@@ -22,7 +22,7 @@ import {
   Colors
 } from 'react-native/Libraries/NewAppScreen';
 
-import RTNTrueLayerPaymentsSDK from 'react-native-true-layer-payments-sdk/js/NativeTrueLayerPaymentsSDK';
+import RTNTrueLayerPaymentsSDK from 'rtn-truelayer-payments-sdk/js/NativeTrueLayerPaymentsSDK';
 
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';

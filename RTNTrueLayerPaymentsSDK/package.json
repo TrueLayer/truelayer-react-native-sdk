@@ -1,5 +1,5 @@
 {
-    "name": "rtn-truelayerpaymentssdk",
+    "name": "rtn-truelayer-payments-sdk",
     "version": "1.0.0",
     "description": "RN wrapper for TrueLyaer's payments SDK",
     "react-native": "js/index",
@@ -8,7 +8,7 @@
       "js",
       "android",
       "ios",
-      "rtn-truelayerpaymentssdk.podspec",
+      "rtn-truelayer-payments-sdk.podspec",
       "!android/build",
       "!ios/build",
       "!**/__tests__",
