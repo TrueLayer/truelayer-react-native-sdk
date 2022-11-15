@@ -49,11 +49,11 @@ const App = () => {
         <Pressable style={styles.button}>
             <Text style={styles.text}> Process Single Payment </Text>
         </Pressable>
-        <Pressable style={styles.button} 
-        onPress={()=> { 
-          RTNTrueLayerPaymentsSDK?.configureSDK()
-          console.log(RTNTrueLayerPaymentsSDK?.configureSDK())
-          console.log("HI")
+        <Pressable style={styles.button}
+        onPress={()=> {
+          const ret = RTNTrueLayerPaymentsSDK?.configureSDK();
+          console.log(ret);
+          console.log("HI");
         }} >
             <Text style={styles.text}> Process Mandate </Text>
         </Pressable>
