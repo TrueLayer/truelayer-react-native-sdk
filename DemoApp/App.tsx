@@ -8,7 +8,7 @@
  * @format
  */
 
- import {
+import {
   Pressable,
   SafeAreaView,
   StatusBar,
@@ -18,18 +18,17 @@
   View,
 } from 'react-native';
 
-import {
-  Colors
-} from 'react-native/Libraries/NewAppScreen';
+import {Colors} from 'react-native/Libraries/NewAppScreen';
 
 import RTNTrueLayerPaymentsSDK from 'rtn-truelayer-payments-sdk/js/NativeTrueLayerPaymentsSDK';
+import {MandateContext} from 'rtn-truelayer-payments-sdk/js/NativeTrueLayerPaymentsSDK';
 
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-    flex: 1
+    flex: 1,
   };
 
   return (
@@ -41,21 +40,37 @@ const App = () => {
       <View
         style={{
           flex: 1,
-          justifyContent: 'center'
+          justifyContent: 'center',
         }}>
-        <Pressable style={styles.button}>
-            <Text style={styles.text}> Start SDK </Text>
+        <Pressable
+            style={styles.button}
+            onPress={() => {
+              const ret = RTNTrueLayerPaymentsSDK?.configureSDK();
+              console.log(ret);
+              console.log('configureSDK button clicked');
+            }}>
+          <Text style={styles.text}> Start SDK </Text>
         </Pressable>
         <Pressable style={styles.button}>
-            <Text style={styles.text}> Process Single Payment </Text>
+          <Text style={styles.text}> Process Single Payment </Text>
         </Pressable>
-        <Pressable style={styles.button}
-        onPress={()=> {
-          const ret = RTNTrueLayerPaymentsSDK?.configureSDK();
-          console.log(ret);
-          console.log("HI");
-        }} >
-            <Text style={styles.text}> Process Mandate </Text>
+        <Pressable
+          style={styles.button}
+          onPress={() => {
+            const ret = RTNTrueLayerPaymentsSDK?.processMandate(
+                {
+                  mandateId: 'anId',
+                  resourceToken: 'theToeken',
+                  redirectUri: 'redirect://url',
+                } as MandateContext,
+                null
+            ).then(result => {
+                console.log(result);
+            });
+            console.log(ret);
+            console.log('processMandate button clicked');
+          }}>
+          <Text style={styles.text}> Process Mandate </Text>
         </Pressable>
       </View>
     </SafeAreaView>
