@@ -1,0 +1,39 @@
+{
+    "name": "rtn-truelayer-payments-sdk",
+    "version": "1.0.0",
+    "description": "RN wrapper for TrueLyaer's payments SDK",
+    "react-native": "js/index",
+    "source": "js/index",
+    "files": [
+      "js",
+      "android",
+      "ios",
+      "rtn-truelayer-payments-sdk.podspec",
+      "!android/build",
+      "!ios/build",
+      "!**/__tests__",
+      "!**/__fixtures__",
+      "!**/__mocks__"
+    ],
+    "keywords": ["react-native", "ios", "android"],
+    "repository": "https://github.com/TrueLayer/truelayer-react-native-sdk",
+    "author": "TrueLayer Limited",
+    "license": "MIT",
+    "bugs": {
+      "url": "https://github.com/TrueLayer/truelayer-react-native-sdk/issues"
+    },
+    "homepage": "https://github.com/TrueLayer/truelayer-react-native-sdk#readme",
+    "devDependencies": {},
+    "peerDependencies": {
+      "react": "*",
+      "react-native": "*"
+    },
+    "codegenConfig": {
+      "name": "RTNTrueLayerPaymentsSDKSpec",
+      "type": "modules",
+      "jsSrcsDir": "js",
+      "android": {
+        "javaPackageName": "com.truelayerpayments"
+      }
+    }
+  }
