@@ -18,6 +18,8 @@ import {
   View,
 } from 'react-native';
 
+import React from 'react';
+
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 
 import RTNTrueLayerPaymentsSDK, {
@@ -63,16 +65,21 @@ const App = () => {
         </Pressable>
         <Pressable
           style={styles.button}
-          onPress={() => getPaymentContext()
-              .then( (processorContext) => {
-              console.log('id: ' + processorContext.id + ' token: ' + processorContext.resource_token);
+          onPress={() =>
+            getPaymentContext().then(processorContext => {
+              console.log(
+                'id: ' +
+                  processorContext.id +
+                  ' token: ' +
+                  processorContext.resource_token,
+              );
               const ret = RTNTrueLayerPaymentsSDK?.processMandate(
                 {
                   mandateId: processorContext.id,
                   resourceToken: processorContext.resource_token,
                   redirectUri: 'truelayer://payments_sample',
                 } as MandateContext,
-                createProcessorPreferences(null, PaymentUseCase.Default),
+                createProcessorPreferences(undefined, PaymentUseCase.Default),
               ).then(result => {
                 const processorRes = result as ProcessorResult;
                 console.log(processorRes);
@@ -82,7 +89,7 @@ const App = () => {
                     break;
                   case ProcessorResultType.Failure:
                     console.log(
-                      "Oh we've failed with following reaon: " +
+                      "Oh we've failed with following reason: " +
                         processorRes.reason,
                     );
                     break;
@@ -100,10 +107,14 @@ const App = () => {
 };
 
 interface SamplePaymentContext {
-  id: string,
-  resource_token: string,
+  id: string;
+  resource_token: string;
 }
 
+/**
+ * This one will fetch the token for mandate from the payments quickstart project
+ * Amend the url to match your instance.
+ */
 async function getPaymentContext(): Promise<SamplePaymentContext> {
   return await fetch('http://192.168.1.35:3000/v3/mandate', {
     method: 'POST',
@@ -140,25 +151,6 @@ async function getPaymentContext(): Promise<SamplePaymentContext> {
       console.error(error);
       return null;
     });
-
-  // if (json != null) {
-  //     const prefs = {
-  //         preferredCountryCode: 'DE',
-  //     };
-  //     const {id, resource_token} = json;
-  //     console.log('id: ' + id + ' token: ' + resource_token);
-  //     const response2 = await TlPaymentSdkModule.startPayment(
-  //         id,
-  //         resource_token,
-  //         'truelayer://payments_sample',
-  //         prefs,
-  //     );
-  //     const {result, reason, step} = response2.data;
-  //     setResponseData(
-  //         'SDK result: ' + result + ' reason: ' + reason + ' step: ' + step,
-  //     );
-  //     console.log(responseData);
-  // }
 }
 
 const styles = StyleSheet.create({

@@ -2,16 +2,16 @@ import type { TurboModule } from 'react-native/Libraries/TurboModule/RCTExport';
 import { TurboModuleRegistry } from 'react-native';
 
 export type ProcessorPrefferences = {
-  prefferedCountryCode?: string;
+  preferredCountryCode?: string;
   paymentUseCase?: string;
 }
 
 export function createProcessorPreferences(
-    prefferedCountryCode?: string,
+    preferredCountryCode?: string,
     paymentUseCase?: PaymentUseCase
 ) {
   return {
-    prefferedCountryCode: prefferedCountryCode,
+    preferredCountryCode: preferredCountryCode,
     paymentUseCase: paymentUseCase
   }
 }
