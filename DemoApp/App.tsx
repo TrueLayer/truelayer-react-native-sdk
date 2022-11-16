@@ -20,8 +20,15 @@ import {
 
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 
-import RTNTrueLayerPaymentsSDK from 'rtn-truelayer-payments-sdk/js/NativeTrueLayerPaymentsSDK';
-import {MandateContext} from 'rtn-truelayer-payments-sdk/js/NativeTrueLayerPaymentsSDK';
+import RTNTrueLayerPaymentsSDK, {
+  MandateContext,
+  createProcessorPreferences,
+  PaymentUseCase,
+  ProcessorResult,
+  ProcessorResultType,
+} from 'rtn-truelayer-payments-sdk/js/NativeTrueLayerPaymentsSDK';
+
+import uuid from 'react-native-uuid';
 
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -43,12 +50,12 @@ const App = () => {
           justifyContent: 'center',
         }}>
         <Pressable
-            style={styles.button}
-            onPress={() => {
-              const ret = RTNTrueLayerPaymentsSDK?.configureSDK();
-              console.log(ret);
-              console.log('configureSDK button clicked');
-            }}>
+          style={styles.button}
+          onPress={() => {
+            const ret = RTNTrueLayerPaymentsSDK?.configureSDK();
+            console.log(ret);
+            console.log('configureSDK button clicked');
+          }}>
           <Text style={styles.text}> Start SDK </Text>
         </Pressable>
         <Pressable style={styles.button}>
@@ -56,26 +63,103 @@ const App = () => {
         </Pressable>
         <Pressable
           style={styles.button}
-          onPress={() => {
-            const ret = RTNTrueLayerPaymentsSDK?.processMandate(
+          onPress={() => getPaymentContext()
+              .then( (processorContext) => {
+              console.log('id: ' + processorContext.id + ' token: ' + processorContext.resource_token);
+              const ret = RTNTrueLayerPaymentsSDK?.processMandate(
                 {
-                  mandateId: 'anId',
-                  resourceToken: 'theToeken',
-                  redirectUri: 'redirect://url',
+                  mandateId: processorContext.id,
+                  resourceToken: processorContext.resource_token,
+                  redirectUri: 'truelayer://payments_sample',
                 } as MandateContext,
-                null
-            ).then(result => {
-                console.log(result);
-            });
-            console.log(ret);
-            console.log('processMandate button clicked');
-          }}>
+                createProcessorPreferences(null, PaymentUseCase.Default),
+              ).then(result => {
+                const processorRes = result as ProcessorResult;
+                console.log(processorRes);
+                switch (processorRes.type) {
+                  case ProcessorResultType.Success:
+                    console.log('Great success at step: ' + processorRes.step);
+                    break;
+                  case ProcessorResultType.Failure:
+                    console.log(
+                      "Oh we've failed with following reaon: " +
+                        processorRes.reason,
+                    );
+                    break;
+                }
+              });
+              console.log(ret);
+              console.log('processMandate button clicked');
+            })
+          }>
           <Text style={styles.text}> Process Mandate </Text>
         </Pressable>
       </View>
     </SafeAreaView>
   );
 };
+
+interface SamplePaymentContext {
+  id: string,
+  resource_token: string,
+}
+
+async function getPaymentContext(): Promise<SamplePaymentContext> {
+  return await fetch('http://192.168.1.35:3000/v3/mandate', {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      id: uuid.v4(),
+      amount_in_minor: '1',
+      currency: 'GBP',
+      payment_method: {
+        statement_reference: 'some ref',
+        type: 'bank_transfer',
+      },
+      beneficiary: {
+        type: 'external_account',
+        name: 'John Doe',
+        reference: 'Test Ref',
+        scheme_identifier: {
+          type: 'sort_code_account_number',
+          account_number: '12345677',
+          sort_code: '123456',
+        },
+      },
+    }),
+  })
+    .then(response => response.json())
+    .then(json => {
+      console.log(json);
+      return json;
+    })
+    .catch(error => {
+      console.error(error);
+      return null;
+    });
+
+  // if (json != null) {
+  //     const prefs = {
+  //         preferredCountryCode: 'DE',
+  //     };
+  //     const {id, resource_token} = json;
+  //     console.log('id: ' + id + ' token: ' + resource_token);
+  //     const response2 = await TlPaymentSdkModule.startPayment(
+  //         id,
+  //         resource_token,
+  //         'truelayer://payments_sample',
+  //         prefs,
+  //     );
+  //     const {result, reason, step} = response2.data;
+  //     setResponseData(
+  //         'SDK result: ' + result + ' reason: ' + reason + ' step: ' + step,
+  //     );
+  //     console.log(responseData);
+  // }
+}
 
 const styles = StyleSheet.create({
   button: {

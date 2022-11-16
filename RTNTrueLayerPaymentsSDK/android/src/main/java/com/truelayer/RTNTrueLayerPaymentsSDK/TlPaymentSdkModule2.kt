@@ -8,6 +8,8 @@ import android.util.SparseArray;
 import androidx.annotation.NonNull;
 import com.facebook.react.bridge.*
 import com.truelayer.payments.core.domain.configuration.Environment
+import com.truelayer.payments.core.domain.configuration.HttpConnectionConfiguration
+import com.truelayer.payments.core.domain.configuration.HttpLoggingLevel
 import com.truelayer.payments.ui.TrueLayerUI
 import com.truelayer.payments.ui.screens.processor.ProcessorActivityContract
 import com.truelayer.payments.ui.screens.processor.ProcessorContext
@@ -34,6 +36,9 @@ class TlPaymentSdkModule2(reactContext: ReactApplicationContext): NativeTrueLaye
         // we ignore the outcome in here for now
         TrueLayerUI.init(reactApplicationContext) {
             environment = Environment.SANDBOX
+            httpConnection = HttpConnectionConfiguration(
+                httpDebugLoggingLevel = HttpLoggingLevel.Body
+            )
         }
         return "configuration successfull"
     }
@@ -60,14 +65,23 @@ class TlPaymentSdkModule2(reactContext: ReactApplicationContext): NativeTrueLaye
                 preferredCountryCode = countryCode
             )
         }
-
+        val id = mandateContext?.let {
+            it.getString("mandateId")
+        }
+        val token = mandateContext?.let {
+            it.getString("resourceToken")
+        }
+        val redirectUri = mandateContext?.let {
+            it.getString("redirectUri")
+        }
+        Log.e(TAG,"context: $mandateContext, preferences: $prefereces")
         activity?.let {
             val intent = ProcessorActivityContract().createIntent(
                 it,
                 ProcessorContext.MandateContext(
-                    "",
-                    "",
-                    "",
+                    id ?: "",
+                    token ?: "",
+                    redirectUri ?:"",
                     prefs
                 )
             )
@@ -144,24 +158,20 @@ class TlPaymentSdkModule2(reactContext: ReactApplicationContext): NativeTrueLaye
         if (promise != null) {
             val result: WritableMap = WritableNativeMap()
             result.putInt("resultCode", resultCode)
-            val sdkResult = ProcessorResult.unwrapResult(data)
-
-            var map = WritableNativeMap()
-            when (sdkResult) {
+            when (val sdkResult = ProcessorResult.unwrapResult(data)) {
                 is ProcessorResult.Successful -> {
                     Log.e(TAG, "sdkResult: success ${sdkResult.step}")
-                    map.putString("result", "success")
-                    map.putString("step", sdkResult.step.name)
+                    result.putString("type", "Success")
+                    result.putString("step", sdkResult.step.name)
                 }
                 is ProcessorResult.Failure -> {
                     Log.e(TAG, "sdkResult: failure ${sdkResult.reason}")
-                    map.putString("result", "failure")
-                    map.putString("reason", sdkResult.reason.name)
+                    result.putString("type", "Failure")
+                    result.putString("reason", sdkResult.reason.name)
                 }
-                null -> map = Arguments.makeNativeMap(data?.extras)
+                null -> { } // just ignore
             }
-//      result.putMap("data", Arguments.makeNativeMap(data.extras))
-            result.putMap("data", map)
+
             promise.resolve(result)
         }
     }

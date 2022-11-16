@@ -6,10 +6,20 @@ export type ProcessorPrefferences = {
   paymentUseCase?: string;
 }
 
+export function createProcessorPreferences(
+    prefferedCountryCode?: string,
+    paymentUseCase?: PaymentUseCase
+) {
+  return {
+    prefferedCountryCode: prefferedCountryCode,
+    paymentUseCase: paymentUseCase
+  }
+}
+
 export enum PaymentUseCase {
-  Default,
-  useCase,
-  SignUpPlus
+  Default = 'Default',
+  Send = 'Send',
+  SignUpPlus = 'SignUpPlus'
 };
 
 export type PaymentContext = {
@@ -24,16 +34,21 @@ export type MandateContext = {
   redirectUri: string,
 }
 
+export enum ProcessorResultType {
+  Success = 'Success',
+  Failure = 'Failure'
+}
+
 export type ProcessorResult =
-    | { type: 'Success', step: PaymentStep }
-    | { type: 'Failure', reason: FailureReason };
+    | { type: ProcessorResultType.Success, step: PaymentStep }
+    | { type: ProcessorResultType.Failure, reason: FailureReason };
 
 export enum PaymentStep {
-  Redirect,
-  Wait,
-  Authoried,
-  Successful,
-  Settled,
+  Redirect= 'Redirect',
+  Wait = 'Wait',
+  Authoried = 'Authorized',
+  Successful = 'Successful',
+  Settled = 'Settled',
 }
 
 export type FailureReason = 'NoInternet'
