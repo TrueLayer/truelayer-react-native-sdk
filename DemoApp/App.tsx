@@ -8,27 +8,17 @@
  * @format
  */
 
-import {
-  Pressable,
-  SafeAreaView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import {Pressable, SafeAreaView, StatusBar, StyleSheet, Text, useColorScheme, View} from 'react-native';
 
 import React from 'react';
 
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 
-import RTNTrueLayerPaymentsSDK, {
-  MandateContext,
-  createProcessorPreferences,
-  PaymentUseCase,
-  ProcessorResult,
-  ProcessorResultType,
-} from 'rtn-truelayer-payments-sdk/js/NativeTrueLayerPaymentsSDK';
+import {TrueLayerPaymentsSDKWrapper} from 'rtn-truelayer-payments-sdk/js/TrueLayerPaymentsSDKWrapper';
+
+import {Environment, ProcessorResult, ProcessorResultType} from 'rtn-truelayer-payments-sdk/js/models/types';
+
+import {PaymentUseCase} from 'rtn-truelayer-payments-sdk/js/models/payments/PaymentUseCase';
 
 import uuid from 'react-native-uuid';
 
@@ -54,57 +44,99 @@ const App = () => {
         <Pressable
           style={styles.button}
           onPress={() => {
-            const ret = RTNTrueLayerPaymentsSDK?.configureSDK();
-            console.log(ret);
+            TrueLayerPaymentsSDKWrapper.configure(Environment.Sandbox).then(
+              _ => {
+                console.log('Configure success');
+              },
+              reason => {
+                console.log('Configure failed ' + reason);
+              },
+            );
             console.log('configureSDK button clicked');
           }}>
           <Text style={styles.text}> Start SDK </Text>
         </Pressable>
-        <Pressable style={styles.button}>
+        <Pressable style={styles.button} onPress={() => processPayment()}>
           <Text style={styles.text}> Process Single Payment </Text>
         </Pressable>
-        <Pressable
-          style={styles.button}
-          onPress={() =>
-            getPaymentContext().then(processorContext => {
-              console.log(
-                'id: ' +
-                  processorContext.id +
-                  ' token: ' +
-                  processorContext.resource_token,
-              );
-              const ret = RTNTrueLayerPaymentsSDK?.processMandate(
-                {
-                  mandateId: processorContext.id,
-                  resourceToken: processorContext.resource_token,
-                  redirectUri: 'truelayer://payments_sample',
-                } as MandateContext,
-                createProcessorPreferences(undefined, PaymentUseCase.Default),
-              ).then(result => {
-                const processorRes = result as ProcessorResult;
-                console.log(processorRes);
-                switch (processorRes.type) {
-                  case ProcessorResultType.Success:
-                    console.log('Great success at step: ' + processorRes.step);
-                    break;
-                  case ProcessorResultType.Failure:
-                    console.log(
-                      "Oh we've failed with following reason: " +
-                        processorRes.reason,
-                    );
-                    break;
-                }
-              });
-              console.log(ret);
-              console.log('processMandate button clicked');
-            })
-          }>
+        <Pressable style={styles.button} onPress={() => processMandate()}>
           <Text style={styles.text}> Process Mandate </Text>
         </Pressable>
       </View>
     </SafeAreaView>
   );
 };
+
+function processPayment() {
+  getPaymentContext('payment').then(processorContext => {
+    console.log(
+      'id: ' +
+        processorContext.id +
+        ' token: ' +
+        processorContext.resource_token,
+    );
+    TrueLayerPaymentsSDKWrapper.processPayment(
+      {
+        paymentId: processorContext.id,
+        resourceToken: processorContext.resource_token,
+        redirectUri: 'truelayer://payments_sample',
+      },
+      {
+        preferredCountryCode: undefined,
+        paymentUseCase: PaymentUseCase.Default,
+      },
+    ).then(result => {
+      const processorRes = result as ProcessorResult;
+      console.log(processorRes);
+      switch (processorRes.type) {
+        case ProcessorResultType.Success:
+          console.log('Great success at step: ' + processorRes.step);
+          break;
+        case ProcessorResultType.Failure:
+          console.log(
+            "Oh we've failed with following reason: " + processorRes.reason,
+          );
+          break;
+      }
+    });
+    console.log('processPayment button clicked');
+  });
+}
+
+function processMandate() {
+  getPaymentContext('mandate').then(processorContext => {
+    console.log(
+      'id: ' +
+        processorContext.id +
+        ' token: ' +
+        processorContext.resource_token,
+    );
+    TrueLayerPaymentsSDKWrapper.processMandate(
+      {
+        mandateId: processorContext.id,
+        resourceToken: processorContext.resource_token,
+        redirectUri: 'truelayer://payments_sample',
+      },
+      {
+        preferredCountryCode: undefined,
+      },
+    ).then(result => {
+      const processorRes = result as ProcessorResult;
+      console.log(processorRes);
+      switch (processorRes.type) {
+        case ProcessorResultType.Success:
+          console.log('Great success at step: ' + processorRes.step);
+          break;
+        case ProcessorResultType.Failure:
+          console.log(
+            "Oh we've failed with following reason: " + processorRes.reason,
+          );
+          break;
+      }
+    });
+    console.log('processMandate button clicked');
+  });
+}
 
 interface SamplePaymentContext {
   id: string;
@@ -115,8 +147,10 @@ interface SamplePaymentContext {
  * This one will fetch the token for mandate from the payments quickstart project
  * Amend the url to match your instance.
  */
-async function getPaymentContext(): Promise<SamplePaymentContext> {
-  return await fetch('http://192.168.1.35:3000/v3/mandate', {
+async function getPaymentContext(
+  type: 'mandate' | 'payment',
+): Promise<SamplePaymentContext> {
+  return await fetch('http://192.168.1.35:3000/v3/' + type, {
     method: 'POST',
     headers: {
       Accept: 'application/json',

@@ -1,80 +1,72 @@
-import type { TurboModule } from 'react-native/Libraries/TurboModule/RCTExport';
-import { TurboModuleRegistry } from 'react-native';
+// @ts-ignore
+import type {TurboModule} from 'react-native/Libraries/TurboModule/RCTExport';
+import {TurboModuleRegistry} from 'react-native';
 
-export type ProcessorPrefferences = {
-  preferredCountryCode?: string;
-  paymentUseCase?: string;
-}
+import {
+    ProcessorResult,
+    PaymentStatus,
+    MandateStatus,
+    Environment
+} from './models/types';
 
-export function createProcessorPreferences(
-    preferredCountryCode?: string,
-    paymentUseCase?: PaymentUseCase
-) {
-  return {
-    preferredCountryCode: preferredCountryCode,
-    paymentUseCase: paymentUseCase
-  }
-}
+/**
+ * ReactNative raw interface. Do not use directly. Use TrueLayerPaymentsSDKWrapper class instead.
+ */
+interface Spec extends TurboModule {
+    /**
+     * ReactNative raw interface. Do not use directly. Use TrueLayerPaymentsSDKWrapper class instead.
+     */
+    _configure(
+        environment: string,
+    ): Promise<void>;
 
-export enum PaymentUseCase {
-  Default = 'Default',
-  Send = 'Send',
-  SignUpPlus = 'SignUpPlus'
-};
+    /**
+     * ReactNative raw interface. Do not use directly. Use TrueLayerPaymentsSDKWrapper class instead.
+     */
+    _processPayment(
+        paymentContext: {
+            paymentId: string,
+            resourceToken: string,
+            redirectUri: string,
+        },
+        prefereces?: {
+            preferredCountryCode?: string;
+            paymentUseCase: string;
+        },
+    ): Promise<ProcessorResult>;
 
-export type PaymentContext = {
-  paymentId: string,
-  resourceToken: string,
-  redirectUri: string,
-}
+    /**
+     * ReactNative raw interface. Do not use directly. Use TrueLayerPaymentsSDKWrapper class instead.
+     */
+    _processMandate(
+        mandateContext: {
+            mandateId: string,
+            resourceToken: string,
+            redirectUri: string,
+        },
+        prefereces: {
+            preferredCountryCode?: string;
+        },
+    ): Promise<ProcessorResult>;
 
-export type MandateContext = {
-  mandateId: string,
-  resourceToken: string,
-  redirectUri: string,
-}
+    /**
+     * ReactNative raw interface. Do not use directly. Use TrueLayerPaymentsSDKWrapper class instead.
+     */
+    _paymentStatus(
+        paymentId: string,
+        resourceToken: string,
+    ): Promise<PaymentStatus>;
 
-export enum ProcessorResultType {
-  Success = 'Success',
-  Failure = 'Failure'
-}
+    /**
+     * ReactNative raw interface. Do not use directly. Use TrueLayerPaymentsSDKWrapper class instead.
+     */
+    _mandateStatus(
+        mandateId: string,
+        resourceToken: string,
+    ): Promise<MandateStatus>;
 
-export type ProcessorResult =
-    | { type: ProcessorResultType.Success, step: PaymentStep }
-    | { type: ProcessorResultType.Failure, reason: FailureReason };
-
-export enum PaymentStep {
-  Redirect= 'Redirect',
-  Wait = 'Wait',
-  Authoried = 'Authorized',
-  Successful = 'Successful',
-  Settled = 'Settled',
-}
-
-export type FailureReason = 'NoInternet'
-    | 'UserAborted'
-    | 'UserAbortedFailedToNotifyBackend'
-    | 'CommunicationIssue'
-    | 'ConnectionSecurityIssue'
-    | 'PaymentFailed'
-    | 'WaitAbandoned'
-    | 'WaitTokenExpired'
-    | 'ProcessorContextNotAvailable'
-    | 'Unknown';
-
-export interface Spec extends TurboModule {
-  configureSDK(): string;
-  processPayment(
-      paymentContext: PaymentContext,
-      prefereces: ProcessorPrefferences,
-  ): Promise<ProcessorResult>;
-
-  processMandate(
-      mandateContext: MandateContext,
-      prefereces: ProcessorPrefferences,
-  ): Promise<ProcessorResult>;
 }
 
 export default TurboModuleRegistry.get<Spec>(
-  'RTNTrueLayerPaymentsSDK'
+    'RTNTrueLayerPaymentsSDK',
 ) as Spec | null;
