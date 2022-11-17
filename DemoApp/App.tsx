@@ -1,14 +1,12 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * Generated with the TypeScript template
- * https://github.com/react-native-community/react-native-template-typescript
- *
- * @format
- */
-
-import {Pressable, SafeAreaView, StatusBar, StyleSheet, Text, useColorScheme, View} from 'react-native';
+import {
+  Pressable,
+  SafeAreaView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  useColorScheme,
+  View,
+} from 'react-native';
 
 import React from 'react';
 
@@ -16,7 +14,11 @@ import {Colors} from 'react-native/Libraries/NewAppScreen';
 
 import {TrueLayerPaymentsSDKWrapper} from 'rtn-truelayer-payments-sdk/js/TrueLayerPaymentsSDKWrapper';
 
-import {Environment, ProcessorResult, ProcessorResultType} from 'rtn-truelayer-payments-sdk/js/models/types';
+import {
+  Environment,
+  ProcessorResult,
+  ProcessorResultType,
+} from 'rtn-truelayer-payments-sdk/js/models/types';
 
 import {PaymentUseCase} from 'rtn-truelayer-payments-sdk/js/models/payments/PaymentUseCase';
 
