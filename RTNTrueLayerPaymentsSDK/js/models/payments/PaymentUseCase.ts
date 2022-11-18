@@ -1,5 +1,5 @@
 export enum PaymentUseCase {
-    Default = 'Default',
-    Send = 'Send',
-    SignUpPlus = 'SignUpPlus'
-};
+  Default = "Default",
+  Send = "Send",
+  SignUpPlus = "SignUpPlus",
+}

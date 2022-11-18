@@ -1,5 +1,5 @@
 export type MandateContext = {
-    mandateId: string,
-    resourceToken: string,
-    redirectUri: string,
-}
+  mandateId: string;
+  resourceToken: string;
+  redirectUri: string;
+};

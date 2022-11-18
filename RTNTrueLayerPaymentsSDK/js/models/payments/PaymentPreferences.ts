@@ -1,6 +1,6 @@
-import {PaymentUseCase} from './PaymentUseCase';
+import { PaymentUseCase } from "./PaymentUseCase";
 
 export type PaymentPreferences = {
-    preferredCountryCode?: string;
-    paymentUseCase: PaymentUseCase;
-}
+  preferredCountryCode?: string;
+  paymentUseCase: PaymentUseCase;
+};

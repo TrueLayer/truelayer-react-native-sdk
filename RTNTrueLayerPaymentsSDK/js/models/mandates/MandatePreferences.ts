@@ -1,3 +1,3 @@
 export type MandatePreferences = {
-    preferredCountryCode?: string;
-}
+  preferredCountryCode?: string;
+};

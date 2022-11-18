@@ -1,63 +1,50 @@
-export type {
-    PaymentContext
-} from './payments/PaymentContext'
+export { PaymentContext } from "./payments/PaymentContext";
 
-export type {
-    PaymentStatus
-} from './payments/PaymentStatus'
+export { PaymentStatus } from "./payments/PaymentStatus";
 
-export type {
-    PaymentUseCase
-} from './payments/PaymentUseCase'
+export { PaymentUseCase } from "./payments/PaymentUseCase";
 
-export type {
-    MandateContext
-} from './mandates/MandateContext'
+export { MandateContext } from "./mandates/MandateContext";
 
-export type {
-    MandateStatus
-} from './mandates/MandateStatus'
+export { MandateStatus } from "./mandates/MandateStatus";
 
-export type {
-    PaymentPreferences
-} from './payments/PaymentPreferences'
+export { PaymentPreferences } from "./payments/PaymentPreferences";
 
-export type {
-    MandatePreferences
-} from './mandates/MandatePreferences'
+export { MandatePreferences } from "./mandates/MandatePreferences";
 
 /**
  * Defines available environments
  */
 export enum Environment {
-    Production = 'PRODUCTION',
-    Sandbox = 'SANDBOX'
+  Production = "PRODUCTION",
+  Sandbox = "SANDBOX",
 }
 
 export enum ProcessorResultType {
-    Success = 'Success',
-    Failure = 'Failure'
+  Success = "Success",
+  Failure = "Failure",
 }
 
 export type ProcessorResult =
-    | { type: ProcessorResultType.Success, step: ProcessorStep }
-    | { type: ProcessorResultType.Failure, reason: FailureReason };
+  | { type: ProcessorResultType.Success; step: ProcessorStep }
+  | { type: ProcessorResultType.Failure; reason: FailureReason };
 
 export enum ProcessorStep {
-    Redirect= 'Redirect',
-    Wait = 'Wait',
-    Authorized = 'Authorized',
-    Successful = 'Successful',
-    Settled = 'Settled',
+  Redirect = "Redirect",
+  Wait = "Wait",
+  Authorized = "Authorized",
+  Successful = "Successful",
+  Settled = "Settled",
 }
 
-export type FailureReason = 'NoInternet'
-    | 'UserAborted'
-    | 'UserAbortedFailedToNotifyBackend'
-    | 'CommunicationIssue'
-    | 'ConnectionSecurityIssue'
-    | 'PaymentFailed'
-    | 'WaitAbandoned'
-    | 'WaitTokenExpired'
-    | 'ProcessorContextNotAvailable'
-    | 'Unknown';
+export type FailureReason =
+  | "NoInternet"
+  | "UserAborted"
+  | "UserAbortedFailedToNotifyBackend"
+  | "CommunicationIssue"
+  | "ConnectionSecurityIssue"
+  | "PaymentFailed"
+  | "WaitAbandoned"
+  | "WaitTokenExpired"
+  | "ProcessorContextNotAvailable"
+  | "Unknown";

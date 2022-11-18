@@ -6,31 +6,28 @@ import {
   Text,
   useColorScheme,
   View,
-} from 'react-native';
+} from 'react-native'
 
-import React from 'react';
+import React from 'react'
 
-import {Colors} from 'react-native/Libraries/NewAppScreen';
-
-import {TrueLayerPaymentsSDKWrapper} from 'rtn-truelayer-payments-sdk/js/TrueLayerPaymentsSDKWrapper';
+import { TrueLayerPaymentsSDKWrapper } from 'rtn-truelayer-payments-sdk/js/TrueLayerPaymentsSDKWrapper'
 
 import {
   Environment,
-  ProcessorResult,
+  PaymentUseCase,
   ProcessorResultType,
-} from 'rtn-truelayer-payments-sdk/js/models/types';
+} from 'rtn-truelayer-payments-sdk/js/models/types'
 
-import {PaymentUseCase} from 'rtn-truelayer-payments-sdk/js/models/payments/PaymentUseCase';
+import uuid from 'react-native-uuid'
+import { Colors } from 'react-native/Libraries/NewAppScreen'
 
-import uuid from 'react-native-uuid';
-
-const App = () => {
-  const isDarkMode = useColorScheme() === 'dark';
+export default function App() {
+  const isDarkMode = useColorScheme() === 'dark'
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
     flex: 1,
-  };
+  }
 
   return (
     <SafeAreaView style={backgroundStyle}>
@@ -38,45 +35,45 @@ const App = () => {
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         backgroundColor={backgroundStyle.backgroundColor}
       />
-      <View
-        style={{
-          flex: 1,
-          justifyContent: 'center',
-        }}>
+      <View style={{ flex: 1, justifyContent: 'center' }}>
         <Pressable
           style={styles.button}
           onPress={() => {
+            console.log('configure button clicked')
+
             TrueLayerPaymentsSDKWrapper.configure(Environment.Sandbox).then(
-              _ => {
-                console.log('Configure success');
+              () => {
+                console.log('Configure success')
               },
               reason => {
-                console.log('Configure failed ' + reason);
+                console.log('Configure failed ' + reason)
               },
-            );
-            console.log('configureSDK button clicked');
-          }}>
+            )
+          }}
+        >
           <Text style={styles.text}> Start SDK </Text>
         </Pressable>
-        <Pressable style={styles.button} onPress={() => processPayment()}>
+        <Pressable style={styles.button} onPress={processPayment}>
           <Text style={styles.text}> Process Single Payment </Text>
         </Pressable>
-        <Pressable style={styles.button} onPress={() => processMandate()}>
+        <Pressable style={styles.button} onPress={processMandate}>
           <Text style={styles.text}> Process Mandate </Text>
         </Pressable>
       </View>
     </SafeAreaView>
-  );
-};
+  )
+}
 
-function processPayment() {
+function processPayment(): void {
+  console.log('processPayment button clicked')
+
   getPaymentContext('payment').then(processorContext => {
     console.log(
-      'id: ' +
-        processorContext.id +
-        ' token: ' +
-        processorContext.resource_token,
-    );
+      `payment`,
+      `id: ${processorContext.id}`,
+      `resource_token: ${processorContext.resource_token}`,
+    )
+
     TrueLayerPaymentsSDKWrapper.processPayment(
       {
         paymentId: processorContext.id,
@@ -84,65 +81,48 @@ function processPayment() {
         redirectUri: 'truelayer://payments_sample',
       },
       {
-        preferredCountryCode: undefined,
         paymentUseCase: PaymentUseCase.Default,
       },
     ).then(result => {
-      const processorRes = result as ProcessorResult;
-      console.log(processorRes);
-      switch (processorRes.type) {
+      switch (result.type) {
         case ProcessorResultType.Success:
-          console.log('Great success at step: ' + processorRes.step);
-          break;
+          console.log(`Great success at step: ${result.step}`)
+          break
         case ProcessorResultType.Failure:
-          console.log(
-            "Oh we've failed with following reason: " + processorRes.reason,
-          );
-          break;
+          console.log(`Oh we've failed with following reason: ${result.reason}`)
+          break
       }
-    });
-    console.log('processPayment button clicked');
-  });
+    })
+  })
 }
 
-function processMandate() {
+function processMandate(): void {
+  console.log('processMandate button clicked')
+
   getPaymentContext('mandate').then(processorContext => {
     console.log(
-      'id: ' +
-        processorContext.id +
-        ' token: ' +
-        processorContext.resource_token,
-    );
-    TrueLayerPaymentsSDKWrapper.processMandate(
-      {
-        mandateId: processorContext.id,
-        resourceToken: processorContext.resource_token,
-        redirectUri: 'truelayer://payments_sample',
-      },
-      {
-        preferredCountryCode: undefined,
-      },
-    ).then(result => {
-      const processorRes = result as ProcessorResult;
-      console.log(processorRes);
-      switch (processorRes.type) {
+      `mandate`,
+      `id: ${processorContext.id}`,
+      `resource_token: ${processorContext.resource_token}`,
+    )
+    TrueLayerPaymentsSDKWrapper.processMandate({
+      mandateId: processorContext.id,
+      resourceToken: processorContext.resource_token,
+      redirectUri: 'truelayer://payments_sample',
+    }).then(result => {
+      switch (result.type) {
         case ProcessorResultType.Success:
-          console.log('Great success at step: ' + processorRes.step);
-          break;
+          break
         case ProcessorResultType.Failure:
-          console.log(
-            "Oh we've failed with following reason: " + processorRes.reason,
-          );
-          break;
+          break
       }
-    });
-    console.log('processMandate button clicked');
-  });
+    })
+  })
 }
 
 interface SamplePaymentContext {
-  id: string;
-  resource_token: string;
+  id: string
+  resource_token: string
 }
 
 /**
@@ -180,13 +160,13 @@ async function getPaymentContext(
   })
     .then(response => response.json())
     .then(json => {
-      console.log(json);
-      return json;
+      console.log(json)
+      return json
     })
     .catch(error => {
-      console.error(error);
-      return null;
-    });
+      console.error(error)
+      return null
+    })
 }
 
 const styles = StyleSheet.create({
@@ -208,6 +188,4 @@ const styles = StyleSheet.create({
   highlight: {
     fontWeight: '700',
   },
-});
-
-export default App;
+})

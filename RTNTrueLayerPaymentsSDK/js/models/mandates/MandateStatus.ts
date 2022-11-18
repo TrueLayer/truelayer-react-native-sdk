@@ -1,3 +1,1 @@
-export enum MandateStatus {
-
-}
+export enum MandateStatus {}
