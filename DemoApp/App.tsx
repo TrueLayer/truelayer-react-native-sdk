@@ -86,10 +86,10 @@ function processPayment(): void {
     ).then(result => {
       switch (result.type) {
         case ProcessorResultType.Success:
-          console.log(`Great success at step: ${result.step}`)
+          console.log(`processPayment success at step: ${result.step}`)
           break
         case ProcessorResultType.Failure:
-          console.log(`Oh we've failed with following reason: ${result.reason}`)
+          console.log(`Oh we've failed processPayment with following reason: ${result.reason}`)
           break
       }
     })
@@ -112,8 +112,10 @@ function processMandate(): void {
     }).then(result => {
       switch (result.type) {
         case ProcessorResultType.Success:
+          console.log(`processMandate success at step: ${result.step}`)
           break
         case ProcessorResultType.Failure:
+          console.log(`Oh we've failed processMandate with following reason: ${result.reason}`)
           break
       }
     })
