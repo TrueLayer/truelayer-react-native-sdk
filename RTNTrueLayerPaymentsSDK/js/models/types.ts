@@ -33,18 +33,16 @@ export enum ProcessorStep {
   Redirect = "Redirect",
   Wait = "Wait",
   Authorized = "Authorized",
-  Successful = "Successful",
+  Executed = "Executed",
   Settled = "Settled",
 }
 
 export type FailureReason =
   | "NoInternet"
   | "UserAborted"
-  | "UserAbortedFailedToNotifyBackend"
   | "CommunicationIssue"
   | "ConnectionSecurityIssue"
   | "PaymentFailed"
   | "WaitAbandoned"
-  | "WaitTokenExpired"
   | "ProcessorContextNotAvailable"
   | "Unknown";

@@ -4,6 +4,11 @@ import { ProcessorResult, PaymentStatus, MandateStatus } from "./models/types";
 
 /**
  * ReactNative raw interface. Do not use directly. Use TrueLayerPaymentsSDKWrapper class instead.
+ *
+ * The raw interface and the wrappers were created to overcome a TypeScript limitations
+ * of the raw interface. The react native bridge has only limitted support for TypeScript.
+ * In order to deliver fully type safe interface we've created a TrueLayerPaymentsSDKWrapper which then
+ * calls into the bridge.
  */
 interface Spec extends TurboModule {
   /**
