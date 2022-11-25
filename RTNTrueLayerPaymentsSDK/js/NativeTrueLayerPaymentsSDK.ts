@@ -1,10 +1,67 @@
-import type { TurboModule } from 'react-native/Libraries/TurboModule/RCTExport';
-import { TurboModuleRegistry } from 'react-native';
+import { TurboModule, TurboModuleRegistry } from "react-native";
 
-export interface Spec extends TurboModule {
-  configureSDK(): string;
+import { ProcessorResult, PaymentStatus, MandateStatus } from "./models/types";
+
+/**
+ * ReactNative raw interface. Do not use directly. Use TrueLayerPaymentsSDKWrapper class instead.
+ *
+ * The raw interface and the wrappers were created to overcome a TypeScript limitations
+ * of the raw interface. The react native bridge has only limitted support for TypeScript.
+ * In order to deliver fully type safe interface we've created a TrueLayerPaymentsSDKWrapper which then
+ * calls into the bridge.
+ */
+interface Spec extends TurboModule {
+  /**
+   * ReactNative raw interface. Do not use directly. Use TrueLayerPaymentsSDKWrapper class instead.
+   */
+  _configure(environment: string): Promise<void>;
+
+  /**
+   * ReactNative raw interface. Do not use directly. Use TrueLayerPaymentsSDKWrapper class instead.
+   */
+  _processPayment(
+    paymentContext: {
+      paymentId: string;
+      resourceToken: string;
+      redirectUri: string;
+    },
+    prefereces?: {
+      preferredCountryCode?: string;
+      paymentUseCase: string;
+    }
+  ): Promise<ProcessorResult>;
+
+  /**
+   * ReactNative raw interface. Do not use directly. Use TrueLayerPaymentsSDKWrapper class instead.
+   */
+  _processMandate(
+    mandateContext: {
+      mandateId: string;
+      resourceToken: string;
+      redirectUri: string;
+    },
+    prefereces?: {
+      preferredCountryCode?: string;
+    }
+  ): Promise<ProcessorResult>;
+
+  /**
+   * ReactNative raw interface. Do not use directly. Use TrueLayerPaymentsSDKWrapper class instead.
+   */
+  _paymentStatus(
+    paymentId: string,
+    resourceToken: string
+  ): Promise<PaymentStatus>;
+
+  /**
+   * ReactNative raw interface. Do not use directly. Use TrueLayerPaymentsSDKWrapper class instead.
+   */
+  _mandateStatus(
+    mandateId: string,
+    resourceToken: string
+  ): Promise<MandateStatus>;
 }
 
 export default TurboModuleRegistry.get<Spec>(
-  'RTNTrueLayerPaymentsSDK'
+  "RTNTrueLayerPaymentsSDK"
 ) as Spec | null;

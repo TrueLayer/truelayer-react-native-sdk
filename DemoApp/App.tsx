@@ -1,14 +1,4 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * Generated with the TypeScript template
- * https://github.com/react-native-community/react-native-template-typescript
- *
- * @format
- */
-
- import {
+import {
   Pressable,
   SafeAreaView,
   StatusBar,
@@ -16,21 +6,28 @@
   Text,
   useColorScheme,
   View,
-} from 'react-native';
+} from 'react-native'
+
+import React from 'react'
+
+import { TrueLayerPaymentsSDKWrapper } from 'rtn-truelayer-payments-sdk/js/TrueLayerPaymentsSDKWrapper'
 
 import {
-  Colors
-} from 'react-native/Libraries/NewAppScreen';
+  Environment,
+  PaymentUseCase,
+  ProcessorResultType,
+} from 'rtn-truelayer-payments-sdk/js/models/types'
 
-import RTNTrueLayerPaymentsSDK from 'rtn-truelayer-payments-sdk/js/NativeTrueLayerPaymentsSDK';
+import uuid from 'react-native-uuid'
+import { Colors } from 'react-native/Libraries/NewAppScreen'
 
-const App = () => {
-  const isDarkMode = useColorScheme() === 'dark';
+export default function App() {
+  const isDarkMode = useColorScheme() === 'dark'
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-    flex: 1
-  };
+    flex: 1,
+  }
 
   return (
     <SafeAreaView style={backgroundStyle}>
@@ -38,29 +35,141 @@ const App = () => {
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         backgroundColor={backgroundStyle.backgroundColor}
       />
-      <View
-        style={{
-          flex: 1,
-          justifyContent: 'center'
-        }}>
-        <Pressable style={styles.button}>
-            <Text style={styles.text}> Start SDK </Text>
+      <View style={{ flex: 1, justifyContent: 'center' }}>
+        <Pressable
+          style={styles.button}
+          onPress={() => {
+            console.log('configure button clicked')
+
+            TrueLayerPaymentsSDKWrapper.configure(Environment.Sandbox).then(
+              () => {
+                console.log('Configure success')
+              },
+              reason => {
+                console.log('Configure failed ' + reason)
+              },
+            )
+          }}
+        >
+          <Text style={styles.text}> Start SDK </Text>
         </Pressable>
-        <Pressable style={styles.button}>
-            <Text style={styles.text}> Process Single Payment </Text>
+        <Pressable style={styles.button} onPress={processPayment}>
+          <Text style={styles.text}> Process Single Payment </Text>
         </Pressable>
-        <Pressable style={styles.button} 
-        onPress={()=> { 
-          RTNTrueLayerPaymentsSDK?.configureSDK()
-          console.log(RTNTrueLayerPaymentsSDK?.configureSDK())
-          console.log("HI")
-        }} >
-            <Text style={styles.text}> Process Mandate </Text>
+        <Pressable style={styles.button} onPress={processMandate}>
+          <Text style={styles.text}> Process Mandate </Text>
         </Pressable>
       </View>
     </SafeAreaView>
-  );
-};
+  )
+}
+
+function processPayment(): void {
+  console.log('processPayment button clicked')
+
+  getPaymentContext('payment').then(processorContext => {
+    console.log(
+      `payment`,
+      `id: ${processorContext.id}`,
+      `resource_token: ${processorContext.resource_token}`,
+    )
+
+    TrueLayerPaymentsSDKWrapper.processPayment(
+      {
+        paymentId: processorContext.id,
+        resourceToken: processorContext.resource_token,
+        redirectUri: 'truelayer://payments_sample',
+      },
+      {
+        paymentUseCase: PaymentUseCase.Default,
+      },
+    ).then(result => {
+      switch (result.type) {
+        case ProcessorResultType.Success:
+          console.log(`processPayment success at step: ${result.step}`)
+          break
+        case ProcessorResultType.Failure:
+          console.log(`Oh we've failed processPayment with following reason: ${result.reason}`)
+          break
+      }
+    })
+  })
+}
+
+function processMandate(): void {
+  console.log('processMandate button clicked')
+
+  getPaymentContext('mandate').then(processorContext => {
+    console.log(
+      `mandate`,
+      `id: ${processorContext.id}`,
+      `resource_token: ${processorContext.resource_token}`,
+    )
+    TrueLayerPaymentsSDKWrapper.processMandate({
+      mandateId: processorContext.id,
+      resourceToken: processorContext.resource_token,
+      redirectUri: 'truelayer://payments_sample',
+    }).then(result => {
+      switch (result.type) {
+        case ProcessorResultType.Success:
+          console.log(`processMandate success at step: ${result.step}`)
+          break
+        case ProcessorResultType.Failure:
+          console.log(`Oh we've failed processMandate with following reason: ${result.reason}`)
+          break
+      }
+    })
+  })
+}
+
+interface SamplePaymentContext {
+  id: string
+  resource_token: string
+}
+
+/**
+ * This one will fetch the token for mandate from the payments quickstart project
+ * Amend the url to match your instance.
+ */
+async function getPaymentContext(
+  type: 'mandate' | 'payment',
+): Promise<SamplePaymentContext> {
+  return await fetch('http://192.168.1.35:3000/v3/' + type, {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      id: uuid.v4(),
+      amount_in_minor: '1',
+      currency: 'GBP',
+      payment_method: {
+        statement_reference: 'some ref',
+        type: 'bank_transfer',
+      },
+      beneficiary: {
+        type: 'external_account',
+        name: 'John Doe',
+        reference: 'Test Ref',
+        scheme_identifier: {
+          type: 'sort_code_account_number',
+          account_number: '12345677',
+          sort_code: '123456',
+        },
+      },
+    }),
+  })
+    .then(response => response.json())
+    .then(json => {
+      console.log(json)
+      return json
+    })
+    .catch(error => {
+      console.error(error)
+      return null
+    })
+}
 
 const styles = StyleSheet.create({
   button: {
@@ -81,6 +190,4 @@ const styles = StyleSheet.create({
   highlight: {
     fontWeight: '700',
   },
-});
-
-export default App;
+})
