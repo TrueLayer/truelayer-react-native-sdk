@@ -1,4 +1,4 @@
-package com.truelayer.RTNTrueLayerPaymentsSDK;
+package com.truelayer.RTNTrueLayerPaymentsSDK
 
 import android.app.Activity
 import android.content.Intent
@@ -12,11 +12,16 @@ import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.WritableMap
 import com.facebook.react.bridge.WritableNativeMap
+import com.truelayer.RTNTrueLayerPaymentsSDK.TLReactNativeUtils.Companion.createProcessorFailureResult
+import com.truelayer.RTNTrueLayerPaymentsSDK.TLReactNativeUtils.Companion.mapMandateStatus
+import com.truelayer.RTNTrueLayerPaymentsSDK.TLReactNativeUtils.Companion.mapPaymentStatus
 import com.truelayer.payments.core.domain.configuration.Environment
+import com.truelayer.payments.core.domain.errors.CoreError
 import com.truelayer.payments.core.domain.errors.TrueLayerConfigurationError
 import com.truelayer.payments.core.domain.utils.onError
 import com.truelayer.payments.core.domain.utils.onOk
 import com.truelayer.payments.ui.TrueLayerUI
+import com.truelayer.payments.ui.models.ProcessorStatus
 import com.truelayer.payments.ui.screens.processor.PaymentUseCase
 import com.truelayer.payments.ui.screens.processor.ProcessorActivityContract
 import com.truelayer.payments.ui.screens.processor.ProcessorContext
@@ -26,65 +31,197 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.contract
 
 private class TLReactNativeUtils {
+    class ContextExtractor(
+        map: ReadableMap?, preferences: ReadableMap?
+    ) {
+        val paymentId: String?
+        val mandateId: String?
+        val token: String?
+        val redirectUri: String?
+        val preferredCountryCode: String?
+        val paymentUseCase: PaymentUseCase
+        init {
+            mandateId = map?.getString("mandateId")
+            paymentId =  map?.getString("paymentId")
+            token = map?.getString("resourceToken")
+            redirectUri = map?.getString("redirectUri")
+            preferredCountryCode = preferences?.getString("preferredCountryCode")
+            paymentUseCase = preferences?.getString("paymentUseCase").convertToUseCase()
+        }
+
+        @OptIn(ExperimentalContracts::class)
+        fun isValidMandate(mandateId: String?, token: String?, redirectUri: String?): Boolean {
+            contract {
+                returns(true) implies (mandateId != null && token != null && redirectUri != null)
+            }
+            return mandateId != null && token != null && redirectUri != null
+        }
+
+        @OptIn(ExperimentalContracts::class)
+        fun isValidPayment(paymentId: String?, token: String?, redirectUri: String?): Boolean {
+            contract {
+                returns(true) implies (paymentId != null && token != null && redirectUri != null)
+            }
+            return paymentId != null && token != null && redirectUri != null
+        }
+
+        fun getMandateContext(): ProcessorContext.MandateContext? {
+            if (!isValidMandate(mandateId, token, redirectUri)) return null
+            return ProcessorContext.MandateContext(
+                id = mandateId,
+                resourceToken = token,
+                redirectUri = redirectUri,
+                preferences = ProcessorContext.MandatePreferences(
+                    preferredCountryCode = preferredCountryCode
+                )
+            )
+        }
+
+        fun getPaymentContext(): ProcessorContext.PaymentContext? {
+            if (!isValidPayment(paymentId, token, redirectUri)) return null
+            return ProcessorContext.PaymentContext(
+                id = paymentId,
+                resourceToken = token,
+                redirectUri = redirectUri,
+                preferences = ProcessorContext.PaymentPreferences(
+                    preferredCountryCode = preferredCountryCode,
+                    paymentUseCase = paymentUseCase
+                )
+            )
+        }
+    }
     companion object {
-        fun extractMandateContext(map: ReadableMap?, preferences: ReadableMap?): ProcessorContext.MandateContext? {
-            val id = map?.getString("mandateId")
-            val token = map?.getString("resourceToken")
-            val redirectUri = map?.getString("redirectUri")
-            val preferredCountryCode = preferences?.getString("preferredCountryCode")
-
-            return if (id != null && token != null && redirectUri != null) {
-                ProcessorContext.MandateContext(
-                    id = id,
-                    resourceToken = token,
-                    redirectUri = redirectUri,
-                    preferences = ProcessorContext.MandatePreferences(
-                        preferredCountryCode = preferredCountryCode
-                    )
-                )
-            } else {
-                null
+        fun mapFailureReason(reason: ProcessorResult.FailureReason): String {
+            /*
+                export type FailureReason =
+                  | "NoInternet"
+                  | "UserAborted"
+                  | "CommunicationIssue"
+                  | "ConnectionSecurityIssue"
+                  | "PaymentFailed"
+                  | "WaitAbandoned"
+                  | "ProcessorContextNotAvailable"
+                  | "Unknown";
+             */
+            return when (reason) {
+                ProcessorResult.FailureReason.NoInternet -> "NoInternet"
+                ProcessorResult.FailureReason.UserAborted -> "UserAborted"
+                ProcessorResult.FailureReason.UserAbortedFailedToNotifyBackend -> "UserAborted"
+                ProcessorResult.FailureReason.CommunicationIssue -> "CommunicationIssue"
+                ProcessorResult.FailureReason.ConnectionSecurityIssue -> "ConnectionSecurityIssue"
+                ProcessorResult.FailureReason.PaymentFailed -> "PaymentFailed"
+                ProcessorResult.FailureReason.WaitAbandoned -> "WaitAbandoned"
+                ProcessorResult.FailureReason.WaitTokenExpired -> "CommunicationIssue"
+                ProcessorResult.FailureReason.ProcessorContextNotAvailable -> "ProcessorContextNotAvailable"
+                ProcessorResult.FailureReason.Unknown -> "Unknown"
             }
         }
 
-        fun extractPaymentContext(map: ReadableMap?, preferences: ReadableMap?): ProcessorContext.PaymentContext? {
-            val id = map?.getString("paymentId")
-            val token = map?.getString("resourceToken")
-            val redirectUri = map?.getString("redirectUri")
-            val preferredCountryCode = preferences?.getString("preferredCountryCode")
-            val useCase = preferences?.getString("paymentUseCase")
-
-            return if (id != null && token != null && redirectUri != null) {
-                ProcessorContext.PaymentContext(
-                    id = id,
-                    resourceToken = token,
-                    redirectUri = redirectUri,
-                    preferences = ProcessorContext.PaymentPreferences(
-                        preferredCountryCode = preferredCountryCode,
-                        paymentUseCase = PaymentUseCase.values().firstOrNull { it.name.equals(useCase, true) } ?: PaymentUseCase.default
-                    )
-                )
-            } else {
-                null
+        fun mapPaymentStep(step: ProcessorResult.PaymentStep): String {
+            /*
+                export enum ProcessorStep {
+                  Redirect = "Redirect",
+                  Wait = "Wait",
+                  Authorized = "Authorized",
+                  Executed = "Executed",
+                  Settled = "Settled",
+                }
+             */
+            return when (step) {
+                ProcessorResult.PaymentStep.Redirect -> "Redirect"
+                ProcessorResult.PaymentStep.Wait -> "Wait"
+                ProcessorResult.PaymentStep.Authorized -> "Authorized"
+                ProcessorResult.PaymentStep.Successful -> "Executed"
+                ProcessorResult.PaymentStep.Settled -> "Settled"
             }
         }
 
+        /*
+            export type ProcessorResult =
+              | { type: ProcessorResultType.Success; step: ProcessorStep }
+              | { type: ProcessorResultType.Failure; reason: FailureReason };
+         */
         fun createProcessorFailureResult(reason: ProcessorResult.FailureReason): WritableMap {
             val map: WritableMap = WritableNativeMap()
             map.putString("type", "Failure")
-            map.putString("reason", reason.name)
+            map.putString("reason", mapFailureReason(reason))
             return map
         }
 
+        /*
+            export type ProcessorResult =
+              | { type: ProcessorResultType.Success; step: ProcessorStep }
+              | { type: ProcessorResultType.Failure; reason: FailureReason };
+         */
         fun createProcessorSuccessResult(step: ProcessorResult.PaymentStep): WritableMap {
             val map: WritableMap = WritableNativeMap()
             map.putString("type", "Success")
-            map.putString("step", step.name)
+            map.putString("step", mapPaymentStep(step))
             return map
         }
+
+        /*
+            export enum PaymentStatus {
+              AuthorizationRequired = "AuthorizationRequired",
+              Authorized = "Authorized",
+              Authorizing = "Authorizing",
+              Executed = "Executed",
+              Failed = "Failed",
+              Settled = "Settled",
+            }
+         */
+        fun mapPaymentStatus(status: ProcessorStatus): String =
+            when (status) {
+                ProcessorStatus.AuthorizationRequired -> "AuthorizationRequired"
+                ProcessorStatus.Authorizing -> "Authorizing"
+                ProcessorStatus.Authorized -> "Authorized"
+                ProcessorStatus.Executed -> "Executed"
+                ProcessorStatus.Settled -> "Settled"
+                ProcessorStatus.Revoked, // this one doesn't exist in payments
+                ProcessorStatus.Failed -> "Failed"
+            }
+
+        /*
+            export enum MandateStatus {
+              AuthorizationRequired = "AuthorizationRequired",
+              Authorized = "Authorized",
+              Authorizing = "Authorizing",
+              Failed = "Failed",
+              Revoked = "Revoked",
+            }
+         */
+        fun mapMandateStatus(status: ProcessorStatus): String =
+            when (status) {
+                ProcessorStatus.AuthorizationRequired -> "AuthorizationRequired"
+                ProcessorStatus.Authorizing -> "Authorizing"
+                ProcessorStatus.Authorized -> "Authorized"
+                ProcessorStatus.Revoked -> "Revoked"
+                ProcessorStatus.Failed -> "Failed"
+                // this does not exist in mandates
+                ProcessorStatus.Executed,
+                // this does not exist in mandates
+                // mapping both as failed
+                ProcessorStatus.Settled -> "Failed"
+            }
     }
+}
+
+private fun String?.convertToEnvironment() = Environment.values().firstOrNull { it.name == this } ?: Environment.PRODUCTION
+
+private fun String?.convertToUseCase() = PaymentUseCase.values().firstOrNull { it.name.equals(this, true) } ?: PaymentUseCase.default
+
+private fun CoreError.intoProcessorResult(): ProcessorResult.Failure = when (this) {
+    is CoreError.ConnectionError ->
+        ProcessorResult.Failure(ProcessorResult.FailureReason.NoInternet)
+    is CoreError.CertificateValidationError ->
+        ProcessorResult.Failure(ProcessorResult.FailureReason.ConnectionSecurityIssue)
+    is CoreError.HttpError,
+    is CoreError.ValidationError ->
+        ProcessorResult.Failure(ProcessorResult.FailureReason.CommunicationIssue)
 }
 
 private fun WritableMap.concatenate(map: WritableMap) {
@@ -130,7 +267,7 @@ class TlPaymentSdkModule(reactContext: ReactApplicationContext):
         environment: String?,
         promise: Promise?
     ) {
-        val env = Environment.values().firstOrNull { it.name == environment } ?: Environment.PRODUCTION
+        val env = environment.convertToEnvironment()
         // we ignore the outcome in here for now
         val out = TrueLayerUI.init(reactApplicationContext) {
             this.environment = env
@@ -154,7 +291,8 @@ class TlPaymentSdkModule(reactContext: ReactApplicationContext):
         }
 
         val activity = reactApplicationContext.currentActivity
-        val extractedContext = TLReactNativeUtils.extractPaymentContext(paymentContext, prefereces)
+        val contextExtractor = TLReactNativeUtils.ContextExtractor(paymentContext, prefereces)
+        val extractedContext: ProcessorContext.PaymentContext? = contextExtractor.getPaymentContext()
         if (extractedContext == null) {
             promise?.resolve(
                 TLReactNativeUtils.createProcessorFailureResult(ProcessorResult.FailureReason.ProcessorContextNotAvailable)
@@ -192,7 +330,8 @@ class TlPaymentSdkModule(reactContext: ReactApplicationContext):
         }
 
         val activity = reactApplicationContext.currentActivity
-        val extractedContext = TLReactNativeUtils.extractMandateContext(mandateContext, prefereces)
+        val contextExtractor = TLReactNativeUtils.ContextExtractor(mandateContext, prefereces)
+        val extractedContext: ProcessorContext.MandateContext? = contextExtractor.getMandateContext()
         if (extractedContext == null) {
             promise?.resolve(
                 TLReactNativeUtils.createProcessorFailureResult(ProcessorResult.FailureReason.ProcessorContextNotAvailable)
@@ -228,6 +367,12 @@ class TlPaymentSdkModule(reactContext: ReactApplicationContext):
                 mandateId,
                 resourceToken
             )
+                .onOk {
+                    promise?.resolve(mapPaymentStatus(it))
+                }
+                .onError {
+                    promise?.reject(createProcessorFailureResult(it.intoProcessorResult().reason))
+                }
         }
     }
 
@@ -248,6 +393,12 @@ class TlPaymentSdkModule(reactContext: ReactApplicationContext):
                 paymentId,
                 resourceToken
             )
+                .onOk {
+                    promise?.resolve(mapMandateStatus(it))
+                }
+                .onError {
+                    promise?.reject(createProcessorFailureResult(it.intoProcessorResult().reason))
+                }
         }
     }
 
