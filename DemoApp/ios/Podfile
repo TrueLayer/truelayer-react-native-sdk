@@ -8,7 +8,7 @@ target 'DemoApp' do
   config = use_native_modules!
   
   # This is temporarily added here to point to the specific development branch for iOS, while we build the Objective-C bridging.
-  pod 'TrueLayerPaymentsSDK', :git => 'https://github.com/TrueLayer/TrueLayer-iOS-SDK.git', :branch => 'feature/PUX-2781-add-objective-c-bridge'
+  pod 'TrueLayerPaymentsSDK', :git => 'https://github.com/TrueLayer/TrueLayer-iOS-SDK.git', :branch => 'feature/PUX-2602-react-native-bridge'
 
   # Flags change depending on the env values.
   flags = get_default_flags()
