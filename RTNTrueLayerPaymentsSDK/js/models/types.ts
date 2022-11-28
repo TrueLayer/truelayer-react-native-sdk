@@ -1,3 +1,6 @@
+import { MandateStatus } from "./mandates/MandateStatus";
+import { PaymentStatus } from "./payments/PaymentStatus";
+
 export { PaymentContext } from "./payments/PaymentContext";
 
 export { PaymentStatus } from "./payments/PaymentStatus";
@@ -46,3 +49,27 @@ export type FailureReason =
   | "WaitAbandoned"
   | "ProcessorContextNotAvailable"
   | "Unknown";
+
+export enum StatusResultType {
+  Success = "Success",
+  Failure = "Failure",
+}
+
+export type StatusFailure = {
+  reason: FailureReason,
+  httpResponseCode?: number,
+  errorMessage?: String,
+  rawResponseBody?: String,
+  title?: String,
+  description?: String,
+  traceId?: String,
+  causeException?: String
+}
+
+export type PaymentStatusResult =
+  | { type: StatusResultType.Success; status: PaymentStatus }
+  | { type: StatusResultType.Failure; failure: StatusFailure }
+
+export type MandateStatusResult =
+  | { type: StatusResultType.Success; status: MandateStatus }
+  | { type: StatusResultType.Failure; failure: StatusFailure }

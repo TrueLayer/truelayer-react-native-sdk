@@ -8,7 +8,9 @@ import {
   ProcessorResult,
   PaymentStatus,
   MandateStatus,
+  MandateStatusResult,
 } from "./models/types";
+import {PaymentStatusResult} from 'rtn-truelayer-payments-sdk/js/models/types';
 
 /**
  * Main TrueLayer interface to process payments and mandates.
@@ -82,7 +84,7 @@ export abstract class TrueLayerPaymentsSDKWrapper {
   static paymentStatus(
     paymentId: string,
     resourceToken: string
-  ): Promise<PaymentStatus> {
+  ): Promise<PaymentStatusResult> {
     return RTNTrueLayerPaymentsSDK!!._paymentStatus(paymentId, resourceToken);
   }
 
@@ -94,7 +96,7 @@ export abstract class TrueLayerPaymentsSDKWrapper {
   static mandateStatus(
     mandateId: string,
     resourceToken: string
-  ): Promise<MandateStatus> {
+  ): Promise<MandateStatusResult> {
     return RTNTrueLayerPaymentsSDK!!._mandateStatus(mandateId, resourceToken);
   }
 }

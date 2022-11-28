@@ -13,6 +13,7 @@ import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.WritableMap
 import com.facebook.react.bridge.WritableNativeMap
 import com.truelayer.RTNTrueLayerPaymentsSDK.TLReactNativeUtils.Companion.createProcessorFailureResult
+import com.truelayer.RTNTrueLayerPaymentsSDK.TLReactNativeUtils.Companion.createStatusFailure
 import com.truelayer.RTNTrueLayerPaymentsSDK.TLReactNativeUtils.Companion.mapMandateStatus
 import com.truelayer.RTNTrueLayerPaymentsSDK.TLReactNativeUtils.Companion.mapPaymentStatus
 import com.truelayer.payments.core.domain.configuration.Environment
@@ -207,6 +208,39 @@ private class TLReactNativeUtils {
                 // mapping both as failed
                 ProcessorStatus.Settled -> "Failed"
             }
+
+        fun createStatusFailure(error: CoreError) =
+             WritableNativeMap().apply {
+                 putString("type", "Failure")
+                 putMap("failure", mapToFailure(error))
+            }
+
+        fun mapToFailure(error: CoreError): WritableNativeMap =
+            WritableNativeMap().apply {
+                putString("reason", mapFailureReason(error.intoProcessorResult().reason))
+                putString("errorMessage", error.message)
+                putString("traceId", error.traceId)
+                putString("causeException", error.cause?.toString())
+                when (error) {
+                    is CoreError.CertificateValidationError,
+                    is CoreError.ConnectionError -> { } // ignore
+                    is CoreError.HttpError.InvalidParameters -> {
+                        putInt("httpResponseCode", error.httpStatusCode)
+                        putString("rawResponseBody", error.responseBody)
+                        putString("title", error.title)
+                        putString("description", error.description)
+                    }
+                    is CoreError.HttpError.ServerError -> {
+                        putInt("httpResponseCode", error.httpStatusCode)
+                        putString("rawResponseBody", error.responseBody)
+                        putString("title", error.title)
+                        putString("description", error.description)
+                    }
+                    is CoreError.ValidationError -> {
+                        putString("rawResponseBody", error.responseBody)
+                    }
+                }
+            }
     }
 }
 
@@ -235,7 +269,6 @@ private fun WritableMap.concatenate(map: WritableMap) {
             is ReadableArray -> this.putArray(entry.key, value)
             null -> this.putNull(entry.key)
         }
-
     }
 }
 
@@ -368,10 +401,15 @@ class TlPaymentSdkModule(reactContext: ReactApplicationContext):
                 resourceToken
             )
                 .onOk {
-                    promise?.resolve(mapPaymentStatus(it))
+                    val mandateStatusResult = WritableNativeMap().apply {
+                        putString("type", "Success")
+                        putString("status", mapMandateStatus(it))
+                    }
+
+                    promise?.resolve(mandateStatusResult)
                 }
                 .onError {
-                    promise?.reject(createProcessorFailureResult(it.intoProcessorResult().reason))
+                    promise?.resolve(createStatusFailure(it))
                 }
         }
     }
@@ -394,10 +432,15 @@ class TlPaymentSdkModule(reactContext: ReactApplicationContext):
                 resourceToken
             )
                 .onOk {
-                    promise?.resolve(mapMandateStatus(it))
+                    val paymentStatusResult = WritableNativeMap().apply {
+                        putString("type", "Success")
+                        putString("status", mapPaymentStatus(it))
+                    }
+
+                    promise?.resolve(paymentStatusResult)
                 }
                 .onError {
-                    promise?.reject(createProcessorFailureResult(it.intoProcessorResult().reason))
+                    promise?.resolve(createStatusFailure(it))
                 }
         }
     }
