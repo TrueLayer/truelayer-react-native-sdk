@@ -1,5 +1,7 @@
 #import "RTNTrueLayerPaymentsSDKSpec.h"
 #import "RTNTrueLayerPaymentsSDK.h"
+#import <TrueLayerPaymentsSDK/TrueLayerPaymentsSDK-umbrella.h>
+#import <React/RCTUtils.h>
 
 @implementation RTNTrueLayerPaymentsSDK
 
@@ -9,7 +11,15 @@ RCT_EXPORT_MODULE()
            resolve:(RCTPromiseResolveBlock)resolve
             reject:(RCTPromiseRejectBlock)reject
 {
-  resolve(NULL);
+  // A pointer to an error in case the `configure` method is called with an invalid environment.
+  NSError *error;
+  [TrueLayerObjectiveCBridge configureWith:environment error:&error];
+  
+  if (error) {
+    reject([@(error.code) stringValue], error.localizedDescription, error);
+  } else {
+    resolve(NULL);
+  }
 }
 
 - (void)_processPayment:(JS::NativeTrueLayerPaymentsSDK::Spec_processPaymentPaymentContext &)paymentContext

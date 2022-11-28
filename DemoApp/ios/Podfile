@@ -1,11 +1,14 @@
 require_relative '../node_modules/react-native/scripts/react_native_pods'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
-platform :ios, '13'
+platform :ios, '14'
 install! 'cocoapods', :deterministic_uuids => false
 
 target 'DemoApp' do
   config = use_native_modules!
+  
+  # This is temporarily added here to point to the specific development branch for iOS, while we build the Objective-C bridging.
+  pod 'TrueLayerPaymentsSDK', :git => 'https://github.com/TrueLayer/TrueLayer-iOS-SDK.git', :branch => 'feature/PUX-2781-add-objective-c-bridge'
 
   # Flags change depending on the env values.
   flags = get_default_flags()
