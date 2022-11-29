@@ -14,7 +14,7 @@ RCT_EXPORT_MODULE()
   // The Objective-C environment to convert the `NSString` `environment` value to,
   // so it can be passed to the Objective-C bridge of the TrueLayer SDK.
   TrueLayerObjectiveCEnvironment objCEnvironment;
-  environment = @"test";
+
   if (environment && [environment caseInsensitiveCompare:@"sandbox"] == NSOrderedSame) {
     objCEnvironment = TrueLayerObjectiveCEnvironmentSandbox;
   } else if (environment && [environment caseInsensitiveCompare:@"production"] == NSOrderedSame) {
