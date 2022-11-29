@@ -134,7 +134,7 @@ interface SamplePaymentContext {
 async function getPaymentContext(
   type: 'mandate' | 'payment',
 ): Promise<SamplePaymentContext> {
-  return await fetch('http://192.168.1.35:3000/v3/' + type, {
+  return await fetch('http://localhost:3000/v3/' + type, {
     method: 'POST',
     headers: {
       Accept: 'application/json',
