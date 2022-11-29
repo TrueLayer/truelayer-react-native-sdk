@@ -8,6 +8,8 @@ import {
   ProcessorResult,
   PaymentStatus,
   MandateStatus,
+  MandateStatusResult,
+  PaymentStatusResult
 } from "./models/types";
 
 /**
@@ -82,7 +84,7 @@ export abstract class TrueLayerPaymentsSDKWrapper {
   static paymentStatus(
     paymentId: string,
     resourceToken: string
-  ): Promise<PaymentStatus> {
+  ): Promise<PaymentStatusResult> {
     return RTNTrueLayerPaymentsSDK!!._paymentStatus(paymentId, resourceToken);
   }
 
@@ -94,7 +96,7 @@ export abstract class TrueLayerPaymentsSDKWrapper {
   static mandateStatus(
     mandateId: string,
     resourceToken: string
-  ): Promise<MandateStatus> {
+  ): Promise<MandateStatusResult> {
     return RTNTrueLayerPaymentsSDK!!._mandateStatus(mandateId, resourceToken);
   }
 }
