@@ -328,7 +328,7 @@ class TlPaymentSdkModule(reactContext: ReactApplicationContext):
         val extractedContext: ProcessorContext.PaymentContext? = contextExtractor.getPaymentContext()
         if (extractedContext == null) {
             promise?.resolve(
-                TLReactNativeUtils.createProcessorFailureResult(ProcessorResult.FailureReason.ProcessorContextNotAvailable)
+                createProcessorFailureResult(ProcessorResult.FailureReason.ProcessorContextNotAvailable)
             )
             return
         }
@@ -367,7 +367,7 @@ class TlPaymentSdkModule(reactContext: ReactApplicationContext):
         val extractedContext: ProcessorContext.MandateContext? = contextExtractor.getMandateContext()
         if (extractedContext == null) {
             promise?.resolve(
-                TLReactNativeUtils.createProcessorFailureResult(ProcessorResult.FailureReason.ProcessorContextNotAvailable)
+                createProcessorFailureResult(ProcessorResult.FailureReason.ProcessorContextNotAvailable)
             )
             return
         }
@@ -390,7 +390,7 @@ class TlPaymentSdkModule(reactContext: ReactApplicationContext):
         }
         if (mandateId == null || resourceToken == null) {
             promise?.resolve(
-                TLReactNativeUtils.createProcessorFailureResult(ProcessorResult.FailureReason.ProcessorContextNotAvailable)
+                createProcessorFailureResult(ProcessorResult.FailureReason.ProcessorContextNotAvailable)
             )
             return
         }
@@ -421,7 +421,7 @@ class TlPaymentSdkModule(reactContext: ReactApplicationContext):
         }
         if (paymentId == null || resourceToken == null) {
             promise?.resolve(
-                TLReactNativeUtils.createProcessorFailureResult(ProcessorResult.FailureReason.ProcessorContextNotAvailable)
+                createProcessorFailureResult(ProcessorResult.FailureReason.ProcessorContextNotAvailable)
             )
             return
         }
@@ -516,7 +516,7 @@ class TlPaymentSdkModule(reactContext: ReactApplicationContext):
                     result.concatenate(TLReactNativeUtils.createProcessorSuccessResult(sdkResult.step))
                 }
                 is ProcessorResult.Failure -> {
-                    result.concatenate(TLReactNativeUtils.createProcessorFailureResult(sdkResult.reason))
+                    result.concatenate(createProcessorFailureResult(sdkResult.reason))
                 }
                 null -> { } // just ignore
             }

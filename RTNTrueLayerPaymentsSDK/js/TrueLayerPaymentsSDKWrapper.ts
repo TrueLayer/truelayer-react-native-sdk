@@ -9,8 +9,8 @@ import {
   PaymentStatus,
   MandateStatus,
   MandateStatusResult,
+  PaymentStatusResult
 } from "./models/types";
-import {PaymentStatusResult} from 'rtn-truelayer-payments-sdk/js/models/types';
 
 /**
  * Main TrueLayer interface to process payments and mandates.
