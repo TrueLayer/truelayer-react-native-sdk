@@ -1,61 +1,63 @@
 #import <Foundation/Foundation.h>
 #import "RTNTrueLayerHelpers.h"
+#import "RTNTrueLayerSinglePaymentStep.h"
+#import "RTNTrueLayerSinglePaymentErrorReason.h"
 
 @implementation RTNTrueLayerHelpers: NSObject
 
 + (NSString *)stepFrom:(TrueLayerSinglePaymentObjCState)state {
   switch (state) {
     case TrueLayerSinglePaymentObjCStateAuthorized:
-      return @"Authorized";
+      return RTNTrueLayerSinglePaymentStepAuthorized;
       
     case TrueLayerSinglePaymentObjCStateExecuted:
-      return @"Executed";
+      return RTNTrueLayerSinglePaymentStepExecuted;
       
     case TrueLayerSinglePaymentObjCStateRedirect:
-      return @"Redirect";
+      return RTNTrueLayerSinglePaymentStepRedirect;
       
     case TrueLayerSinglePaymentObjCStateSettled:
-      return @"Settled";
+      return RTNTrueLayerSinglePaymentStepSettled;
       
     case TrueLayerSinglePaymentObjCStateWait:
-      return @"Wait";
+      return RTNTrueLayerSinglePaymentStepWait;
   }
 }
 
 + (NSString *)reasonFrom:(TrueLayerSinglePaymentObjCError)error {
   switch (error) {
     case TrueLayerSinglePaymentObjCErrorAuthorizationFailed:
-      return @"PaymentFailed";
+      return RTNTrueLayerSinglePaymentErrorReasonPaymentFailed;
       
     case TrueLayerSinglePaymentObjCErrorConnectionIssues:
-      return @"CommunicationIssue";
+      return RTNTrueLayerSinglePaymentErrorReasonCommunicationIssue;
       
     case TrueLayerSinglePaymentObjCErrorGeneric:
-      return @"Unknown";
+      return RTNTrueLayerSinglePaymentErrorReasonUnknown;
       
     case TrueLayerSinglePaymentObjCErrorInvalidToken:
-      return @"ConnectionSecurityIssue";
+      return RTNTrueLayerSinglePaymentErrorReasonConnectionSecurityIssue;
       
     case TrueLayerSinglePaymentObjCErrorPaymentExpired:
-      return @"PaymentFailed";
+      return RTNTrueLayerSinglePaymentErrorReasonPaymentFailed;
       
     case TrueLayerSinglePaymentObjCErrorPaymentNotFound:
-      return @"PaymentFailed";
+      return RTNTrueLayerSinglePaymentErrorReasonPaymentFailed;
       
     case TrueLayerSinglePaymentObjCErrorPaymentRejected:
-      return @"PaymentFailed";
+      return RTNTrueLayerSinglePaymentErrorReasonPaymentFailed;
       
     case TrueLayerSinglePaymentObjCErrorSdkNotConfigured:
-      return @"ProcessorContextNotAvailable";
+      return RTNTrueLayerSinglePaymentErrorReasonProcessorContextNotAvailable;
       
     case TrueLayerSinglePaymentObjCErrorServerError:
-      return @"CommunicationIssue";
+      return RTNTrueLayerSinglePaymentErrorReasonCommunicationIssue;
       
     case TrueLayerSinglePaymentObjCErrorUnexpectedBehavior:
-      return @"Unknown";
+      return RTNTrueLayerSinglePaymentErrorReasonUnknown;
       
     case TrueLayerSinglePaymentObjCErrorUserCanceled:
-      return @"UserAborted";
+      return RTNTrueLayerSinglePaymentErrorReasonUserAborted;
   }
 }
 

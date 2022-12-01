@@ -15,7 +15,8 @@ import { TrueLayerPaymentsSDKWrapper } from 'rtn-truelayer-payments-sdk/js/TrueL
 import {
   Environment,
   PaymentUseCase,
-  ProcessorResultType,
+  ProcessorResult,
+  ResultType
 } from 'rtn-truelayer-payments-sdk/js/models/types'
 
 import uuid from 'react-native-uuid'
@@ -85,10 +86,10 @@ function processPayment(): void {
       },
     ).then(result => {
       switch (result.type) {
-        case ProcessorResultType.Success:
+        case ResultType.Success:
           console.log(`processPayment success at step: ${result.step}`)
           break
-        case ProcessorResultType.Failure:
+        case ResultType.Failure:
           console.log(`Oh we've failed processPayment with following reason: ${result.reason}`)
           break
       }
