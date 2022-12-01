@@ -112,10 +112,10 @@ function processMandate(): void {
       redirectUri: 'truelayer://payments_sample',
     }).then(result => {
       switch (result.type) {
-        case ProcessorResultType.Success:
+        case ResultType.Success:
           console.log(`processMandate success at step: ${result.step}`)
           break
-        case ProcessorResultType.Failure:
+        case ResultType.Failure:
           console.log(`Oh we've failed processMandate with following reason: ${result.reason}`)
           break
       }

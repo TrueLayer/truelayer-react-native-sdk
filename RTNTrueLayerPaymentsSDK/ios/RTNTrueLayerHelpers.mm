@@ -1,11 +1,14 @@
 #import <Foundation/Foundation.h>
 #import "RTNTrueLayerHelpers.h"
 #import "RTNTrueLayerSinglePaymentStep.h"
-#import "RTNTrueLayerSinglePaymentErrorReason.h"
+#import "RTNTrueLayerErrorReason.h"
+#import "RTNTrueLayerMandateStep.h"
 
 @implementation RTNTrueLayerHelpers: NSObject
 
-+ (NSString *)stepFrom:(TrueLayerSinglePaymentObjCState)state {
+// MARK: - Single Payment
+
++ (NSString *)stepFromSinglePaymentObjCState:(TrueLayerSinglePaymentObjCState)state {
   switch (state) {
     case TrueLayerSinglePaymentObjCStateAuthorized:
       return RTNTrueLayerSinglePaymentStepAuthorized;
@@ -24,40 +27,92 @@
   }
 }
 
-+ (NSString *)reasonFrom:(TrueLayerSinglePaymentObjCError)error {
++ (NSString *)reasonFromSinglePaymentObjCError:(TrueLayerSinglePaymentObjCError)error {
   switch (error) {
     case TrueLayerSinglePaymentObjCErrorAuthorizationFailed:
-      return RTNTrueLayerSinglePaymentErrorReasonPaymentFailed;
+      return RTNTrueLayerErrorReasonPaymentFailed;
       
     case TrueLayerSinglePaymentObjCErrorConnectionIssues:
-      return RTNTrueLayerSinglePaymentErrorReasonCommunicationIssue;
+      return RTNTrueLayerErrorReasonCommunicationIssue;
       
     case TrueLayerSinglePaymentObjCErrorGeneric:
-      return RTNTrueLayerSinglePaymentErrorReasonUnknown;
+      return RTNTrueLayerErrorReasonUnknown;
       
     case TrueLayerSinglePaymentObjCErrorInvalidToken:
-      return RTNTrueLayerSinglePaymentErrorReasonConnectionSecurityIssue;
+      return RTNTrueLayerErrorReasonConnectionSecurityIssue;
       
     case TrueLayerSinglePaymentObjCErrorPaymentExpired:
-      return RTNTrueLayerSinglePaymentErrorReasonPaymentFailed;
+      return RTNTrueLayerErrorReasonPaymentFailed;
       
     case TrueLayerSinglePaymentObjCErrorPaymentNotFound:
-      return RTNTrueLayerSinglePaymentErrorReasonPaymentFailed;
+      return RTNTrueLayerErrorReasonPaymentFailed;
       
     case TrueLayerSinglePaymentObjCErrorPaymentRejected:
-      return RTNTrueLayerSinglePaymentErrorReasonPaymentFailed;
+      return RTNTrueLayerErrorReasonPaymentFailed;
       
     case TrueLayerSinglePaymentObjCErrorSdkNotConfigured:
-      return RTNTrueLayerSinglePaymentErrorReasonProcessorContextNotAvailable;
+      return RTNTrueLayerErrorReasonProcessorContextNotAvailable;
       
     case TrueLayerSinglePaymentObjCErrorServerError:
-      return RTNTrueLayerSinglePaymentErrorReasonCommunicationIssue;
+      return RTNTrueLayerErrorReasonCommunicationIssue;
       
     case TrueLayerSinglePaymentObjCErrorUnexpectedBehavior:
-      return RTNTrueLayerSinglePaymentErrorReasonUnknown;
+      return RTNTrueLayerErrorReasonUnknown;
       
     case TrueLayerSinglePaymentObjCErrorUserCanceled:
-      return RTNTrueLayerSinglePaymentErrorReasonUserAborted;
+      return RTNTrueLayerErrorReasonUserAborted;
+  }
+}
+
+// MARK: - Mandate
+
++ (NSString *)stepFromMandateObjCState:(TrueLayerMandateObjCState)state {
+  switch (state) {
+    case TrueLayerMandateObjCStateAuthorized:
+      return RTNTrueLayerMandateStepAuthorized;
+      
+    case TrueLayerMandateObjCStateRedirect:
+      return RTNTrueLayerMandateStepRedirect;
+  }
+}
+
++ (NSString *)reasonFromMandateObjCError:(TrueLayerMandateObjCError)error {
+  switch (error) {
+    case TrueLayerMandateObjCErrorAuthorizationFailed:
+      return RTNTrueLayerErrorReasonPaymentFailed;
+      
+    case TrueLayerMandateObjCErrorConnectionIssues:
+      return RTNTrueLayerErrorReasonCommunicationIssue;
+      
+    case TrueLayerMandateObjCErrorGeneric:
+      return RTNTrueLayerErrorReasonUnknown;
+      
+    case TrueLayerMandateObjCErrorInvalidToken:
+      return RTNTrueLayerErrorReasonConnectionSecurityIssue;
+      
+    case TrueLayerMandateObjCErrorMandateExpired:
+      return RTNTrueLayerErrorReasonPaymentFailed;
+      
+    case TrueLayerMandateObjCErrorMandateNotFound:
+      return RTNTrueLayerErrorReasonPaymentFailed;
+      
+    case TrueLayerMandateObjCErrorMandateRejected:
+      return RTNTrueLayerErrorReasonPaymentFailed;
+      
+    case TrueLayerMandateObjCErrorRevoked:
+      return RTNTrueLayerErrorReasonPaymentFailed;
+      
+    case TrueLayerMandateObjCErrorSdkNotConfigured:
+      return RTNTrueLayerErrorReasonProcessorContextNotAvailable;
+      
+    case TrueLayerMandateObjCErrorServerError:
+      return RTNTrueLayerErrorReasonCommunicationIssue;
+      
+    case TrueLayerMandateObjCErrorUnexpectedBehavior:
+      return RTNTrueLayerErrorReasonUnknown;
+      
+    case TrueLayerMandateObjCErrorUserCanceled:
+      return RTNTrueLayerErrorReasonUserAborted;
   }
 }
 
