@@ -1,6 +1,6 @@
 import { TurboModule, TurboModuleRegistry } from "react-native";
 
-import { ProcessorResult, PaymentStatus, MandateStatus } from "./models/types";
+import { ProcessorResult, PaymentStatus, MandateStatus, PaymentStatusResult, MandateStatusResult } from "./models/types";
 
 /**
  * ReactNative raw interface. Do not use directly. Use TrueLayerPaymentsSDKWrapper class instead.
@@ -51,7 +51,7 @@ interface Spec extends TurboModule {
   _paymentStatus(
     paymentId: string,
     resourceToken: string
-  ): Promise<PaymentStatus>;
+  ): Promise<PaymentStatusResult>;
 
   /**
    * ReactNative raw interface. Do not use directly. Use TrueLayerPaymentsSDKWrapper class instead.
@@ -59,7 +59,7 @@ interface Spec extends TurboModule {
   _mandateStatus(
     mandateId: string,
     resourceToken: string
-  ): Promise<MandateStatus>;
+  ): Promise<MandateStatusResult>;
 }
 
 export default TurboModuleRegistry.get<Spec>(
