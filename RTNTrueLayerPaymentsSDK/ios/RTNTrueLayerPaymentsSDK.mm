@@ -106,10 +106,11 @@ RCT_EXPORT_MODULE()
     UIViewController *reactViewController = RCTPresentedViewController();
     
     // Create the context required by the ObjC bridge in TrueLayerSDK.
+    TrueLayerMandatePreferences *objCPreferences = [[TrueLayerMandatePreferences alloc] initWithViewController:reactViewController];
     TrueLayerMandateContext *context = [[TrueLayerMandateContext alloc] initWithMandateID:mandateID
                                                                                         resourceToken:resourceToken
                                                                                           redirectURL:[NSURL URLWithString:redirectURI]
-                                                                                       viewController:reactViewController];
+                                                                                       preferences:objCPreferences];
     
     // Call the ObjC bridge.
     [TrueLayerObjectiveCBridge processMandateWithContext:context
