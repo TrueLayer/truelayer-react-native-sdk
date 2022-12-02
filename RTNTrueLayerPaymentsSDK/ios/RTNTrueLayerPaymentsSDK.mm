@@ -67,7 +67,7 @@ RCT_EXPORT_MODULE()
     [TrueLayerObjectiveCBridge processSinglePaymentWithContext:context success:^(TrueLayerSinglePaymentObjCState state) {
       // Create a `step` value to return to React Native, that is equal to the typescript `ProcessorStep` enum.
       // See `types.ts` for the raw values to match.
-      NSString *step = [RTNTrueLayerHelpers stepFrom:state];
+      NSString *step = [RTNTrueLayerHelpers stepFromSinglePaymentObjCState:state];
       
       NSDictionary *result = @{
         @"type": @"Success",
@@ -79,7 +79,7 @@ RCT_EXPORT_MODULE()
     } failure:^(TrueLayerSinglePaymentObjCError error) {
       // Create a `reason` value to return to React Native, that is equal to the typescript `FailureReason` enum.
       // See `types.ts` for the raw values to match.
-      NSString *reason = [RTNTrueLayerHelpers reasonFrom:error];
+      NSString *reason = [RTNTrueLayerHelpers reasonFromSinglePaymentObjCError:error];
             
       NSDictionary *result = @{
         @"type": @"Failure",
@@ -95,7 +95,51 @@ RCT_EXPORT_MODULE()
              prefereces:(JS::NativeTrueLayerPaymentsSDK::Spec_processMandatePrefereces &)prefereces
                 resolve:(RCTPromiseResolveBlock)resolve
                  reject:(RCTPromiseRejectBlock)reject {
-  resolve(NULL);
+  // Create a copied strong reference to the context information.
+  NSString *mandateID = [NSString stringWithString:mandateContext.mandateId()];
+  NSString *resourceToken = [NSString stringWithString:mandateContext.resourceToken()];
+  NSString *redirectURI = [NSString stringWithString:mandateContext.redirectUri()];
+  
+  [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+    // Capture the presented view controller.
+    // We use the main thread here as `RCTPresentedViewController.init` accesses the main application window.
+    UIViewController *reactViewController = RCTPresentedViewController();
+    
+    // Create the context required by the ObjC bridge in TrueLayerSDK.
+    TrueLayerMandatePreferences *objCPreferences = [[TrueLayerMandatePreferences alloc] initWithViewController:reactViewController];
+    TrueLayerMandateContext *context = [[TrueLayerMandateContext alloc] initWithMandateID:mandateID
+                                                                                        resourceToken:resourceToken
+                                                                                          redirectURL:[NSURL URLWithString:redirectURI]
+                                                                                       preferences:objCPreferences];
+    
+    // Call the ObjC bridge.
+    [TrueLayerObjectiveCBridge processMandateWithContext:context
+                                                 success:^(TrueLayerMandateObjCState state) {
+      // Create a `step` value to return to React Native, that is equal to the typescript `ProcessorStep` enum.
+      // See `types.ts` for the raw values to match.
+      NSString *step = [RTNTrueLayerHelpers stepFromMandateObjCState:state];
+      
+      NSDictionary *result = @{
+        @"type": @"Success",
+        @"step": step
+      };
+      
+      resolve(result);
+      
+    }
+                                                 failure:^(TrueLayerMandateObjCError error) {
+      // Create a `reason` value to return to React Native, that is equal to the typescript `FailureReason` enum.
+      // See `types.ts` for the raw values to match.
+      NSString *reason = [RTNTrueLayerHelpers reasonFromMandateObjCError:error];
+            
+      NSDictionary *result = @{
+        @"type": @"Failure",
+        @"reason": reason
+      };
+      
+      resolve(result);
+    }];
+  }];
 }
 - (void)_paymentStatus:(NSString *)paymentId
          resourceToken:(NSString *)resourceToken
