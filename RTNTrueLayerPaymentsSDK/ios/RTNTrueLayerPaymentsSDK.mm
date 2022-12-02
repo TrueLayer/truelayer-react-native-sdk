@@ -56,10 +56,12 @@ RCT_EXPORT_MODULE()
     UIViewController *reactViewController = RCTPresentedViewController();
     
     // Create the context required by the ObjC bridge in TrueLayerSDK.
+    TrueLayerSinglePaymentPreferences *trueLayerPreferences = [[TrueLayerSinglePaymentPreferences alloc] initWithPreferredCountryCode:prefereces.preferredCountryCode()
+                                                                                                                       viewController:reactViewController];
     TrueLayerSinglePaymentContext *context = [[TrueLayerSinglePaymentContext alloc] initWithPaymentID:paymentID
                                                                                         resourceToken:resourceToken
                                                                                           redirectURL:[NSURL URLWithString:redirectURI]
-                                                                                       viewController:reactViewController];
+                                                                                       preferences:trueLayerPreferences];
     
     // Call the ObjC bridge.
     [TrueLayerObjectiveCBridge processSinglePaymentWithContext:context success:^(TrueLayerSinglePaymentObjCState state) {
