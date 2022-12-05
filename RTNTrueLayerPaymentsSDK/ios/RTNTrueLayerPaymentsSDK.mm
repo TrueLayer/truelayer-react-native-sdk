@@ -49,16 +49,21 @@ RCT_EXPORT_MODULE()
   NSString *paymentID = [NSString stringWithString:paymentContext.paymentId()];
   NSString *resourceToken = [NSString stringWithString:paymentContext.resourceToken()];
   NSString *redirectURI = [NSString stringWithString:paymentContext.redirectUri()];
-  
+  NSString *preferredCountryCode;
+  if (prefereces.preferredCountryCode()) {
+    // Only set the preferred country code if it is not `nil`, as `[NSString stringWithString:]` requires the parameter to be non-nil.
+    preferredCountryCode = [NSString stringWithString:prefereces.preferredCountryCode()];
+  }
+ 
   [[NSOperationQueue mainQueue] addOperationWithBlock:^{
     // Capture the presented view controller.
     // We use the main thread here as `RCTPresentedViewController.init` accesses the main application window.
     UIViewController *reactViewController = RCTPresentedViewController();
     
     // Create the context required by the ObjC bridge in TrueLayerSDK.
-    TrueLayerSinglePaymentPreferences *trueLayerPreferences = [[TrueLayerSinglePaymentPreferences alloc] initWithPreferredCountryCode:prefereces.preferredCountryCode()
+    TrueLayerSinglePaymentPreferences *trueLayerPreferences = [[TrueLayerSinglePaymentPreferences alloc] initWithPreferredCountryCode:preferredCountryCode
                                                                                                                        viewController:reactViewController];
-    TrueLayerSinglePaymentContext *context = [[TrueLayerSinglePaymentContext alloc] initWithPaymentID:paymentID
+    TrueLayerSinglePaymentContext *context = [[TrueLayerSinglePaymentContext alloc] initWithIdentifier:paymentID
                                                                                         resourceToken:resourceToken
                                                                                           redirectURL:[NSURL URLWithString:redirectURI]
                                                                                        preferences:trueLayerPreferences];
