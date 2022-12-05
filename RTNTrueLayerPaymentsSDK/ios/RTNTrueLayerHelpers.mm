@@ -3,6 +3,7 @@
 #import "RTNTrueLayerSinglePaymentStep.h"
 #import "RTNTrueLayerErrorReason.h"
 #import "RTNTrueLayerMandateStep.h"
+#import "RTNTrueLayerSinglePaymentStatus.h"
 
 @implementation RTNTrueLayerHelpers: NSObject
 
@@ -61,6 +62,28 @@
       
     case TrueLayerSinglePaymentObjCErrorUserCanceled:
       return RTNTrueLayerErrorReasonUserAborted;
+  }
+}
+
++ (NSString *)statusFromSinglePaymentObjCStatus:(TrueLayerSinglePaymentObjCStatus)status {
+  switch (status) {
+    case TrueLayerSinglePaymentObjCStatusAuthorizationRequired:
+      return RTNTrueLayerSinglePaymentStatusAuthorizationRequired;
+
+    case TrueLayerSinglePaymentObjCStatusAuthorizing:
+      return RTNTrueLayerSinglePaymentStatusAuthorizing;
+
+    case TrueLayerSinglePaymentObjCStatusAuthorized:
+      return RTNTrueLayerSinglePaymentStatusAuthorized;
+
+    case TrueLayerSinglePaymentObjCStatusExecuted:
+      return RTNTrueLayerSinglePaymentStatusExecuted;
+
+    case TrueLayerSinglePaymentObjCStatusSettled:
+      return RTNTrueLayerSinglePaymentStatusSettled;
+
+    case TrueLayerSinglePaymentObjCStatusFailed:
+      return RTNTrueLayerSinglePaymentStatusFailed;
   }
 }
 
