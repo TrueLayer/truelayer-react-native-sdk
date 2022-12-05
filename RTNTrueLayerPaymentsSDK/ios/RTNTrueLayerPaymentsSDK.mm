@@ -149,7 +149,9 @@ RCT_EXPORT_MODULE()
   NSString *paymentIDCopy = [NSString stringWithString:paymentId];
   NSString *resourceTokenCopy = [NSString stringWithString:resourceToken];
   
-  [TrueLayerObjectiveCBridge singlePaymentStatusWithPaymentIdentifier:paymentIDCopy resourceToken:resourceTokenCopy success:^(enum TrueLayerSinglePaymentObjCStatus objCStatus) {
+  [TrueLayerObjectiveCBridge singlePaymentStatusWithPaymentIdentifier:paymentIDCopy
+                                                        resourceToken:resourceTokenCopy
+                                                              success:^(enum TrueLayerSinglePaymentObjCStatus objCStatus) {
     NSString *status = [RTNTrueLayerHelpers statusFromSinglePaymentObjCStatus:objCStatus];
     
     NSDictionary *result = @{
@@ -159,7 +161,8 @@ RCT_EXPORT_MODULE()
     
     resolve(result);
 
-  } failure:^(enum TrueLayerSinglePaymentObjCError error) {
+  }
+                                                              failure:^(enum TrueLayerSinglePaymentObjCError error) {
     // Create a `reason` value to return to React Native, that is equal to the typescript `FailureReason` enum.
     // See `types.ts` for the raw values to match.
     NSString *reason = [RTNTrueLayerHelpers reasonFromSinglePaymentObjCError:error];
