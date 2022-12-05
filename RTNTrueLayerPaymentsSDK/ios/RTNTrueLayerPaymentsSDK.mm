@@ -11,15 +11,33 @@ RCT_EXPORT_MODULE()
            resolve:(RCTPromiseResolveBlock)resolve
             reject:(RCTPromiseRejectBlock)reject
 {
-  // A pointer to an error in case the `configure` method is called with an invalid environment.
-  NSError *error;
-  [TrueLayerObjectiveCBridge configureWith:environment error:&error];
-  
-  if (error) {
-    reject([@(error.code) stringValue], error.localizedDescription, error);
+  // The Objective-C environment to convert the `NSString` `environment` value to,
+  // so it can be passed to the Objective-C bridge of the TrueLayer SDK.
+  TrueLayerObjectiveCEnvironment objCEnvironment;
+
+  if (environment && [environment caseInsensitiveCompare:@"sandbox"] == NSOrderedSame) {
+    objCEnvironment = TrueLayerObjectiveCEnvironmentSandbox;
+  } else if (environment && [environment caseInsensitiveCompare:@"production"] == NSOrderedSame) {
+    objCEnvironment = TrueLayerObjectiveCEnvironmentProduction;
   } else {
-    resolve(NULL);
+    // Create an NSError object for the configuration error.
+    NSDictionary *userInfo = @{
+       NSLocalizedDescriptionKey: @"Invalid environment value passed.",
+       NSLocalizedFailureReasonErrorKey: @"The environment value passed does not match any expected cases.",
+       NSLocalizedRecoverySuggestionErrorKey: @"Please use either `sandbox` or `production`."
+    };
+    
+    NSError *error = [NSError errorWithDomain:@"TrueLayerPaymentsSDK.TrueLayerObjectiveCError"
+                                         code:1
+                                     userInfo:userInfo];
+
+    reject([@(error.code) stringValue], error.localizedDescription, error);
+
+    return;
   }
+  
+  [TrueLayerObjectiveCBridge configureWith:objCEnvironment];
+  resolve(NULL);
 }
 
 - (void)_processPayment:(JS::NativeTrueLayerPaymentsSDK::Spec_processPaymentPaymentContext &)paymentContext
