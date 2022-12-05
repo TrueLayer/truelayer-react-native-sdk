@@ -165,7 +165,6 @@ RCT_EXPORT_MODULE()
     };
     
     resolve(result);
-
   }
                                                               failure:^(enum TrueLayerSinglePaymentObjCError error) {
     // Create a `reason` value to return to React Native, that is equal to the typescript `FailureReason` enum.
@@ -184,8 +183,34 @@ RCT_EXPORT_MODULE()
          resourceToken:(NSString *)resourceToken
                resolve:(RCTPromiseResolveBlock)resolve
                 reject:(RCTPromiseRejectBlock)reject {
-  resolve(NULL);
+  // Create a copied strong reference to the context information.
+  NSString *mandateIDCopy = [NSString stringWithString:mandateId];
+  NSString *resourceTokenCopy = [NSString stringWithString:resourceToken];
   
+  [TrueLayerObjectiveCBridge mandateStatusWithMandateIdentifier:mandateIDCopy
+                                                  resourceToken:resourceTokenCopy
+                                                        success:^(enum TrueLayerMandateObjCStatus objCStatus) {
+    NSString *status = [RTNTrueLayerHelpers statusFromMandateObjCStatus:objCStatus];
+    
+    NSDictionary *result = @{
+      @"type": @"Success",
+      @"status": status
+    };
+    
+    resolve(result);
+  }
+                                                              failure:^(enum TrueLayerMandateObjCError error) {
+    // Create a `reason` value to return to React Native, that is equal to the typescript `FailureReason` enum.
+    // See `types.ts` for the raw values to match.
+    NSString *reason = [RTNTrueLayerHelpers reasonFromMandateObjCError:error];
+          
+    NSDictionary *result = @{
+      @"type": @"Failure",
+      @"reason": reason
+    };
+    
+    resolve(result);
+  }];
 }
 
 - (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:

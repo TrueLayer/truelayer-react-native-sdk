@@ -31,4 +31,8 @@
 /// - Parameter error: The mandate error received from the TrueLayerSDK Objective-C bridge.
 +(NSString *)reasonFromMandateObjCError:(TrueLayerMandateObjCError)error;
 
+/// Returns a `status` value to send to the merchant from a given Objective-C mandate status.
+/// - Parameter status: The mandate status from the TrueLayerSDK Objecive-C bridge.
++(NSString *)statusFromMandateObjCStatus:(TrueLayerMandateObjCStatus)status;
+
 @end
