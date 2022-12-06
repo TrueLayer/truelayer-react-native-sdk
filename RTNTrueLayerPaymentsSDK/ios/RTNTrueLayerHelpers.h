@@ -3,6 +3,7 @@
 #import "TrueLayerMandateObjCState.h"
 #import "TrueLayerMandateObjCError.h"
 #import "TrueLayerSinglePaymentObjCStatus.h"
+#import "TrueLayerMandateObjCStatus.h"
 
 /// Helper methods to use throughout the react native implementation of the TrueLayer SDK.
 @interface RTNTrueLayerHelpers: NSObject
