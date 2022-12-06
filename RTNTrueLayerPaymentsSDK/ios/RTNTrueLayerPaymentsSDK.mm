@@ -2,6 +2,7 @@
 #import "RTNTrueLayerPaymentsSDK.h"
 #import <TrueLayerPaymentsSDK/TrueLayerPaymentsSDK-umbrella.h>
 #import <React/RCTUtils.h>
+#import "RTNTrueLayerHelpers.h"
 
 @implementation RTNTrueLayerPaymentsSDK
 
@@ -44,8 +45,57 @@ RCT_EXPORT_MODULE()
              prefereces:(JS::NativeTrueLayerPaymentsSDK::Spec_processPaymentPrefereces &)prefereces
                 resolve:(RCTPromiseResolveBlock)resolve
                  reject:(RCTPromiseRejectBlock)reject {
-  resolve(NULL);
+  // Create a copied strong reference to the context information.
+  NSString *paymentID = [NSString stringWithString:paymentContext.paymentId()];
+  NSString *resourceToken = [NSString stringWithString:paymentContext.resourceToken()];
+  NSString *redirectURI = [NSString stringWithString:paymentContext.redirectUri()];
+  NSString *preferredCountryCode;
+  if (prefereces.preferredCountryCode()) {
+    // Only set the preferred country code if it is not `nil`, as `[NSString stringWithString:]` requires the parameter to be non-nil.
+    preferredCountryCode = [NSString stringWithString:prefereces.preferredCountryCode()];
+  }
+ 
+  [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+    // Capture the presented view controller.
+    // We use the main thread here as `RCTPresentedViewController.init` accesses the main application window.
+    UIViewController *reactViewController = RCTPresentedViewController();
+    
+    // Create the context required by the ObjC bridge in TrueLayerSDK.
+    TrueLayerSinglePaymentPreferences *trueLayerPreferences = [[TrueLayerSinglePaymentPreferences alloc] initWithPreferredCountryCode:preferredCountryCode
+                                                                                                                       viewController:reactViewController];
+    TrueLayerSinglePaymentContext *context = [[TrueLayerSinglePaymentContext alloc] initWithIdentifier:paymentID
+                                                                                        resourceToken:resourceToken
+                                                                                          redirectURL:[NSURL URLWithString:redirectURI]
+                                                                                       preferences:trueLayerPreferences];
+    
+    // Call the ObjC bridge.
+    [TrueLayerObjectiveCBridge processSinglePaymentWithContext:context success:^(TrueLayerSinglePaymentObjCState state) {
+      // Create a `step` value to return to React Native, that is equal to the typescript `ProcessorStep` enum.
+      // See `types.ts` for the raw values to match.
+      NSString *step = [RTNTrueLayerHelpers stepFrom:state];
+      
+      NSDictionary *result = @{
+        @"type": @"Success",
+        @"step": step
+      };
+      
+      resolve(result);
+      
+    } failure:^(TrueLayerSinglePaymentObjCError error) {
+      // Create a `reason` value to return to React Native, that is equal to the typescript `FailureReason` enum.
+      // See `types.ts` for the raw values to match.
+      NSString *reason = [RTNTrueLayerHelpers reasonFrom:error];
+            
+      NSDictionary *result = @{
+        @"type": @"Failure",
+        @"reason": reason
+      };
+      
+      resolve(result);
+    }];
+  }];
 }
+
 - (void)_processMandate:(JS::NativeTrueLayerPaymentsSDK::Spec_processMandateMandateContext &)mandateContext
              prefereces:(JS::NativeTrueLayerPaymentsSDK::Spec_processMandatePrefereces &)prefereces
                 resolve:(RCTPromiseResolveBlock)resolve
