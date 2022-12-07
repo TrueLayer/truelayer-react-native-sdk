@@ -4,6 +4,7 @@
 #import "RTNTrueLayerErrorReason.h"
 #import "RTNTrueLayerMandateStep.h"
 #import "RTNTrueLayerSinglePaymentStatus.h"
+#import "RTNTrueLayerMandateStatus.h"
 
 @implementation RTNTrueLayerHelpers: NSObject
 
@@ -136,6 +137,25 @@
       
     case TrueLayerMandateObjCErrorUserCanceled:
       return RTNTrueLayerErrorReasonUserAborted;
+  }
+}
+
++ (NSString *)statusFromMandateObjCStatus:(TrueLayerMandateObjCStatus)status {
+  switch (status) {
+    case TrueLayerMandateObjCStatusAuthorizationRequired:
+      return RTNTrueLayerMandateStatusAuthorizationRequired;
+      
+    case TrueLayerMandateObjCStatusAuthorizing:
+      return RTNTrueLayerMandateStatusAuthorizing;
+      
+    case TrueLayerMandateObjCStatusAuthorized:
+      return RTNTrueLayerMandateStatusAuthorized;
+      
+    case TrueLayerMandateObjCStatusRevoked:
+      return RTNTrueLayerMandateStatusRevoked;
+      
+    case TrueLayerMandateObjCStatusFailed:
+      return RTNTrueLayerMandateStatusFailed;
   }
 }
 
