@@ -1,0 +1,9 @@
+#import <Foundation/Foundation.h>
+#import "RTNTrueLayerSinglePaymentErrorReason.h"
+
+RTNTrueLayerSinglePaymentErrorReason const RTNTrueLayerSinglePaymentErrorReasonPaymentFailed = @"PaymentFailed";
+RTNTrueLayerSinglePaymentErrorReason const RTNTrueLayerSinglePaymentErrorReasonCommunicationIssue = @"CommunicationIssue";
+RTNTrueLayerSinglePaymentErrorReason const RTNTrueLayerSinglePaymentErrorReasonUnknown = @"Unknown";
+RTNTrueLayerSinglePaymentErrorReason const RTNTrueLayerSinglePaymentErrorReasonConnectionSecurityIssue = @"ConnectionSecurityIssue";
+RTNTrueLayerSinglePaymentErrorReason const RTNTrueLayerSinglePaymentErrorReasonProcessorContextNotAvailable = @"ProcessorContextNotAvailable";
+RTNTrueLayerSinglePaymentErrorReason const RTNTrueLayerSinglePaymentErrorReasonUserAborted = @"UserAborted";
