@@ -339,6 +339,7 @@ class TlPaymentSdkModule(reactContext: ReactApplicationContext):
                 extractedContext
             )
             intent.putExtra("react-native", true)
+            intent.putExtra("react-native-sdk-version", BuildConfig.RN_TL_SDK_VERSION)
             it.startActivityForResult(intent, 0)
         }
         mPromises.put(0, promise)
@@ -379,6 +380,7 @@ class TlPaymentSdkModule(reactContext: ReactApplicationContext):
                 extractedContext
             )
             intent.putExtra("react-native", true)
+            intent.putExtra("react-native-sdk-version", BuildConfig.RN_TL_SDK_VERSION)
             it.startActivityForResult(intent, 0)
         }
         mPromises.put(0, promise)
