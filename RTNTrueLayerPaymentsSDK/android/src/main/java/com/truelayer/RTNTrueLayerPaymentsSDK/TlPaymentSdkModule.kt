@@ -338,6 +338,7 @@ class TlPaymentSdkModule(reactContext: ReactApplicationContext):
                 it,
                 extractedContext
             )
+            intent.putExtra("react-native", true)
             it.startActivityForResult(intent, 0)
         }
         mPromises.put(0, promise)
@@ -377,6 +378,7 @@ class TlPaymentSdkModule(reactContext: ReactApplicationContext):
                 it,
                 extractedContext
             )
+            intent.putExtra("react-native", true)
             it.startActivityForResult(intent, 0)
         }
         mPromises.put(0, promise)
