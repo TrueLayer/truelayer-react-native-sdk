@@ -36,8 +36,14 @@ RCT_EXPORT_MODULE()
 
     return;
   }
-  
-  [TrueLayerObjectiveCBridge configureWith:objCEnvironment];
+
+  NSDictionary *additionalConfiguration = @{
+    [TrueLayerObjectiveCAdditionalConfigurationKey integrationType]: @"react-native",
+    [TrueLayerObjectiveCAdditionalConfigurationKey integrationVersion]: @"1.0.0"
+  };
+
+  [TrueLayerObjectiveCBridge configureWith:objCEnvironment
+                   additionalConfiguration:additionalConfiguration];
   resolve(NULL);
 }
 
