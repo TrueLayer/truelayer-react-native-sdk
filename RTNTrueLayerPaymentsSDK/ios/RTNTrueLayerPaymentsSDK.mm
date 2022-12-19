@@ -38,7 +38,7 @@ RCT_EXPORT_MODULE()
   }
 
   NSDictionary *additionalConfiguration = @{
-    [TrueLayerObjectiveCAdditionalConfigurationKey integrationType]: @"react-native",
+    [TrueLayerObjectiveCAdditionalConfigurationKey integrationType]: @"React Native",
     [TrueLayerObjectiveCAdditionalConfigurationKey integrationVersion]: @"1.0.0"
   };
 
