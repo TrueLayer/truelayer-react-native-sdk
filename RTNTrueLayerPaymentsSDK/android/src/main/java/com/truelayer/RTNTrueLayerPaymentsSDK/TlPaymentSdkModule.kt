@@ -2,6 +2,7 @@ package com.truelayer.RTNTrueLayerPaymentsSDK
 
 import android.app.Activity
 import android.content.Intent
+import android.os.Bundle
 import android.util.SparseArray
 import com.facebook.react.bridge.ActivityEventListener
 import com.facebook.react.bridge.Arguments
@@ -339,6 +340,7 @@ class TlPaymentSdkModule(reactContext: ReactApplicationContext):
                 extractedContext
             )
             intent.putExtra("react-native", true)
+            intent.putExtra("react-native-sdk-version", BuildConfig.RN_TL_SDK_VERSION)
             it.startActivityForResult(intent, 0)
         }
         mPromises.put(0, promise)
@@ -379,6 +381,7 @@ class TlPaymentSdkModule(reactContext: ReactApplicationContext):
                 extractedContext
             )
             intent.putExtra("react-native", true)
+            intent.putExtra("react-native-sdk-version", BuildConfig.RN_TL_SDK_VERSION)
             it.startActivityForResult(intent, 0)
         }
         mPromises.put(0, promise)
@@ -397,10 +400,15 @@ class TlPaymentSdkModule(reactContext: ReactApplicationContext):
             return
         }
 
+        val bundle = Bundle()
+        bundle.putBoolean("react-native", true)
+        bundle.putString("react-native-sdk-version", BuildConfig.RN_TL_SDK_VERSION)
+
         scope.launch(Dispatchers.IO) {
             TrueLayerUI.getMandateStatus(
                 mandateId,
-                resourceToken
+                resourceToken,
+                bundle
             )
                 .onOk {
                     val mandateStatusResult = WritableNativeMap().apply {
@@ -427,11 +435,15 @@ class TlPaymentSdkModule(reactContext: ReactApplicationContext):
             )
             return
         }
-
+        val bundle = Bundle()
+        bundle.putBoolean("react-native", true)
+        bundle.putString("react-native-sdk-version", BuildConfig.RN_TL_SDK_VERSION)
+        
         scope.launch(Dispatchers.IO) {
             TrueLayerUI.getPaymentStatus(
                 paymentId,
-                resourceToken
+                resourceToken,
+                bundle
             )
                 .onOk {
                     val paymentStatusResult = WritableNativeMap().apply {
