@@ -1,7 +1,0 @@
-/// The Strings to return for each payment step. This matches the types in `types.ts`.
-typedef NSString *RTNTrueLayerSinglePaymentStep NS_TYPED_ENUM;
-extern RTNTrueLayerSinglePaymentStep const RTNTrueLayerSinglePaymentStepAuthorized;
-extern RTNTrueLayerSinglePaymentStep const RTNTrueLayerSinglePaymentStepExecuted;
-extern RTNTrueLayerSinglePaymentStep const RTNTrueLayerSinglePaymentStepRedirect;
-extern RTNTrueLayerSinglePaymentStep const RTNTrueLayerSinglePaymentStepSettled;
-extern RTNTrueLayerSinglePaymentStep const RTNTrueLayerSinglePaymentStepWait;

@@ -1,7 +1,0 @@
-/// The Strings to return for each mandate step. This matches the types in `types.ts`.
-typedef NSString *RTNTrueLayerMandateStatus NS_TYPED_ENUM;
-extern RTNTrueLayerMandateStatus const RTNTrueLayerMandateStatusAuthorizationRequired;
-extern RTNTrueLayerMandateStatus const RTNTrueLayerMandateStatusAuthorized;
-extern RTNTrueLayerMandateStatus const RTNTrueLayerMandateStatusAuthorizing;
-extern RTNTrueLayerMandateStatus const RTNTrueLayerMandateStatusFailed;
-extern RTNTrueLayerMandateStatus const RTNTrueLayerMandateStatusRevoked;
