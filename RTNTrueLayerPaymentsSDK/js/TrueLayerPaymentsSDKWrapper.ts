@@ -35,7 +35,7 @@ export abstract class TrueLayerPaymentsSDKWrapper {
   /**
    * Processes payment for a given context
    * @param paymentContext context of a payment to process
-   * @param prefereces (optional) extra preferences
+   * @param preferences (optional) extra preferences
    *
    * @see PaymentContext
    * @see PaymentPreferences
@@ -46,18 +46,18 @@ export abstract class TrueLayerPaymentsSDKWrapper {
    */
   static processPayment(
     paymentContext: PaymentContext,
-    prefereces?: PaymentPreferences
+    preferences?: PaymentPreferences
   ): Promise<ProcessorResult> {
     return RTNTrueLayerPaymentsSDK!!._processPayment(
       paymentContext,
-      prefereces
+      preferences
     );
   }
 
   /**
    * Processes mandate (recurring payment) for a given context
    * @param paymentContext context of a mandate to process
-   * @param prefereces (optional) extra preferences
+   * @param preferences (optional) extra preferences
    *
    * @see MandateContext
    * @see MandatePreferences
@@ -68,11 +68,11 @@ export abstract class TrueLayerPaymentsSDKWrapper {
    */
   static processMandate(
     mandateContext: MandateContext,
-    prefereces?: MandatePreferences
+    preferences?: MandatePreferences
   ): Promise<ProcessorResult> {
     return RTNTrueLayerPaymentsSDK!!._processMandate(
       mandateContext,
-      prefereces
+      preferences
     );
   }
 

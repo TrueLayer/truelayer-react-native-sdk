@@ -43,14 +43,14 @@ RCT_EXPORT_MODULE()
  resolve(NULL);
 }
 
-- (void)_processPayment:(JS::NativeTrueLayerPaymentsSDK::Spec_processPaymentPaymentContext &)paymentContext prefereces:(JS::NativeTrueLayerPaymentsSDK::Spec_processPaymentPrefereces &)prefereces resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
+- (void)_processPayment:(JS::NativeTrueLayerPaymentsSDK::Spec_processPaymentPaymentContext &)paymentContext preferences:(JS::NativeTrueLayerPaymentsSDK::Spec_processPaymentPreferences &)preferences resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
   NSString *paymentID = [NSString stringWithString:paymentContext.paymentId()];
   NSString *resourceToken = [NSString stringWithString:paymentContext.resourceToken()];
   NSString *redirectURI = [NSString stringWithString:paymentContext.redirectUri()];
   NSString *preferredCountryCode;
-  if (prefereces.preferredCountryCode()) {
+  if (preferences.preferredCountryCode()) {
     // Only set the preferred country code if it is not `nil`, as `[NSString stringWithString:]` requires the parameter to be non-nil.
-    preferredCountryCode = [NSString stringWithString:prefereces.preferredCountryCode()];
+    preferredCountryCode = [NSString stringWithString:preferences.preferredCountryCode()];
   }
 
   [[NSOperationQueue mainQueue] addOperationWithBlock:^{
@@ -107,13 +107,13 @@ RCT_EXPORT_MODULE()
 }
 
 
-- (void)_processMandate:(JS::NativeTrueLayerPaymentsSDK::Spec_processMandateMandateContext &)mandateContext prefereces:(JS::NativeTrueLayerPaymentsSDK::Spec_processMandatePrefereces &)prefereces resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
+- (void)_processMandate:(JS::NativeTrueLayerPaymentsSDK::Spec_processMandateMandateContext &)mandateContext preferences:(JS::NativeTrueLayerPaymentsSDK::Spec_processMandatePreferences &)preferences resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
   resolve(NULL);
 }
 
 
 // - (void)_processPayment:(JS::NativeTrueLayerPaymentsSDK::Spec_processPaymentPaymentContext &)paymentContext
-//              prefereces:(JS::NativeTrueLayerPaymentsSDK::Spec_processPaymentPrefereces &)prefereces
+//              preferences:(JS::NativeTrueLayerPaymentsSDK::Spec_processPaymentPreferences &)preferences
 //                 resolve:(RCTPromiseResolveBlock)resolve
 //                  reject:(RCTPromiseRejectBlock)reject {
 //   // Create a copied strong reference to the context information.
@@ -121,9 +121,9 @@ RCT_EXPORT_MODULE()
 //   NSString *resourceToken = [NSString stringWithString:paymentContext.resourceToken()];
 //   NSString *redirectURI = [NSString stringWithString:paymentContext.redirectUri()];
 //   NSString *preferredCountryCode;
-//   if (prefereces.preferredCountryCode()) {
+//   if (preferences.preferredCountryCode()) {
 //     // Only set the preferred country code if it is not `nil`, as `[NSString stringWithString:]` requires the parameter to be non-nil.
-//     preferredCountryCode = [NSString stringWithString:prefereces.preferredCountryCode()];
+//     preferredCountryCode = [NSString stringWithString:preferences.preferredCountryCode()];
 //   }
 
 //   [[NSOperationQueue mainQueue] addOperationWithBlock:^{
@@ -168,7 +168,7 @@ RCT_EXPORT_MODULE()
 // }
 
 // - (void)_processMandate:(JS::NativeTrueLayerPaymentsSDK::Spec_processMandateMandateContext &)mandateContext
-//              prefereces:(JS::NativeTrueLayerPaymentsSDK::Spec_processMandatePrefereces &)prefereces
+//              preferences:(JS::NativeTrueLayerPaymentsSDK::Spec_processMandatePreferences &)preferences
 //                 resolve:(RCTPromiseResolveBlock)resolve
 //                  reject:(RCTPromiseRejectBlock)reject {
 //   // Create a copied strong reference to the context information.

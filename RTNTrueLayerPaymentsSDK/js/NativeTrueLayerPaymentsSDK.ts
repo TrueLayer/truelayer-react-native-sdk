@@ -25,7 +25,7 @@ interface Spec extends TurboModule {
       resourceToken: string;
       redirectUri: string;
     },
-    prefereces?: {
+    preferences?: {
       preferredCountryCode?: string;
       paymentUseCase: string;
     }
@@ -40,7 +40,7 @@ interface Spec extends TurboModule {
       resourceToken: string;
       redirectUri: string;
     },
-    prefereces?: {
+    preferences?: {
       preferredCountryCode?: string;
     }
   ): Promise<ProcessorResult>;

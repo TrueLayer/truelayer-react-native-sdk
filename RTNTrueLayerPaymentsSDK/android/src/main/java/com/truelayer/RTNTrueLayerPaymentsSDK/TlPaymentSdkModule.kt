@@ -316,7 +316,7 @@ class TlPaymentSdkModule(reactContext: ReactApplicationContext):
 
     override fun _processPayment(
         paymentContext: ReadableMap?,
-        prefereces: ReadableMap?,
+        preferences: ReadableMap?,
         promise: Promise?
     ) {
         checkInitialized()?.let {
@@ -325,7 +325,7 @@ class TlPaymentSdkModule(reactContext: ReactApplicationContext):
         }
 
         val activity = reactApplicationContext.currentActivity
-        val contextExtractor = TLReactNativeUtils.ContextExtractor(paymentContext, prefereces)
+        val contextExtractor = TLReactNativeUtils.ContextExtractor(paymentContext, preferences)
         val extractedContext: ProcessorContext.PaymentContext? = contextExtractor.getPaymentContext()
         if (extractedContext == null) {
             promise?.resolve(
@@ -357,7 +357,7 @@ class TlPaymentSdkModule(reactContext: ReactApplicationContext):
 
     override fun _processMandate(
         mandateContext: ReadableMap?,
-        prefereces: ReadableMap?,
+        preferences: ReadableMap?,
         promise: Promise?
     ) {
         checkInitialized()?.let {
@@ -366,7 +366,7 @@ class TlPaymentSdkModule(reactContext: ReactApplicationContext):
         }
 
         val activity = reactApplicationContext.currentActivity
-        val contextExtractor = TLReactNativeUtils.ContextExtractor(mandateContext, prefereces)
+        val contextExtractor = TLReactNativeUtils.ContextExtractor(mandateContext, preferences)
         val extractedContext: ProcessorContext.MandateContext? = contextExtractor.getMandateContext()
         if (extractedContext == null) {
             promise?.resolve(
