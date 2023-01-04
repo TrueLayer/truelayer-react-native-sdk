@@ -1,6 +1,6 @@
 #import <React/RCTUtils.h>
 #import "RTNTrueLayerPaymentsSDK.h"
-#import "TrueLayerPaymentsSDK-Swift.h"
+#import <TrueLayerObjectiveC/TrueLayerObjectiveC-Swift.h>
 
 @implementation RTNTrueLayerPaymentsSDK
 
@@ -37,7 +37,7 @@ RCT_EXPORT_MODULE()
 
  [TrueLayerPaymentsManager
   configureWithEnvironment:sdkEnvironment
-  additionalConfiguration:[NSDictionary dictionaryWithObjectsAndKeys:@"react-native", @"customIntegrationType"];
+  additionalConfiguration:[NSDictionary dictionaryWithObjectsAndKeys:@"react-native", @"customIntegrationType", nil]
  ];
 
  resolve(NULL);
@@ -60,15 +60,15 @@ RCT_EXPORT_MODULE()
 
     // Create the context required by the ObjC bridge in TrueLayerSDK.
     TrueLayerSinglePaymentPreferences *trueLayerPreferences = [[
-      TrueLayerSinglePaymentPreferences alloc] 
-      initWithPreferredCountryCode:preferredCountryCode
-      viewController:reactViewController
+      TrueLayerSinglePaymentPreferences alloc]
+      initWithPresentationStyle:[[TrueLayerPresentationStyle alloc] initWithPresentOn:reactViewController style:UIModalPresentationAutomatic]
+      preferredCountryCode:preferredCountryCode
     ];
 
     TrueLayerSinglePaymentContext *context = [
       [TrueLayerSinglePaymentContext alloc] 
       initWithIdentifier:paymentID
-      resourceToken:resourceToken
+      token:resourceToken
       redirectURL:[NSURL URLWithString:redirectURI]
       preferences:trueLayerPreferences
     ];
@@ -89,7 +89,7 @@ RCT_EXPORT_MODULE()
     } failure:^(TrueLayerSinglePaymentError error) {
       NSDictionary *result = @{
         @"type": @"Failure",
-        @"reason": "TrueLayerSinglePaymentError"
+        @"reason": @"TrueLayerSinglePaymentError"
       };
 
       resolve(result);
