@@ -63,5 +63,5 @@ interface Spec extends TurboModule {
 }
 
 export default TurboModuleRegistry.get<Spec>(
-  "RTNTrueLayerPaymentsSDK"
+  "RNTrueLayerPaymentsSDK"
 ) as Spec | null;

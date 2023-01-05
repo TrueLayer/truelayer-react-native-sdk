@@ -1,4 +1,4 @@
-import RTNTrueLayerPaymentsSDK from "./NativeTrueLayerPaymentsSDK";
+import RNTrueLayerPaymentsSDK from "./NativeTrueLayerPaymentsSDK";
 import {
   PaymentContext,
   PaymentPreferences,
@@ -6,8 +6,6 @@ import {
   MandatePreferences,
   Environment,
   ProcessorResult,
-  PaymentStatus,
-  MandateStatus,
   MandateStatusResult,
   PaymentStatusResult
 } from "./models/types";
@@ -29,7 +27,7 @@ export abstract class TrueLayerPaymentsSDKWrapper {
   static configure(
     environment: Environment = Environment.Production
   ): Promise<void> {
-    return RTNTrueLayerPaymentsSDK!!._configure(environment);
+    return RNTrueLayerPaymentsSDK!!._configure(environment);
   }
 
   /**
@@ -48,7 +46,7 @@ export abstract class TrueLayerPaymentsSDKWrapper {
     paymentContext: PaymentContext,
     preferences?: PaymentPreferences
   ): Promise<ProcessorResult> {
-    return RTNTrueLayerPaymentsSDK!!._processPayment(
+    return RNTrueLayerPaymentsSDK!!._processPayment(
       paymentContext,
       preferences
     );
@@ -70,7 +68,7 @@ export abstract class TrueLayerPaymentsSDKWrapper {
     mandateContext: MandateContext,
     preferences?: MandatePreferences
   ): Promise<ProcessorResult> {
-    return RTNTrueLayerPaymentsSDK!!._processMandate(
+    return RNTrueLayerPaymentsSDK!!._processMandate(
       mandateContext,
       preferences
     );
@@ -85,7 +83,7 @@ export abstract class TrueLayerPaymentsSDKWrapper {
     paymentId: string,
     resourceToken: string
   ): Promise<PaymentStatusResult> {
-    return RTNTrueLayerPaymentsSDK!!._paymentStatus(paymentId, resourceToken);
+    return RNTrueLayerPaymentsSDK!!._paymentStatus(paymentId, resourceToken);
   }
 
   /**
@@ -97,6 +95,6 @@ export abstract class TrueLayerPaymentsSDKWrapper {
     mandateId: string,
     resourceToken: string
   ): Promise<MandateStatusResult> {
-    return RTNTrueLayerPaymentsSDK!!._mandateStatus(mandateId, resourceToken);
+    return RNTrueLayerPaymentsSDK!!._mandateStatus(mandateId, resourceToken);
   }
 }

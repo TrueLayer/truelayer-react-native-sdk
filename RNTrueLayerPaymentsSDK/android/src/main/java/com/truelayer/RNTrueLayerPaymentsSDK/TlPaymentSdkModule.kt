@@ -1,4 +1,4 @@
-package com.truelayer.RTNTrueLayerPaymentsSDK
+package com.truelayer.RNTrueLayerPaymentsSDK
 
 import android.app.Activity
 import android.content.Intent
@@ -13,10 +13,10 @@ import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.WritableMap
 import com.facebook.react.bridge.WritableNativeMap
-import com.truelayer.RTNTrueLayerPaymentsSDK.TLReactNativeUtils.Companion.createProcessorFailureResult
-import com.truelayer.RTNTrueLayerPaymentsSDK.TLReactNativeUtils.Companion.createStatusFailure
-import com.truelayer.RTNTrueLayerPaymentsSDK.TLReactNativeUtils.Companion.mapMandateStatus
-import com.truelayer.RTNTrueLayerPaymentsSDK.TLReactNativeUtils.Companion.mapPaymentStatus
+import com.truelayer.RNTrueLayerPaymentsSDK.TLReactNativeUtils.Companion.createProcessorFailureResult
+import com.truelayer.RNTrueLayerPaymentsSDK.TLReactNativeUtils.Companion.createStatusFailure
+import com.truelayer.RNTrueLayerPaymentsSDK.TLReactNativeUtils.Companion.mapMandateStatus
+import com.truelayer.RNTrueLayerPaymentsSDK.TLReactNativeUtils.Companion.mapPaymentStatus
 import com.truelayer.payments.core.domain.configuration.Environment
 import com.truelayer.payments.core.domain.errors.CoreError
 import com.truelayer.payments.core.domain.errors.TrueLayerConfigurationError
@@ -285,11 +285,11 @@ class TlPaymentSdkModule(reactContext: ReactApplicationContext):
     )
 
     companion object {
-        const val NAME = "RTNTrueLayerPaymentsSDK"
+        const val NAME = "RNTrueLayerPaymentsSDK"
     }
 
     override fun getName(): String {
-        return "RTNTrueLayerPaymentsSDK"
+        return "RNTrueLayerPaymentsSDK"
     }
 
     override fun initialize() {

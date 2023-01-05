@@ -39,7 +39,7 @@
     "react-native": "*"
   },
   "codegenConfig": {
-    "name": "RTNTrueLayerPaymentsSDKSpec",
+    "name": "RNTrueLayerPaymentsSDKSpec",
     "type": "modules",
     "jsSrcsDir": "js",
     "android": {

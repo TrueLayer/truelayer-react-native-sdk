@@ -10,14 +10,14 @@ import {
 
 import React from 'react'
 
-import { TrueLayerPaymentsSDKWrapper } from 'rtn-truelayer-payments-sdk/js/TrueLayerPaymentsSDKWrapper'
+import { TrueLayerPaymentsSDKWrapper } from 'rn-truelayer-payments-sdk/js/TrueLayerPaymentsSDKWrapper'
 
 import {
   Environment,
   PaymentUseCase,
   ProcessorResult,
   ResultType
-} from 'rtn-truelayer-payments-sdk/js/models/types'
+} from 'rn-truelayer-payments-sdk/js/models/types'
 
 import uuid from 'react-native-uuid'
 import { Colors } from 'react-native/Libraries/NewAppScreen'

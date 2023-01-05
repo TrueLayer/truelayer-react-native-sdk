@@ -1,4 +1,4 @@
-package com.truelayer.RTNTrueLayerPaymentsSDK;
+package com.truelayer.RNTrueLayerPaymentsSDK;
 
 import androidx.annotation.Nullable;
 import com.facebook.react.bridge.NativeModule;
@@ -9,7 +9,7 @@ import com.facebook.react.TurboReactPackage;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RTNTrueLayerPaymentsSDKPackage extends TurboReactPackage {
+public class RNTrueLayerPaymentsSDKPackage extends TurboReactPackage {
 
   @Nullable
   @Override
