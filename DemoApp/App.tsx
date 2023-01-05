@@ -15,7 +15,6 @@ import { TrueLayerPaymentsSDKWrapper } from 'rn-truelayer-payments-sdk/js/TrueLa
 import {
   Environment,
   PaymentUseCase,
-  ProcessorResult,
   ResultType
 } from 'rn-truelayer-payments-sdk/js/models/types'
 

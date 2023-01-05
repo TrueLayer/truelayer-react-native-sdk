@@ -27,9 +27,11 @@ RCT_EXPORT_MODULE()
       NSLocalizedRecoverySuggestionErrorKey: @"Please use either `sandbox` or `production`."
    };
 
-   NSError *error = [NSError errorWithDomain:@"TrueLayerPaymentsSDK.TrueLayerObjectiveCError"
-                                        code:1
-                                    userInfo:userInfo];
+   NSError *error = [
+    NSError errorWithDomain:@"TrueLayerPaymentsSDK.TrueLayerObjectiveCError"
+    code:1
+    userInfo:userInfo
+  ];
 
    reject([@(error.code) stringValue], error.localizedDescription, error);
 

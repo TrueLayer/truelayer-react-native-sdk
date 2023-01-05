@@ -776,7 +776,7 @@ DEPENDENCIES:
   - React-rncore (from `../node_modules/react-native/ReactCommon`)
   - React-runtimeexecutor (from `../node_modules/react-native/ReactCommon/runtimeexecutor`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
-  - rn-truelayer-payments-sdk (from `../node_modules/rtn-truelayer-payments-sdk`)
+  - rn-truelayer-payments-sdk (from `../node_modules/rn-truelayer-payments-sdk`)
   - TrueLayerPaymentsSDK (from `https://github.com/TrueLayer/TrueLayer-iOS-SDK/`, branch `release/2.2.0`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
@@ -874,7 +874,7 @@ EXTERNAL SOURCES:
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
   rn-truelayer-payments-sdk:
-    :path: "../node_modules/rtn-truelayer-payments-sdk"
+    :path: "../node_modules/rn-truelayer-payments-sdk"
   TrueLayerPaymentsSDK:
     :branch: release/2.2.0
     :git: https://github.com/TrueLayer/TrueLayer-iOS-SDK/
