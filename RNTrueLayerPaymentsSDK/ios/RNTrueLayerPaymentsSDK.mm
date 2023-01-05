@@ -100,6 +100,7 @@ RCT_EXPORT_MODULE()
   }];
 }
 
+
 - (void)_paymentStatus:(NSString *)paymentId resourceToken:(NSString *)resourceToken resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
   // Create a copied strong reference to the context information.
   NSString *paymentIDCopy = [NSString stringWithString:paymentId];
@@ -133,7 +134,56 @@ RCT_EXPORT_MODULE()
 }
 
 - (void)_processMandate:(JS::NativeTrueLayerPaymentsSDK::Spec_processMandateMandateContext &)mandateContext preferences:(JS::NativeTrueLayerPaymentsSDK::Spec_processMandatePreferences &)preferences resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
-  resolve(NULL);
+  // Create a copied strong reference to the context information.
+  NSString *mandateID = [NSString stringWithString:mandateContext.mandateId()];
+  NSString *resourceToken = [NSString stringWithString:mandateContext.resourceToken()];
+  NSString *redirectURI = [NSString stringWithString:mandateContext.redirectUri()];
+  
+  [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+    // Capture the presented view controller.
+    // We use the main thread here as `RCTPresentedViewController.init` accesses the main application window.
+    UIViewController *reactViewController = RCTPresentedViewController();
+    
+    // Create the context required by the ObjC bridge in TrueLayerSDK.
+    TrueLayerMandatePreferences *preferences = [
+      [TrueLayerMandatePreferences alloc] initWithPresentationStyle:[[TrueLayerPresentationStyle alloc] initWithPresentOn:reactViewController style:UIModalPresentationAutomatic]
+    ];
+    
+    TrueLayerMandateContext *context = [
+      [TrueLayerMandateContext alloc] initWithIdentifier:mandateID
+      token:resourceToken
+      redirectURL:[NSURL URLWithString:redirectURI]
+      preferences:preferences
+    ];
+    
+    // Call the ObjC bridge.
+    [TrueLayerPaymentsManager
+     processMandateWithContext:context
+     success:^(TrueLayerMandateState state) {
+      // Create a `step` value to return to React Native, that is equal to the typescript `ProcessorStep` enum.
+      // See `types.ts` for the raw values to match.
+      NSString *step = [RNTrueLayerHelpers stepFromMandateState:state];
+      
+      NSDictionary *result = @{
+        @"type": @"Success",
+        @"step": step
+      };
+      
+      resolve(result);
+    }
+    failure:^(TrueLayerMandateError error) {
+      // Create a `reason` value to return to React Native, that is equal to the typescript `FailureReason` enum.
+      // See `types.ts` for the raw values to match.
+      NSString *reason = [RNTrueLayerHelpers reasonFromMandateError:error];
+      
+      NSDictionary *result = @{
+        @"type": @"Failure",
+        @"reason": reason
+      };
+      
+      resolve(result);
+    }];
+  }];
 }
 
 - (void)_mandateStatus:(NSString *)mandateId resourceToken:(NSString *)resourceToken resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
@@ -167,58 +217,6 @@ RCT_EXPORT_MODULE()
     resolve(result);
   }];
 }
-
-
-// - (void)_processMandate:(JS::NativeTrueLayerPaymentsSDK::Spec_processMandateMandateContext &)mandateContext
-//              preferences:(JS::NativeTrueLayerPaymentsSDK::Spec_processMandatePreferences &)preferences
-//                 resolve:(RCTPromiseResolveBlock)resolve
-//                  reject:(RCTPromiseRejectBlock)reject {
-//   // Create a copied strong reference to the context information.
-//   NSString *mandateID = [NSString stringWithString:mandateContext.mandateId()];
-//   NSString *resourceToken = [NSString stringWithString:mandateContext.resourceToken()];
-//   NSString *redirectURI = [NSString stringWithString:mandateContext.redirectUri()];
-
-//   [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-//     // Capture the presented view controller.
-//     // We use the main thread here as `RCTPresentedViewController.init` accesses the main application window.
-//     UIViewController *reactViewController = RCTPresentedViewController();
-
-//     // Create the context required by the ObjC bridge in TrueLayerSDK.
-//     TrueLayerMandatePreferences *objCPreferences = [[TrueLayerMandatePreferences alloc] initWithViewController:reactViewController];
-//     TrueLayerMandateContext *context = [[TrueLayerMandateContext alloc] initWithIdentifier:mandateID
-//                                                                                         resourceToken:resourceToken
-//                                                                                           redirectURL:[NSURL URLWithString:redirectURI]
-//                                                                                        preferences:objCPreferences];
-
-//     // Call the ObjC bridge.
-//     [TrueLayerObjectiveCBridge processMandateWithContext:context
-//                                                  success:^(TrueLayerMandateObjCState state) {
-//       // Create a `step` value to return to React Native, that is equal to the typescript `ProcessorStep` enum.
-//       // See `types.ts` for the raw values to match.
-//       NSString *step = [RNTrueLayerHelpers stepFromMandateObjCState:state];
-
-//       NSDictionary *result = @{
-//         @"type": @"Success",
-//         @"step": step
-//       };
-
-//       resolve(result);
-
-//     }
-//                                                  failure:^(TrueLayerMandateObjCError error) {
-//       // Create a `reason` value to return to React Native, that is equal to the typescript `FailureReason` enum.
-//       // See `types.ts` for the raw values to match.
-//       NSString *reason = [RNTrueLayerHelpers reasonFromMandateObjCError:error];
-
-//       NSDictionary *result = @{
-//         @"type": @"Failure",
-//         @"reason": reason
-//       };
-
-//       resolve(result);
-//     }];
-//   }];
-// }
 
  - (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:
      (const facebook::react::ObjCTurboModule::InitParams &)params
