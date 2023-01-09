@@ -21,17 +21,10 @@ RCT_EXPORT_MODULE()
    sdkEnvironment = TrueLayerEnvironmentProduction;
  } else {
    // Create an NSError object for the configuration error.
-   NSDictionary *userInfo = @{
-      NSLocalizedDescriptionKey: @"Invalid environment value passed.",
-      NSLocalizedFailureReasonErrorKey: @"The environment value passed does not match any expected cases.",
-      NSLocalizedRecoverySuggestionErrorKey: @"Please use either `sandbox` or `production`."
-   };
-
-   NSError *error = [
-    NSError errorWithDomain:@"TrueLayerPaymentsSDK.TrueLayerObjectiveCError"
-    code:1
-    userInfo:userInfo
-  ];
+  NSError *error = [self errorWithDescriptionKey:@"Invalid environment value passed."
+                            failureReasonErrorKey:@"The environment value passed does not match any expected cases."
+                       recoverySuggestionErrorKey:@"Please use either `sandbox` or `production`."
+                                             code:1];
 
    reject([@(error.code) stringValue], error.localizedDescription, error);
 
@@ -47,6 +40,18 @@ RCT_EXPORT_MODULE()
 }
 
 - (void)_processPayment:(JS::NativeTrueLayerPaymentsSDK::Spec_processPaymentPaymentContext &)paymentContext preferences:(JS::NativeTrueLayerPaymentsSDK::Spec_processPaymentPreferences &)preferences resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
+  // Check that all the context values exist. Else, reject the promise.
+  if (paymentContext.paymentId() == nil || paymentContext.resourceToken() == nil || paymentContext.redirectUri() == nil) {
+    NSError *error = [self errorWithDescriptionKey:@"Payment context value is nil."
+                             failureReasonErrorKey:@"The payment ID, resource token, or redirect URI passed is nil."
+                        recoverySuggestionErrorKey:@"Please pass a valid, non-nil payment ID, resource token, or redirect URI."
+                                              code:2];
+
+    reject([@(error.code) stringValue], error.localizedDescription, error);
+
+    return;
+  }
+  
   NSString *paymentID = [NSString stringWithString:paymentContext.paymentId()];
   NSString *resourceToken = [NSString stringWithString:paymentContext.resourceToken()];
   NSString *redirectURI = [NSString stringWithString:paymentContext.redirectUri()];
@@ -69,7 +74,7 @@ RCT_EXPORT_MODULE()
     ];
 
     TrueLayerSinglePaymentContext *context = [
-      [TrueLayerSinglePaymentContext alloc] 
+      [TrueLayerSinglePaymentContext alloc]
       initWithIdentifier:paymentID
       token:resourceToken
       redirectURL:[NSURL URLWithString:redirectURI]
@@ -104,6 +109,18 @@ RCT_EXPORT_MODULE()
 
 
 - (void)_paymentStatus:(NSString *)paymentId resourceToken:(NSString *)resourceToken resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
+  // Check that the paymentId and resourceToken values are non-nil.
+  if (paymentId == nil || resourceToken == nil) {
+    NSError *error = [self errorWithDescriptionKey:@"Payment ID or resource token is nil."
+                             failureReasonErrorKey:@"The payment ID or resource token is nil."
+                        recoverySuggestionErrorKey:@"Please pass a valid, non-nil payment ID and resource token"
+                                              code:3];
+
+    reject([@(error.code) stringValue], error.localizedDescription, error);
+
+    return;
+  }
+
   // Create a copied strong reference to the context information.
   NSString *paymentIDCopy = [NSString stringWithString:paymentId];
   NSString *resourceTokenCopy = [NSString stringWithString:resourceToken];
@@ -136,6 +153,18 @@ RCT_EXPORT_MODULE()
 }
 
 - (void)_processMandate:(JS::NativeTrueLayerPaymentsSDK::Spec_processMandateMandateContext &)mandateContext preferences:(JS::NativeTrueLayerPaymentsSDK::Spec_processMandatePreferences &)preferences resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
+  // Check that all the context values exist. Else, reject the promise.
+  if (mandateContext.mandateId() == nil || mandateContext.resourceToken() == nil || mandateContext.redirectUri() == nil) {
+    NSError *error = [self errorWithDescriptionKey:@"Mandate context value is nil."
+                             failureReasonErrorKey:@"The mandate ID, resource token, or redirect URI passed is nil."
+                        recoverySuggestionErrorKey:@"Please pass a valid, non-nil mandate ID, resource token, or redirect URI."
+                                              code:4];
+
+    reject([@(error.code) stringValue], error.localizedDescription, error);
+
+    return;
+  }
+
   // Create a copied strong reference to the context information.
   NSString *mandateID = [NSString stringWithString:mandateContext.mandateId()];
   NSString *resourceToken = [NSString stringWithString:mandateContext.resourceToken()];
@@ -189,6 +218,18 @@ RCT_EXPORT_MODULE()
 }
 
 - (void)_mandateStatus:(NSString *)mandateId resourceToken:(NSString *)resourceToken resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
+  // Check that the mandateId and resourceToken values are non-nil.
+  if (mandateId == nil || resourceToken == nil) {
+    NSError *error = [self errorWithDescriptionKey:@"Mandate ID or resource token is nil."
+                             failureReasonErrorKey:@"The mandate ID or resource token is nil."
+                        recoverySuggestionErrorKey:@"Please pass a valid, non-nil mandate ID and resource token"
+                                              code:5];
+
+    reject([@(error.code) stringValue], error.localizedDescription, error);
+
+    return;
+  }
+
   // Create a copied strong reference to the context information.
   NSString *mandateIDCopy = [NSString stringWithString:mandateId];
   NSString *resourceTokenCopy = [NSString stringWithString:resourceToken];
@@ -225,5 +266,31 @@ RCT_EXPORT_MODULE()
  {
      return std::make_shared<facebook::react::NativeTrueLayerPaymentsSDKSpecJSI>(params);
  }
+
+// MARK: - Helpers
+
+/// Creates an `NSError` with the domain `TrueLayerPaymentsSDK.TrueLayerObjectiveCError` and a given description, failure reason, recovery suggestion, and code.
+/// - Parameters:
+///   - descriptionKey: The corresponding value is a localized string representation of the error that, if present, will be returned by localizedDescription.
+///   - failureReasonErrorKey: The corresponding value is a localized string representation containing the reason for the failure that, if present, will be returned by localizedFailureReason.
+///   - recoverySuggestionErrorKey: The corresponding value is a string containing the localized recovery suggestion for the error.
+///   - code: The unique code for the error.
+-(NSError *)errorWithDescriptionKey:(NSString *)descriptionKey
+              failureReasonErrorKey:(NSString *)failureReasonErrorKey
+         recoverySuggestionErrorKey:(NSString *)recoverySuggestionErrorKey
+                               code:(NSInteger)code
+{
+    NSDictionary *userInfo = @{
+       NSLocalizedDescriptionKey: descriptionKey,
+       NSLocalizedFailureReasonErrorKey: failureReasonErrorKey,
+       NSLocalizedRecoverySuggestionErrorKey: recoverySuggestionErrorKey
+    };
+
+    return [
+     NSError errorWithDomain:@"TrueLayerPaymentsSDK.TrueLayerObjectiveCError"
+     code:code
+     userInfo:userInfo
+   ];
+}
 
 @end
