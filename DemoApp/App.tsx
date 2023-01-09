@@ -57,6 +57,9 @@ export default function App() {
         <Pressable style={styles.button} onPress={processPayment}>
           <Text style={styles.text}> Process Single Payment </Text>
         </Pressable>
+        <Pressable style={styles.button} onPress={getSinglePaymentStatus}>
+          <Text style={styles.text}> Get Single Payment Status </Text>
+        </Pressable>
         <Pressable style={styles.button} onPress={processMandate}>
           <Text style={styles.text}> Process Mandate </Text>
         </Pressable>
@@ -91,6 +94,31 @@ function processPayment(): void {
           break
         case ResultType.Failure:
           console.log(`Oh we've failed processPayment with following reason: ${result.reason}`)
+          break
+      }
+    })
+  })
+}
+
+function getSinglePaymentStatus(): void {
+  console.log('getSinglePaymentStatus button clicked')
+  getPaymentContext('payment').then(processorContext => {
+    console.log(
+      `payment`,
+      `id: ${processorContext.id}`,
+      `resource_token: ${processorContext.resource_token}`,
+    )
+
+    TrueLayerPaymentsSDKWrapper.paymentStatus(
+      processorContext.id,
+      processorContext.resource_token,
+    ).then(result => {
+      switch (result.type) {
+        case ResultType.Success:
+          console.log(`getSinglePaymentStatus success at step: ${result.status}`)
+          break
+        case ResultType.Failure:
+          console.log(`Oh we've failed getSinglePaymentStatus with following reason: ${result.failure}`)
           break
       }
     })
