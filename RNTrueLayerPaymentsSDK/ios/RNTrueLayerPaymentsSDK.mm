@@ -26,7 +26,6 @@ RCT_EXPORT_MODULE()
                                               code:1];
 
     reject([@(error.code) stringValue], error.localizedDescription, error);
-
     return;
   }
 
@@ -48,7 +47,6 @@ RCT_EXPORT_MODULE()
                                               code:2];
 
     reject([@(error.code) stringValue], error.localizedDescription, error);
-
     return;
   }
 
