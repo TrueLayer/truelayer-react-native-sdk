@@ -9,37 +9,37 @@ RCT_EXPORT_MODULE()
 
 - (void)_configure:(NSString *)environment
            resolve:(RCTPromiseResolveBlock)resolve
-            reject:(RCTPromiseRejectBlock)reject
-{
- // The Objective-C environment to convert the `NSString` `environment` value to,
- // so it can be passed to the Objective-C bridge of the TrueLayer SDK.
- TrueLayerEnvironment sdkEnvironment;
+            reject:(RCTPromiseRejectBlock)reject {
+  // The Objective-C environment to convert the `NSString` `environment` value to,
+  // so it can be passed to the Objective-C bridge of the TrueLayer SDK.
+  TrueLayerEnvironment sdkEnvironment;
 
- if (environment && [environment caseInsensitiveCompare:@"sandbox"] == NSOrderedSame) {
-   sdkEnvironment = TrueLayerEnvironmentSandbox;
- } else if (environment && [environment caseInsensitiveCompare:@"production"] == NSOrderedSame) {
-   sdkEnvironment = TrueLayerEnvironmentProduction;
- } else {
-   // Create an NSError object for the configuration error.
-  NSError *error = [self errorWithDescriptionKey:@"Invalid environment value passed."
-                            failureReasonErrorKey:@"The environment value passed does not match any expected cases."
-                       recoverySuggestionErrorKey:@"Please use either `sandbox` or `production`."
-                                             code:1];
+  if (environment && [environment caseInsensitiveCompare:@"sandbox"] == NSOrderedSame) {
+    sdkEnvironment = TrueLayerEnvironmentSandbox;
+  } else if (environment && [environment caseInsensitiveCompare:@"production"] == NSOrderedSame) {
+    sdkEnvironment = TrueLayerEnvironmentProduction;
+  } else {
+    // Create an NSError object for the configuration error.
+    NSError *error = [self errorWithDescriptionKey:@"Invalid environment value passed."
+                             failureReasonErrorKey:@"The environment value passed does not match any expected cases."
+                        recoverySuggestionErrorKey:@"Please use either `sandbox` or `production`."
+                                              code:1];
 
-   reject([@(error.code) stringValue], error.localizedDescription, error);
+    reject([@(error.code) stringValue], error.localizedDescription, error);
 
-   return;
- }
+    return;
+  }
 
- [TrueLayerPaymentsManager
-  configureWithEnvironment:sdkEnvironment
-  additionalConfiguration:[NSDictionary dictionaryWithObjectsAndKeys:@"react-native", @"customIntegrationType", nil]
- ];
+  [TrueLayerPaymentsManager configureWithEnvironment:sdkEnvironment
+                             additionalConfiguration:[NSDictionary dictionaryWithObjectsAndKeys:@"react-native", @"customIntegrationType", nil]];
 
- resolve(NULL);
+  resolve(NULL);
 }
 
-- (void)_processPayment:(JS::NativeTrueLayerPaymentsSDK::Spec_processPaymentPaymentContext &)paymentContext preferences:(JS::NativeTrueLayerPaymentsSDK::Spec_processPaymentPreferences &)preferences resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
+- (void)_processPayment:(JS::NativeTrueLayerPaymentsSDK::Spec_processPaymentPaymentContext &)paymentContext
+            preferences:(JS::NativeTrueLayerPaymentsSDK::Spec_processPaymentPreferences &)preferences
+                resolve:(RCTPromiseResolveBlock)resolve
+                 reject:(RCTPromiseRejectBlock)reject {
   // Check that all the context values exist. Else, reject the promise.
   if (paymentContext.paymentId() == nil || paymentContext.resourceToken() == nil || paymentContext.redirectUri() == nil) {
     NSError *error = [self errorWithDescriptionKey:@"A value in the payment context is nil."
@@ -51,7 +51,7 @@ RCT_EXPORT_MODULE()
 
     return;
   }
-  
+
   NSString *paymentID = [NSString stringWithString:paymentContext.paymentId()];
   NSString *resourceToken = [NSString stringWithString:paymentContext.resourceToken()];
   NSString *redirectURI = [NSString stringWithString:paymentContext.redirectUri()];
@@ -67,36 +67,32 @@ RCT_EXPORT_MODULE()
     UIViewController *reactViewController = RCTPresentedViewController();
 
     // Create the context required by the ObjC bridge in TrueLayerSDK.
-    TrueLayerSinglePaymentPreferences *trueLayerPreferences = [[
-      TrueLayerSinglePaymentPreferences alloc]
-      initWithPresentationStyle:[[TrueLayerPresentationStyle alloc] initWithPresentOn:reactViewController style:UIModalPresentationAutomatic]
-      preferredCountryCode:preferredCountryCode
-    ];
+    TrueLayerPresentationStyle *presentationStyle = [[TrueLayerPresentationStyle alloc] initWithPresentOn:reactViewController
+                                                                                                    style:UIModalPresentationAutomatic];
+    TrueLayerSinglePaymentPreferences *trueLayerPreferences = [[TrueLayerSinglePaymentPreferences alloc] initWithPresentationStyle:presentationStyle
+                                                                                                              preferredCountryCode:preferredCountryCode];
+    TrueLayerSinglePaymentContext *context = [[TrueLayerSinglePaymentContext alloc] initWithIdentifier:paymentID
+                                                                                                 token:resourceToken
+                                                                                           redirectURL:[NSURL URLWithString:redirectURI]
+                                                                                           preferences:trueLayerPreferences];
 
-    TrueLayerSinglePaymentContext *context = [
-      [TrueLayerSinglePaymentContext alloc]
-      initWithIdentifier:paymentID
-      token:resourceToken
-      redirectURL:[NSURL URLWithString:redirectURI]
-      preferences:trueLayerPreferences
-    ];
-
-    [TrueLayerPaymentsManager processSinglePaymentWithContext:context success:^(TrueLayerSinglePaymentState state) {
+    [TrueLayerPaymentsManager processSinglePaymentWithContext:context
+                                                      success:^(TrueLayerSinglePaymentState state) {
       // Create a `step` value to return to React Native, that is equal to the typescript `ProcessorStep` enum.
       // See `types.ts` for the raw values to match.
       NSString *step = [RNTrueLayerHelpers stepFromSinglePaymentState:state];
 
-       NSDictionary *result = @{
-         @"type": @"Success",
-         @"step": step
-       };
+      NSDictionary *result = @{
+        @"type": @"Success",
+        @"step": step
+      };
 
-       resolve(result);
-    } failure:^(TrueLayerSinglePaymentError error) {
+      resolve(result);
+    }
+                                                      failure:^(TrueLayerSinglePaymentError error) {
       // Create a `reason` value to return to React Native, that is equal to the typescript `FailureReason` enum.
       // See `types.ts` for the raw values to match.
       NSString *reason = [RNTrueLayerHelpers reasonFromSinglePaymentError:error];
-      
       NSDictionary *result = @{
         @"type": @"Failure",
         @"reason": reason
@@ -107,8 +103,10 @@ RCT_EXPORT_MODULE()
   }];
 }
 
-
-- (void)_paymentStatus:(NSString *)paymentId resourceToken:(NSString *)resourceToken resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
+- (void)_paymentStatus:(NSString *)paymentId
+         resourceToken:(NSString *)resourceToken
+               resolve:(RCTPromiseResolveBlock)resolve
+                reject:(RCTPromiseRejectBlock)reject {
   // Check that the paymentId and resourceToken values are non-nil.
   if (paymentId == nil || resourceToken == nil) {
     NSError *error = [self errorWithDescriptionKey:@"Payment ID or resource token is nil."
@@ -117,32 +115,29 @@ RCT_EXPORT_MODULE()
                                               code:3];
 
     reject([@(error.code) stringValue], error.localizedDescription, error);
-
     return;
   }
 
   // Create a copied strong reference to the context information.
   NSString *paymentIDCopy = [NSString stringWithString:paymentId];
   NSString *resourceTokenCopy = [NSString stringWithString:resourceToken];
-  
-  [TrueLayerPaymentsManager
-   singlePaymentStatusWithPaymentIdentifier:paymentIDCopy
-   resourceToken:resourceTokenCopy
-   success:^(enum TrueLayerSinglePaymentStatus status) {
+
+  [TrueLayerPaymentsManager singlePaymentStatusWithPaymentIdentifier:paymentIDCopy
+                                                       resourceToken:resourceTokenCopy
+                                                             success:^(enum TrueLayerSinglePaymentStatus status) {
     NSString *finalStatus = [RNTrueLayerHelpers statusFromSinglePaymentStatus:status];
-    
+
     NSDictionary *result = @{
       @"type": @"Success",
       @"status": finalStatus
     };
-    
+
     resolve(result);
   }
-  failure:^(enum TrueLayerSinglePaymentError error) {
+                                                             failure:^(enum TrueLayerSinglePaymentError error) {
     // Create a `reason` value to return to React Native, that is equal to the typescript `FailureReason` enum.
     // See `types.ts` for the raw values to match.
     NSString *reason = [RNTrueLayerHelpers reasonFromSinglePaymentError:error];
-
     NSDictionary *result = @{
       @"type": @"Failure",
       @"reason": reason
@@ -152,7 +147,10 @@ RCT_EXPORT_MODULE()
   }];
 }
 
-- (void)_processMandate:(JS::NativeTrueLayerPaymentsSDK::Spec_processMandateMandateContext &)mandateContext preferences:(JS::NativeTrueLayerPaymentsSDK::Spec_processMandatePreferences &)preferences resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
+- (void)_processMandate:(JS::NativeTrueLayerPaymentsSDK::Spec_processMandateMandateContext &)mandateContext
+            preferences:(JS::NativeTrueLayerPaymentsSDK::Spec_processMandatePreferences &)preferences
+                resolve:(RCTPromiseResolveBlock)resolve
+                 reject:(RCTPromiseRejectBlock)reject {
   // Check that all the context values exist. Else, reject the promise.
   if (mandateContext.mandateId() == nil || mandateContext.resourceToken() == nil || mandateContext.redirectUri() == nil) {
     NSError *error = [self errorWithDescriptionKey:@"A value in the mandate context is nil."
@@ -161,7 +159,6 @@ RCT_EXPORT_MODULE()
                                               code:4];
 
     reject([@(error.code) stringValue], error.localizedDescription, error);
-
     return;
   }
 
@@ -169,28 +166,23 @@ RCT_EXPORT_MODULE()
   NSString *mandateID = [NSString stringWithString:mandateContext.mandateId()];
   NSString *resourceToken = [NSString stringWithString:mandateContext.resourceToken()];
   NSString *redirectURI = [NSString stringWithString:mandateContext.redirectUri()];
-  
+
   [[NSOperationQueue mainQueue] addOperationWithBlock:^{
     // Capture the presented view controller.
     // We use the main thread here as `RCTPresentedViewController.init` accesses the main application window.
     UIViewController *reactViewController = RCTPresentedViewController();
-    
+
     // Create the context required by the ObjC bridge in TrueLayerSDK.
-    TrueLayerMandatePreferences *preferences = [
-      [TrueLayerMandatePreferences alloc] initWithPresentationStyle:[[TrueLayerPresentationStyle alloc] initWithPresentOn:reactViewController style:UIModalPresentationAutomatic]
-    ];
-    
-    TrueLayerMandateContext *context = [
-      [TrueLayerMandateContext alloc] initWithIdentifier:mandateID
-      token:resourceToken
-      redirectURL:[NSURL URLWithString:redirectURI]
-      preferences:preferences
-    ];
-    
+    TrueLayerPresentationStyle *presentationStyle = [[TrueLayerPresentationStyle alloc] initWithPresentOn:reactViewController style:UIModalPresentationAutomatic];
+    TrueLayerMandatePreferences *preferences = [[TrueLayerMandatePreferences alloc] initWithPresentationStyle:presentationStyle];
+    TrueLayerMandateContext *context = [[TrueLayerMandateContext alloc] initWithIdentifier:mandateID
+                                                                                     token:resourceToken
+                                                                               redirectURL:[NSURL URLWithString:redirectURI]
+                                                                               preferences:preferences];
+
     // Call the ObjC bridge.
-    [TrueLayerPaymentsManager
-     processMandateWithContext:context
-     success:^(TrueLayerMandateState state) {
+    [TrueLayerPaymentsManager processMandateWithContext:context
+                                                success:^(TrueLayerMandateState state) {
       // Create a `step` value to return to React Native, that is equal to the typescript `ProcessorStep` enum.
       // See `types.ts` for the raw values to match.
       NSString *step = [RNTrueLayerHelpers stepFromMandateState:state];
@@ -199,25 +191,28 @@ RCT_EXPORT_MODULE()
         @"type": @"Success",
         @"step": step
       };
-      
+
       resolve(result);
     }
-    failure:^(TrueLayerMandateError error) {
+                                                failure:^(TrueLayerMandateError error) {
       // Create a `reason` value to return to React Native, that is equal to the typescript `FailureReason` enum.
       // See `types.ts` for the raw values to match.
       NSString *reason = [RNTrueLayerHelpers reasonFromMandateError:error];
-      
+
       NSDictionary *result = @{
         @"type": @"Failure",
         @"reason": reason
       };
-      
+
       resolve(result);
     }];
   }];
 }
 
-- (void)_mandateStatus:(NSString *)mandateId resourceToken:(NSString *)resourceToken resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
+- (void)_mandateStatus:(NSString *)mandateId
+         resourceToken:(NSString *)resourceToken
+               resolve:(RCTPromiseResolveBlock)resolve
+                reject:(RCTPromiseRejectBlock)reject {
   // Check that the mandateId and resourceToken values are non-nil.
   if (mandateId == nil || resourceToken == nil) {
     NSError *error = [self errorWithDescriptionKey:@"Mandate ID or resource token is nil."
@@ -226,46 +221,43 @@ RCT_EXPORT_MODULE()
                                               code:5];
 
     reject([@(error.code) stringValue], error.localizedDescription, error);
-
     return;
   }
 
   // Create a copied strong reference to the context information.
   NSString *mandateIDCopy = [NSString stringWithString:mandateId];
   NSString *resourceTokenCopy = [NSString stringWithString:resourceToken];
-  
-  [TrueLayerPaymentsManager
-   mandateStatusWithMandateIdentifier:mandateIDCopy
-   resourceToken:resourceTokenCopy
-  success:^(enum TrueLayerMandateStatus status) {
+
+  [TrueLayerPaymentsManager mandateStatusWithMandateIdentifier:mandateIDCopy
+                                                 resourceToken:resourceTokenCopy
+                                                       success:^(enum TrueLayerMandateStatus status) {
     NSString *finalStatus = [RNTrueLayerHelpers statusFromMandateStatus:status];
-    
+
     NSDictionary *result = @{
       @"type": @"Success",
       @"status": finalStatus
     };
-    
+
     resolve(result);
   }
-  failure:^(enum TrueLayerMandateError error) {
+                                                       failure:^(enum TrueLayerMandateError error) {
     // Create a `reason` value to return to React Native, that is equal to the typescript `FailureReason` enum.
     // See `types.ts` for the raw values to match.
     NSString *reason = [RNTrueLayerHelpers reasonFromMandateError:error];
-    
     NSDictionary *result = @{
       @"type": @"Failure",
       @"reason": reason
     };
-    
+
     resolve(result);
   }];
 }
 
- - (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:
-     (const facebook::react::ObjCTurboModule::InitParams &)params
- {
-     return std::make_shared<facebook::react::NativeTrueLayerPaymentsSDKSpecJSI>(params);
- }
+- (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:
+(const facebook::react::ObjCTurboModule::InitParams &)params
+{
+  return std::make_shared<facebook::react::NativeTrueLayerPaymentsSDKSpecJSI>(params);
+}
 
 // MARK: - Helpers
 
@@ -280,17 +272,15 @@ RCT_EXPORT_MODULE()
          recoverySuggestionErrorKey:(NSString *)recoverySuggestionErrorKey
                                code:(NSInteger)code
 {
-    NSDictionary *userInfo = @{
-       NSLocalizedDescriptionKey: descriptionKey,
-       NSLocalizedFailureReasonErrorKey: failureReasonErrorKey,
-       NSLocalizedRecoverySuggestionErrorKey: recoverySuggestionErrorKey
-    };
+  NSDictionary *userInfo = @{
+    NSLocalizedDescriptionKey: descriptionKey,
+    NSLocalizedFailureReasonErrorKey: failureReasonErrorKey,
+    NSLocalizedRecoverySuggestionErrorKey: recoverySuggestionErrorKey
+  };
 
-    return [
-     NSError errorWithDomain:@"TrueLayerPaymentsSDK.TrueLayerObjectiveCError"
-     code:code
-     userInfo:userInfo
-   ];
+  return [NSError errorWithDomain:@"TrueLayerPaymentsSDK.TrueLayerObjectiveCError"
+                             code:code
+                         userInfo:userInfo];
 }
 
 @end
