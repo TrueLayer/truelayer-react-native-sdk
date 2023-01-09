@@ -42,9 +42,9 @@ RCT_EXPORT_MODULE()
 - (void)_processPayment:(JS::NativeTrueLayerPaymentsSDK::Spec_processPaymentPaymentContext &)paymentContext preferences:(JS::NativeTrueLayerPaymentsSDK::Spec_processPaymentPreferences &)preferences resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
   // Check that all the context values exist. Else, reject the promise.
   if (paymentContext.paymentId() == nil || paymentContext.resourceToken() == nil || paymentContext.redirectUri() == nil) {
-    NSError *error = [self errorWithDescriptionKey:@"Payment context value is nil."
+    NSError *error = [self errorWithDescriptionKey:@"A value in the payment context is nil."
                              failureReasonErrorKey:@"The payment ID, resource token, or redirect URI passed is nil."
-                        recoverySuggestionErrorKey:@"Please pass a valid, non-nil payment ID, resource token, or redirect URI."
+                        recoverySuggestionErrorKey:@"Please pass a valid, non-nil payment ID, resource token, and redirect URI."
                                               code:2];
 
     reject([@(error.code) stringValue], error.localizedDescription, error);
@@ -113,7 +113,7 @@ RCT_EXPORT_MODULE()
   if (paymentId == nil || resourceToken == nil) {
     NSError *error = [self errorWithDescriptionKey:@"Payment ID or resource token is nil."
                              failureReasonErrorKey:@"The payment ID or resource token is nil."
-                        recoverySuggestionErrorKey:@"Please pass a valid, non-nil payment ID and resource token"
+                        recoverySuggestionErrorKey:@"Please pass a valid, non-nil payment ID and resource token."
                                               code:3];
 
     reject([@(error.code) stringValue], error.localizedDescription, error);
@@ -155,9 +155,9 @@ RCT_EXPORT_MODULE()
 - (void)_processMandate:(JS::NativeTrueLayerPaymentsSDK::Spec_processMandateMandateContext &)mandateContext preferences:(JS::NativeTrueLayerPaymentsSDK::Spec_processMandatePreferences &)preferences resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
   // Check that all the context values exist. Else, reject the promise.
   if (mandateContext.mandateId() == nil || mandateContext.resourceToken() == nil || mandateContext.redirectUri() == nil) {
-    NSError *error = [self errorWithDescriptionKey:@"Mandate context value is nil."
+    NSError *error = [self errorWithDescriptionKey:@"A value in the mandate context is nil."
                              failureReasonErrorKey:@"The mandate ID, resource token, or redirect URI passed is nil."
-                        recoverySuggestionErrorKey:@"Please pass a valid, non-nil mandate ID, resource token, or redirect URI."
+                        recoverySuggestionErrorKey:@"Please pass a valid, non-nil mandate ID, resource token, and redirect URI."
                                               code:4];
 
     reject([@(error.code) stringValue], error.localizedDescription, error);
