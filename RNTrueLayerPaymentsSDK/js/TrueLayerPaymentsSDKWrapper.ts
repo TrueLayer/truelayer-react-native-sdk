@@ -98,3 +98,5 @@ export abstract class TrueLayerPaymentsSDKWrapper {
     return RNTrueLayerPaymentsSDK!!._mandateStatus(mandateId, resourceToken);
   }
 }
+
+export default require('./NativeTrueLayerPaymentsSDK').default;

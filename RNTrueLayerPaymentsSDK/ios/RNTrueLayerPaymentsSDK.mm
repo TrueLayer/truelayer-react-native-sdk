@@ -252,12 +252,6 @@ RCT_EXPORT_MODULE()
   }];
 }
 
-- (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:
-(const facebook::react::ObjCTurboModule::InitParams &)params
-{
-  return std::make_shared<facebook::react::NativeTrueLayerPaymentsSDKSpecJSI>(params);
-}
-
 // MARK: - Helpers
 
 /// Creates an `NSError` with the domain `TrueLayerPaymentsSDK.TrueLayerObjectiveCError` and a given description, failure reason, recovery suggestion, and code.
@@ -281,5 +275,13 @@ RCT_EXPORT_MODULE()
                              code:code
                          userInfo:userInfo];
 }
+
+#ifdef RCT_NEW_ARCH_ENABLED
+- (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:
+(const facebook::react::ObjCTurboModule::InitParams &)params
+{
+  return std::make_shared<facebook::react::NativeTrueLayerPaymentsSDKSpecJSI>(params);
+}
+#endif
 
 @end
