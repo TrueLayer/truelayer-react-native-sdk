@@ -171,7 +171,8 @@ RCT_EXPORT_MODULE()
     UIViewController *reactViewController = RCTPresentedViewController();
 
     // Create the context required by the ObjC bridge in TrueLayerSDK.
-    TrueLayerPresentationStyle *presentationStyle = [[TrueLayerPresentationStyle alloc] initWithPresentOn:reactViewController style:UIModalPresentationAutomatic];
+    TrueLayerPresentationStyle *presentationStyle = [[TrueLayerPresentationStyle alloc] initWithPresentOn:reactViewController
+                                                                                                    style:UIModalPresentationAutomatic];
     TrueLayerMandatePreferences *preferences = [[TrueLayerMandatePreferences alloc] initWithPresentationStyle:presentationStyle];
     TrueLayerMandateContext *context = [[TrueLayerMandateContext alloc] initWithIdentifier:mandateID
                                                                                      token:resourceToken
