@@ -63,6 +63,9 @@ export default function App() {
         <Pressable style={styles.button} onPress={processMandate}>
           <Text style={styles.text}> Process Mandate </Text>
         </Pressable>
+        <Pressable style={styles.button} onPress={getMandateStatus}>
+          <Text style={styles.text}> Get Mandate Status </Text>
+        </Pressable>
       </View>
     </SafeAreaView>
   )
@@ -145,6 +148,31 @@ function processMandate(): void {
           break
         case ResultType.Failure:
           console.log(`Oh we've failed processMandate with following reason: ${result.reason}`)
+          break
+      }
+    })
+  })
+}
+
+function getMandateStatus(): void {
+  console.log('getMandateStatus button clicked')
+
+  getPaymentContext('mandate').then(processorContext => {
+    console.log(
+      `mandate`,
+      `id: ${processorContext.id}`,
+      `resource_token: ${processorContext.resource_token}`,
+    )
+    TrueLayerPaymentsSDKWrapper.mandateStatus(
+      processorContext.id,
+      processorContext.resource_token
+    ).then(result => {
+      switch (result.type) {
+        case ResultType.Success:
+          console.log(`getMandateStatus success: ${result.status}`)
+          break
+        case ResultType.Failure:
+          console.log(`Oh we've failed getMandateStatus with following reason: ${result.failure}`)
           break
       }
     })
