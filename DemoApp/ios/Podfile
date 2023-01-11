@@ -7,7 +7,6 @@ install! 'cocoapods', :deterministic_uuids => false
 target 'DemoApp' do
   config = use_native_modules!
 
-  pod 'TrueLayerPaymentsSDK', git: 'https://github.com/TrueLayer/TrueLayer-iOS-SDK/', branch: "release/2.2.0"
   # Flags change depending on the env values.
   flags = get_default_flags()
 
