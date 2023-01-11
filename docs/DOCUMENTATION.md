@@ -52,10 +52,10 @@ TrueLayerPaymentsSDKWrapper.paymentStatus(
 ).then(result => {
   switch (result.type) {
     case ResultType.Success:
-      console.log(`getSinglePaymentStatus success with status: ${result.status}`)
+      console.log(`paymentStatus success with status: ${result.status}`)
       break
     case ResultType.Failure:
-      console.log(`getSinglePaymentStatus failed with the following reason: ${result.failure}`)
+      console.log(`paymentStatus failed with the following reason: ${result.failure}`)
       break
   }
 })
@@ -116,10 +116,10 @@ TrueLayerPaymentsSDKWrapper.mandateStatus(
 ).then(result => {
   switch (result.type) {
     case ResultType.Success:
-      console.log(`getMandateStatus success: ${result.status}`)
+      console.log(`mandateStatus success: ${result.status}`)
       break
     case ResultType.Failure:
-      console.log(`getMandateStatus failed with the following reason: ${result.failure}`)
+      console.log(`mandateStatus failed with the following reason: ${result.failure}`)
       break
   }
 })
@@ -135,7 +135,7 @@ This should be treated as the favorite source of truth for the status of the man
 | `Authorizing` | The user is authorizing the mandate.
 | `Authorized` | The user has authorized the mandate with their bank.
 | `Revoked` | The mandate has been revoked and is no longer valid.
-| `Failed` | The mandate failed. https://docs.truelayer.com/docs/mandate-statuses#more-about-failed-mandates
+| `Failed` | The mandate failed. Click [here](https://docs.truelayer.com/docs/mandate-statuses#more-about-failed-mandates) for more information.
 
 ## Handling the `ProcessorResult`
 
@@ -159,7 +159,7 @@ The `processPayment` and `processMandate` methods return a `ProcessorResult` typ
 | `NoInternet` | There was an issue while connecting to the internet. Either the user is offline, or the request timed out.
 | `CommunicationIssue` | There was an issue communicating with the server.
 | `ConnectionSecurityIssue` | The token used to make the payment or mandate is not authorized to undergo such operation.
-| `PaymentFailed` | The payment or mandate is in a failed state.
+| `PaymentFailed` | The payment or mandate is in a failed state. Click here for more information: [payments](https://docs.truelayer.com/docs/payment-statuses-for-payments-v3#more-about-failed-payments) or [mandates](https://docs.truelayer.com/docs/mandate-statuses#more-about-failed-mandates).
 | `WaitAbandoned` | The user abandoned the payment on the wait screen.
 | `Unknown`| The `SDK` encountered an unexpected behavior.
 | `UserAborted` | The user canceled the payment or mandate.

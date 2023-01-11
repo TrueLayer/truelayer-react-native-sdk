@@ -39,16 +39,14 @@ Finally, your app should setup a payment. Once the payment has been setup, it is
 ## How to Use the SDK
 
 1. Configure the SDK with the given environment (`Environment.Sandbox` or `Environment.Production`):
-2. 
-```
-TrueLayerPaymentsSDKWrapper.configure(Environment.Sandbox).then(
-	() => {
-		console.log('Configure success')
-	},
-	reason => {
-		console.log('Configure failed ' + reason)
-	},
-)
-```
 
-3. Checkout [Documentation](docs/DOCUMENTATION.md)
+        TrueLayerPaymentsSDKWrapper.configure(Environment.Sandbox).then(
+                () => {
+                       console.log('Configure success')
+                },
+                reason => {
+                        console.log('Configure failed ' + reason)
+                },
+        )
+
+2. Checkout [Documentation](docs/DOCUMENTATION.md)
