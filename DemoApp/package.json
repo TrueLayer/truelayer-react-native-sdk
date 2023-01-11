@@ -13,7 +13,7 @@
     "react": "18.1.0",
     "react-native": "0.70.5",
     "react-native-uuid": "^2.0.1",
-    "rtn-truelayer-payments-sdk": "file:../RTNTrueLayerPaymentsSDK"
+    "rn-truelayer-payments-sdk": "../RNTrueLayerPaymentsSDK"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

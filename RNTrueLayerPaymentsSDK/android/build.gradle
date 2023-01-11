@@ -1,0 +1,52 @@
+buildscript {
+  ext.safeExtGet = {prop, fallback ->
+    rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
+  }
+  repositories {
+    google()
+    gradlePluginPortal()
+  }
+  dependencies {
+    classpath("com.android.tools.build:gradle:7.1.1")
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.0"
+  }
+}
+
+def isNewArchitectureEnabled() {
+   return project.hasProperty("newArchEnabled") && project.newArchEnabled == "true"
+}
+
+apply plugin: 'com.android.library'
+apply plugin: 'com.facebook.react'
+apply plugin: 'kotlin-android'
+
+android {
+  compileSdkVersion safeExtGet('compileSdkVersion', 33)
+  defaultConfig {
+    buildConfigField "String", "RN_TL_SDK_VERSION", "\"1.0.0\""
+    buildConfigField("boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString())
+  }
+  sourceSets {
+    main {
+      if (isNewArchitectureEnabled()) {
+        java.srcDirs += ['src/newarch/java']
+      } else {
+        java.srcDirs += ['src/oldarch/java']
+      }
+    }
+  }
+}
+
+repositories {
+  maven {
+    // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
+    url "$projectDir/../node_modules/react-native/android"
+  }
+  mavenCentral()
+  google()
+}
+
+dependencies {
+  implementation 'com.facebook.react:react-native:+'
+  implementation 'com.truelayer.payments:ui:2.1.0'
+}
