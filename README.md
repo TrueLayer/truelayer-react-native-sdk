@@ -14,6 +14,7 @@ The SDK presents native screens that allow your users to select their bank and c
 3. [How to Use the SDK](#how-to-use-the-sdk)
 
 ## How to Install the SDK
+
 Using Yarn:
 
 `yarn add rn-truelayer-payments-sdk`
@@ -21,6 +22,7 @@ Using Yarn:
 Using npm:
 
 `npm install rn-truelayer-payments-sdk --save`
+
 ## Setup
 
 ### Prerequisites
@@ -44,7 +46,17 @@ Finally, your app should setup a payment. Once the payment has been setup, it is
 
 ## How to Use the SDK
 
-1. Configure the SDK with the given environment (`Environment.Sandbox` or `Environment.Production`):
+1. Import the SDK:
+
+        import { TrueLayerPaymentsSDKWrapper } from 'rn-truelayer-payments-sdk/js/TrueLayerPaymentsSDKWrapper'
+
+        import {
+                Environment,
+                PaymentUseCase,
+                ResultType
+        } from 'rn-truelayer-payments-sdk/js/models/types'
+
+2. Configure the SDK with the given environment (`Environment.Sandbox` or `Environment.Production`):
 
         TrueLayerPaymentsSDKWrapper.configure(Environment.Sandbox).then(
                 () => {
@@ -55,4 +67,4 @@ Finally, your app should setup a payment. Once the payment has been setup, it is
                 },
         )
 
-2. Checkout [Documentation](docs/DOCUMENTATION.md)
+3. Checkout [Documentation](docs/DOCUMENTATION.md).
