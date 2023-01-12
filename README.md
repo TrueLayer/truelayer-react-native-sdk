@@ -14,7 +14,13 @@ The SDK presents native screens that allow your users to select their bank and c
 3. [How to Use the SDK](#how-to-use-the-sdk)
 
 ## How to Install the SDK
+Using Yarn:
 
+`yarn add rn-truelayer-payments-sdk`
+
+Using npm:
+
+`npm install rn-truelayer-payments-sdk --save`
 ## Setup
 
 ### Prerequisites
