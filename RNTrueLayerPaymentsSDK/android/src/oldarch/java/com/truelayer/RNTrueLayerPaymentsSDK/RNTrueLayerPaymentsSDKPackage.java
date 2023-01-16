@@ -18,7 +18,8 @@ public class RNTrueLayerPaymentsSDKPackage implements ReactPackage {
 
     @Override
     public List<NativeModule> createNativeModules(
-            ReactApplicationContext reactContext) {
+            ReactApplicationContext reactContext
+    ) {
         List<NativeModule> modules = new ArrayList<>();
 
         modules.add(new TlPaymentSdkModule(reactContext));
