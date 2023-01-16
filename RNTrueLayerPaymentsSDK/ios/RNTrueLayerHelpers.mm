@@ -61,7 +61,6 @@
   }
 }
 
-
 + (NSString *)statusFromSinglePaymentStatus:(TrueLayerSinglePaymentStatus)status {
   switch (status) {
   case TrueLayerSinglePaymentStatusAuthorizationRequired:
@@ -154,6 +153,5 @@
     return @"Failed";
   }
 }
-
 
 @end
