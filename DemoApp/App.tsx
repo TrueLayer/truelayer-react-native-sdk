@@ -20,6 +20,8 @@ import {
 
 import uuid from 'react-native-uuid'
 import { Colors } from 'react-native/Libraries/NewAppScreen'
+import { log } from './utils/logger'
+
 
 export default function App() {
   const isDarkMode = useColorScheme() === 'dark'
@@ -39,14 +41,14 @@ export default function App() {
         <Pressable
           style={styles.button}
           onPress={() => {
-            console.log('configure button clicked')
+            log('configure button clicked')
 
             TrueLayerPaymentsSDKWrapper.configure(Environment.Sandbox).then(
               () => {
-                console.log('Configure success')
+                log('Configure success')
               },
               reason => {
-                console.log('Configure failed ' + reason)
+                log('Configure failed ' + reason)
               },
             )
           }}
@@ -71,10 +73,10 @@ export default function App() {
 }
 
 function processPayment(): void {
-  console.log('processPayment button clicked')
+  log('processPayment button clicked')
 
   getPaymentContext('payment').then(processorContext => {
-    console.log(
+    log(
       `payment`,
       `id: ${processorContext.id}`,
       `resource_token: ${processorContext.resource_token}`,
@@ -92,10 +94,10 @@ function processPayment(): void {
     ).then(result => {
       switch (result.type) {
         case ResultType.Success:
-          console.log(`processPayment success at step: ${result.step}`)
+          log(`processPayment success at step: ${result.step}`)
           break
         case ResultType.Failure:
-          console.log(`Oh we've failed processPayment with following reason: ${result.reason}`)
+          log(`Oh we've failed processPayment with following reason: ${result.reason}`)
           break
       }
     })
@@ -103,9 +105,9 @@ function processPayment(): void {
 }
 
 function getSinglePaymentStatus(): void {
-  console.log('getSinglePaymentStatus button clicked')
+  log('getSinglePaymentStatus button clicked')
   getPaymentContext('payment').then(processorContext => {
-    console.log(
+    log(
       `payment`,
       `id: ${processorContext.id}`,
       `resource_token: ${processorContext.resource_token}`,
@@ -117,10 +119,10 @@ function getSinglePaymentStatus(): void {
     ).then(result => {
       switch (result.type) {
         case ResultType.Success:
-          console.log(`getSinglePaymentStatus success at step: ${result.status}`)
+          log(`getSinglePaymentStatus success at step: ${result.status}`)
           break
         case ResultType.Failure:
-          console.log(`Oh we've failed getSinglePaymentStatus with following reason: ${result.failure}`)
+          log(`Oh we've failed getSinglePaymentStatus with following reason: ${result.failure}`)
           break
       }
     })
@@ -128,10 +130,10 @@ function getSinglePaymentStatus(): void {
 }
 
 function processMandate(): void {
-  console.log('processMandate button clicked')
+  log('processMandate button clicked')
 
   getPaymentContext('mandate').then(processorContext => {
-    console.log(
+    log(
       `mandate`,
       `id: ${processorContext.id}`,
       `resource_token: ${processorContext.resource_token}`,
@@ -143,10 +145,10 @@ function processMandate(): void {
     }).then(result => {
       switch (result.type) {
         case ResultType.Success:
-          console.log(`processMandate success at step: ${result.step}`)
+          log(`processMandate success at step: ${result.step}`)
           break
         case ResultType.Failure:
-          console.log(`Oh we've failed processMandate with following reason: ${result.reason}`)
+          log(`Oh we've failed processMandate with following reason: ${result.reason}`)
           break
       }
     })
@@ -154,10 +156,10 @@ function processMandate(): void {
 }
 
 function getMandateStatus(): void {
-  console.log('getMandateStatus button clicked')
+  log('getMandateStatus button clicked')
 
   getPaymentContext('mandate').then(processorContext => {
-    console.log(
+    log(
       `mandate`,
       `id: ${processorContext.id}`,
       `resource_token: ${processorContext.resource_token}`,
@@ -168,10 +170,10 @@ function getMandateStatus(): void {
     ).then(result => {
       switch (result.type) {
         case ResultType.Success:
-          console.log(`getMandateStatus success: ${result.status}`)
+          log(`getMandateStatus success: ${result.status}`)
           break
         case ResultType.Failure:
-          console.log(`Oh we've failed getMandateStatus with following reason: ${result.failure}`)
+          log(`Oh we've failed getMandateStatus with following reason: ${result.failure}`)
           break
       }
     })
@@ -218,7 +220,7 @@ async function getPaymentContext(
   })
     .then(response => response.json())
     .then(json => {
-      console.log(json)
+      log(json)
       return json
     })
     .catch(error => {

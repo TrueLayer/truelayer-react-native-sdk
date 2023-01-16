@@ -14,7 +14,7 @@ import {
  * Main TrueLayer interface to process payments and mandates.
  * In order to use TrueLayerSDK please make sure to
  * call configure() (only once) before attempting
- * to call any other funcions otherwise you will
+ * to call any other functions otherwise you will
  * encounter a crash.
  */
 export abstract class TrueLayerPaymentsSDKWrapper {
