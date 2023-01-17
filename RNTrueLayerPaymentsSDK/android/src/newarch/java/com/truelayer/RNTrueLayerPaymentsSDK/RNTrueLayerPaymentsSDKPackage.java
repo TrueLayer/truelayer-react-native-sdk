@@ -12,19 +12,19 @@ import java.util.Map;
 
 public class RNTrueLayerPaymentsSDKPackage extends TurboReactPackage {
 
-  @Nullable
-  @Override
-  public NativeModule getModule(String name, ReactApplicationContext reactContext) {
-      return new TlPaymentSdkModule(reactContext);
-  }
+    @Nullable
+    @Override
+    public NativeModule getModule(String name, ReactApplicationContext reactContext) {
+        return new TlPaymentSdkModule(reactContext);
+    }
 
-  @Override
-  public ReactModuleInfoProvider getReactModuleInfoProvider() {
-      return () -> {
-          final Map<String, ReactModuleInfo> moduleInfo = new HashMap<>();
-          moduleInfo.put(
-                  TlPaymentSdkModule.NAME,
-            new ReactModuleInfo(
+    @Override
+    public ReactModuleInfoProvider getReactModuleInfoProvider() {
+        return () -> {
+            final Map<String, ReactModuleInfo> moduleInfo = new HashMap<>();
+            moduleInfo.put(
+                TlPaymentSdkModule.NAME,
+                new ReactModuleInfo(
                     TlPaymentSdkModule.NAME,
                     TlPaymentSdkModule.NAME,
                     false, // canOverrideExistingModule
@@ -32,10 +32,10 @@ public class RNTrueLayerPaymentsSDKPackage extends TurboReactPackage {
                     true, // hasConstants
                     false, // isCxxModule
                     true // isTurboModule
-            )
-          );
-          return moduleInfo;
-      };
-  }
+                )
+            );
+            return moduleInfo;
+        };
+    }
 }
 

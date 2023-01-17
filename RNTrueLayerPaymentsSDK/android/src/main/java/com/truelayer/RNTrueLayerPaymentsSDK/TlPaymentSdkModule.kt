@@ -38,7 +38,8 @@ import kotlin.contracts.contract
 
 private class TLReactNativeUtils {
     class ContextExtractor(
-        map: ReadableMap?, preferences: ReadableMap?
+        map: ReadableMap?,
+        preferences: ReadableMap?
     ) {
         val paymentId: String?
         val mandateId: String?
@@ -48,7 +49,7 @@ private class TLReactNativeUtils {
         val paymentUseCase: PaymentUseCase
         init {
             mandateId = map?.getString("mandateId")
-            paymentId =  map?.getString("paymentId")
+            paymentId = map?.getString("paymentId")
             token = map?.getString("resourceToken")
             redirectUri = map?.getString("redirectUri")
             preferredCountryCode = preferences?.getString("preferredCountryCode")
@@ -211,9 +212,9 @@ private class TLReactNativeUtils {
             }
 
         fun createStatusFailure(error: CoreError) =
-             WritableNativeMap().apply {
-                 putString("type", "Failure")
-                 putMap("failure", mapToFailure(error))
+            WritableNativeMap().apply {
+                putString("type", "Failure")
+                putMap("failure", mapToFailure(error))
             }
 
         fun mapToFailure(error: CoreError): WritableNativeMap =
@@ -261,7 +262,7 @@ private fun CoreError.intoProcessorResult(): ProcessorResult.Failure = when (thi
 
 private fun WritableMap.concatenate(map: WritableMap) {
     map.entryIterator.forEach { entry ->
-        when( val value = entry.value) {
+        when (val value = entry.value) {
             is String -> this.putString(entry.key, value)
             is Int -> this.putInt(entry.key, value)
             is Boolean -> this.putBoolean(entry.key, value)
@@ -273,7 +274,7 @@ private fun WritableMap.concatenate(map: WritableMap) {
     }
 }
 
-class TlPaymentSdkModule(reactContext: ReactApplicationContext):
+class TlPaymentSdkModule(reactContext: ReactApplicationContext) :
     NativeTrueLayerPaymentsSDKSpec(reactContext), ActivityEventListener {
 
     val mPromises: SparseArray<Promise> = SparseArray()
@@ -281,7 +282,7 @@ class TlPaymentSdkModule(reactContext: ReactApplicationContext):
 
     val scope = CoroutineScope(
         SupervisorJob() +
-                Dispatchers.IO
+            Dispatchers.IO
     )
 
     companion object {
@@ -344,7 +345,6 @@ class TlPaymentSdkModule(reactContext: ReactApplicationContext):
             it.startActivityForResult(intent, 0)
         }
         mPromises.put(0, promise)
-
     }
 
     private fun checkInitialized(): Exception? {
@@ -385,7 +385,6 @@ class TlPaymentSdkModule(reactContext: ReactApplicationContext):
             it.startActivityForResult(intent, 0)
         }
         mPromises.put(0, promise)
-
     }
 
     override fun _mandateStatus(mandateId: String?, resourceToken: String?, promise: Promise?) {
@@ -438,7 +437,7 @@ class TlPaymentSdkModule(reactContext: ReactApplicationContext):
         val bundle = Bundle()
         bundle.putBoolean("react-native", true)
         bundle.putString("react-native-sdk-version", BuildConfig.RN_TL_SDK_VERSION)
-        
+
         scope.launch(Dispatchers.IO) {
             TrueLayerUI.getPaymentStatus(
                 paymentId,
@@ -460,7 +459,6 @@ class TlPaymentSdkModule(reactContext: ReactApplicationContext):
     }
 
     override fun onNewIntent(p0: Intent?) {
-
     }
 
     override fun getConstants(): Map<String, Any> {
