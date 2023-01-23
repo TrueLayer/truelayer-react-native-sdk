@@ -8,9 +8,9 @@ The SDK presents native screens that allow your users to select their bank and c
 
 1. [How to Install the SDK](#how-to-install-the-sdk)
 2. [Setup](#setup)
-	1. [Prerequisites](#prerequisites)
-		1. [Setting Up Your Backend](#setting-up-your-backend) 
-		2. [Minimum Versions](#minimum-versions)
+   1. [Prerequisites](#prerequisites)
+      1. [Setting Up Your Backend](#setting-up-your-backend)
+      2. [Minimum Versions](#minimum-versions)
 3. [How to Use the SDK](#how-to-use-the-sdk)
 
 ## How to Install the SDK
@@ -29,8 +29,8 @@ Using npm:
 
 #### Setting Up Your Backend
 
-- Create an account in the [TrueLayer console](https://console.truelayer.com/). 
-Follow [this guide](https://docs.truelayer.com/docs/get-started-with-truelayer) to set it up correctly.
+- Create an account in the [TrueLayer console](https://console.truelayer.com/).
+  Follow [this guide](https://docs.truelayer.com/docs/get-started-with-truelayer) to set it up correctly.
 
 - You need a backend which is able to retrieve an access token and create a payment on behalf of the user. This is to enforce security on the client, avoiding the need to store static secrets in your app. The API documentation can be found [here](https://docs.truelayer.com/).
 
@@ -45,30 +45,35 @@ Finally, your app should setup a payment. Once the payment has been setup, it is
 Alternatively, you can use our [open source server](https://github.com/TrueLayer/payments-quickstart).
 
 #### Minimum Versions
+
 - Xcode 14.x and iOS 14.0.
 - Android 7.0 (API level 24)
 
 ## How to Use the SDK
 
-1. Import the SDK:
+1.  Import the SDK:
 
-        import { TrueLayerPaymentsSDKWrapper } from 'rn-truelayer-payments-sdk/js/TrueLayerPaymentsSDKWrapper'
+```typescript
+import { TrueLayerPaymentsSDKWrapper } from "rn-truelayer-payments-sdk/js/TrueLayerPaymentsSDKWrapper";
 
-        import {
-                Environment,
-                PaymentUseCase,
-                ResultType
-        } from 'rn-truelayer-payments-sdk/js/models/types'
+import {
+  Environment,
+  PaymentUseCase,
+  ResultType,
+} from "rn-truelayer-payments-sdk/js/models/types";
+```
 
-2. Configure the SDK with the given environment (`Environment.Sandbox` or `Environment.Production`):
+2.  Configure the SDK with the given environment (`Environment.Sandbox` or `Environment.Production`):
 
-        TrueLayerPaymentsSDKWrapper.configure(Environment.Sandbox).then(
-                () => {
-                       console.log('Configure success')
-                },
-                reason => {
-                        console.log('Configure failed ' + reason)
-                },
-        )
+```typescript
+TrueLayerPaymentsSDKWrapper.configure(Environment.Sandbox).then(
+  () => {
+    console.log("Configure success");
+  },
+  (reason) => {
+    console.log("Configure failed " + reason);
+  }
+);
+```
 
-3. Checkout [Documentation](docs/DOCUMENTATION.md).
+3.  Checkout [Documentation](docs/DOCUMENTATION.md).
