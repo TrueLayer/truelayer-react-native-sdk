@@ -9,7 +9,8 @@ RCT_EXPORT_MODULE()
 
 RCT_EXPORT_METHOD(_configure:(NSString *)environment
                   resolve:(RCTPromiseResolveBlock)resolve
-                  reject:(RCTPromiseRejectBlock)reject) {
+                  reject:(RCTPromiseRejectBlock)reject) 
+{
   // The Objective-C environment to convert the `NSString` `environment` value to,
   // so it can be passed to the Objective-C bridge of the TrueLayer SDK.
   TrueLayerEnvironment sdkEnvironment;
@@ -40,7 +41,8 @@ RCT_EXPORT_METHOD(_configure:(NSString *)environment
 - (void)_processPayment:(JS::NativeTrueLayerPaymentsSDK::Spec_processPaymentPaymentContext &)paymentContext
             preferences:(JS::NativeTrueLayerPaymentsSDK::Spec_processPaymentPreferences &)preferences
                 resolve:(RCTPromiseResolveBlock)resolve
-                 reject:(RCTPromiseRejectBlock)reject {
+                 reject:(RCTPromiseRejectBlock)reject 
+{
   [self executeProcessPayment:paymentContext.paymentId()
                 resourceToken:paymentContext.resourceToken()
                   redirectURI:paymentContext.redirectUri()
@@ -49,11 +51,10 @@ RCT_EXPORT_METHOD(_configure:(NSString *)environment
                        reject:reject];
 }
 #else
-RCT_EXPORT_METHOD(
-                  _processPayment:(NSDictionary *)paymentContext
-                  preferences:(NSDictionary *)preferences
-                  resolve:(RCTPromiseResolveBlock)resolve
-                  reject:(RCTPromiseRejectBlock)reject)
+RCT_EXPORT_METHOD(_processPayment:(NSDictionary *)paymentContext
+                      preferences:(NSDictionary *)preferences
+                          resolve:(RCTPromiseResolveBlock)resolve
+                           reject:(RCTPromiseRejectBlock)reject)
 {
   [self executeProcessPayment:paymentContext[@"paymentId"]
                 resourceToken:paymentContext[@"resourceToken"]
@@ -67,9 +68,10 @@ RCT_EXPORT_METHOD(
 // MARK: Payment Status
 
 RCT_EXPORT_METHOD(_paymentStatus:(NSString *)paymentId
-                  resourceToken:(NSString *)resourceToken
-                  resolve:(RCTPromiseResolveBlock)resolve
-                  reject:(RCTPromiseRejectBlock)reject) {
+                   resourceToken:(NSString *)resourceToken
+                         resolve:(RCTPromiseResolveBlock)resolve
+                          reject:(RCTPromiseRejectBlock)reject) 
+{
   // Check that the paymentId and resourceToken values are non-nil.
   if (paymentId == nil || resourceToken == nil) {
     NSError *error = [self errorWithDescriptionKey:@"Payment ID or resource token is nil."
@@ -116,7 +118,8 @@ RCT_EXPORT_METHOD(_paymentStatus:(NSString *)paymentId
 - (void)_processMandate:(JS::NativeTrueLayerPaymentsSDK::Spec_processMandateMandateContext &)mandateContext
             preferences:(JS::NativeTrueLayerPaymentsSDK::Spec_processMandatePreferences &)preferences
                 resolve:(RCTPromiseResolveBlock)resolve
-                 reject:(RCTPromiseRejectBlock)reject {
+                 reject:(RCTPromiseRejectBlock)reject 
+{
   [self executeProcessMandate:mandateContext.mandateId()
                 resourceToken:mandateContext.resourceToken()
                   redirectURI:mandateContext.redirectUri()
@@ -124,11 +127,10 @@ RCT_EXPORT_METHOD(_paymentStatus:(NSString *)paymentId
                        reject:reject];
 }
 #else
-RCT_EXPORT_METHOD(
-                  _processMandate:(NSDictionary *)paymentContext
-                  preferences:(NSDictionary *)preferences
-                  resolve:(RCTPromiseResolveBlock)resolve
-                  reject:(RCTPromiseRejectBlock)reject)
+RCT_EXPORT_METHOD(_processMandate:(NSDictionary *)paymentContext
+                      preferences:(NSDictionary *)preferences
+                          resolve:(RCTPromiseResolveBlock)resolve
+                           reject:(RCTPromiseRejectBlock)reject)
 {
   [self executeProcessMandate:paymentContext[@"mandateId"]
                 resourceToken:paymentContext[@"resourceToken"]
@@ -141,9 +143,10 @@ RCT_EXPORT_METHOD(
 // MARK: Mandate Status
 
 RCT_EXPORT_METHOD(_mandateStatus:(NSString *)mandateId
-                  resourceToken:(NSString *)resourceToken
-                  resolve:(RCTPromiseResolveBlock)resolve
-                  reject:(RCTPromiseRejectBlock)reject) {
+                   resourceToken:(NSString *)resourceToken
+                         resolve:(RCTPromiseResolveBlock)resolve
+                          reject:(RCTPromiseRejectBlock)reject) 
+{
   // Check that the mandateId and resourceToken values are non-nil.
   if (mandateId == nil || resourceToken == nil) {
     NSError *error = [self errorWithDescriptionKey:@"Mandate ID or resource token is nil."

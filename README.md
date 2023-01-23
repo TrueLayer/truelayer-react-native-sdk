@@ -40,6 +40,10 @@ Finally, your app should setup a payment. Once the payment has been setup, it is
 2. [Create a Payment](https://docs.truelayer.com/docs/single-payments-for-payments-v3).
 3. Return the payment identifier and the resource token to the app.
 
+#### Payments Quickstart
+
+Alternatively, you can use our [open source server](https://github.com/TrueLayer/payments-quickstart).
+
 #### Minimum Versions
 - Xcode 14.x and iOS 14.0.
 - Android 7.0 (API level 24)

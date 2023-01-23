@@ -6,6 +6,10 @@ Once your app has obtained the payment (or mandate) identifier and resource toke
 
 ## Single Payment
 
+### Creating a payment
+
+Refer to our [payment-quickstart](https://github.com/TrueLayer/payments-quickstart)
+
 ### Processing a Single Payment
 
 ```
