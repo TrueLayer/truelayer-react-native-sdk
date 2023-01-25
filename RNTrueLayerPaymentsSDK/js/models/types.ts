@@ -55,30 +55,30 @@ export type FailureReason =
  */
 export type StatusFailure = {
   /** The main reason for the failure */
-  reason: FailureReason,
+  reason: FailureReason;
   /** HTTP response code (optional) */
-  httpResponseCode?: number,
+  httpResponseCode?: number;
   /** The error message (optional)*/
-  errorMessage?: String,
+  errorMessage?: String;
   /** The raw response that was send by the server (optional) */
-  rawResponseBody?: String,
+  rawResponseBody?: String;
   /** If server returned valid error response this will
    * contain a error title (optinal)*/
-  title?: String,
+  title?: String;
   /** If server returned valid error response this will
    * contain a error description (optinal)*/
-  description?: String,
+  description?: String;
   /** Trace ID will allow faster debugging on TrueLayer side (optional) */
-  traceId?: String,
+  traceId?: String;
   /** If the error was caused by an Exception, the information will be
    * available in here (optional) */
-  causeException?: String
-}
+  causeException?: String;
+};
 
 export type PaymentStatusResult =
   | { type: ResultType.Success; status: PaymentStatus }
-  | { type: ResultType.Failure; failure: StatusFailure }
+  | { type: ResultType.Failure; failure: StatusFailure };
 
 export type MandateStatusResult =
   | { type: ResultType.Success; status: MandateStatus }
-  | { type: ResultType.Failure; failure: StatusFailure }
+  | { type: ResultType.Failure; failure: StatusFailure };

@@ -1,6 +1,10 @@
 import { TurboModule, TurboModuleRegistry } from "react-native";
 
-import { ProcessorResult, PaymentStatus, MandateStatus, PaymentStatusResult, MandateStatusResult } from "./models/types";
+import {
+  ProcessorResult,
+  PaymentStatusResult,
+  MandateStatusResult,
+} from "./models/types";
 
 /**
  * ReactNative raw interface. Do not use directly. Use TrueLayerPaymentsSDKWrapper class instead.

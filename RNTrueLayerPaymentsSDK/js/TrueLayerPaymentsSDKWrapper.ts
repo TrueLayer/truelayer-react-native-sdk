@@ -7,7 +7,7 @@ import {
   Environment,
   ProcessorResult,
   MandateStatusResult,
-  PaymentStatusResult
+  PaymentStatusResult,
 } from "./models/types";
 
 /**
@@ -99,4 +99,5 @@ export abstract class TrueLayerPaymentsSDKWrapper {
   }
 }
 
-export default require('./NativeTrueLayerPaymentsSDK').default;
+import NativeTrueLayerPaymentsSDK from "./NativeTrueLayerPaymentsSDK";
+export default NativeTrueLayerPaymentsSDK;
