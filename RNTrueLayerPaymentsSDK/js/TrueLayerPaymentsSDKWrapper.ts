@@ -8,6 +8,7 @@ import {
   ProcessorResult,
   MandateStatusResult,
   PaymentStatusResult,
+  Theme,
 } from "./models/types";
 
 /**
@@ -34,6 +35,7 @@ export abstract class TrueLayerPaymentsSDKWrapper {
    * Processes payment for a given context
    * @param paymentContext context of a payment to process
    * @param preferences (optional) extra preferences
+   * @param theme (optional) UI customisation options for the SDK
    *
    * @see PaymentContext
    * @see PaymentPreferences
@@ -44,11 +46,13 @@ export abstract class TrueLayerPaymentsSDKWrapper {
    */
   static processPayment(
     paymentContext: PaymentContext,
-    preferences?: PaymentPreferences
+    preferences?: PaymentPreferences,
+    theme?: Theme
   ): Promise<ProcessorResult> {
     return RNTrueLayerPaymentsSDK!!._processPayment(
       paymentContext,
-      preferences
+      preferences,
+      theme
     );
   }
 
@@ -56,6 +60,7 @@ export abstract class TrueLayerPaymentsSDKWrapper {
    * Processes mandate (recurring payment) for a given context
    * @param paymentContext context of a mandate to process
    * @param preferences (optional) extra preferences
+   * @param theme (optional) UI customisation options for the SDK
    *
    * @see MandateContext
    * @see MandatePreferences
@@ -66,11 +71,13 @@ export abstract class TrueLayerPaymentsSDKWrapper {
    */
   static processMandate(
     mandateContext: MandateContext,
-    preferences?: MandatePreferences
+    preferences?: MandatePreferences,
+    theme?: Theme
   ): Promise<ProcessorResult> {
     return RNTrueLayerPaymentsSDK!!._processMandate(
       mandateContext,
-      preferences
+      preferences,
+      theme
     );
   }
 

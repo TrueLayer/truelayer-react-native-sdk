@@ -33,13 +33,15 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
+import java.util.HashMap
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
 
 private class TLReactNativeUtils {
     class ContextExtractor(
         map: ReadableMap?,
-        preferences: ReadableMap?
+        preferences: ReadableMap?,
+        theme: ReadableMap?
     ) {
         val paymentId: String?
         val mandateId: String?
@@ -47,6 +49,7 @@ private class TLReactNativeUtils {
         val redirectUri: String?
         val preferredCountryCode: String?
         val paymentUseCase: PaymentUseCase
+        val themeMap: HashMap<String, Any>?
         init {
             mandateId = map?.getString("mandateId")
             paymentId = map?.getString("paymentId")
@@ -54,6 +57,7 @@ private class TLReactNativeUtils {
             redirectUri = map?.getString("redirectUri")
             preferredCountryCode = preferences?.getString("preferredCountryCode")
             paymentUseCase = preferences?.getString("paymentUseCase").convertToUseCase()
+            themeMap = theme?.getMap("android")?.toHashMap()
         }
 
         @OptIn(ExperimentalContracts::class)
@@ -318,6 +322,7 @@ class TlPaymentSdkModule(reactContext: ReactApplicationContext) :
     override fun _processPayment(
         paymentContext: ReadableMap?,
         preferences: ReadableMap?,
+        theme: ReadableMap?,
         promise: Promise?
     ) {
         checkInitialized()?.let {
@@ -326,7 +331,7 @@ class TlPaymentSdkModule(reactContext: ReactApplicationContext) :
         }
 
         val activity = reactApplicationContext.currentActivity
-        val contextExtractor = TLReactNativeUtils.ContextExtractor(paymentContext, preferences)
+        val contextExtractor = TLReactNativeUtils.ContextExtractor(paymentContext, preferences, theme)
         val extractedContext: ProcessorContext.PaymentContext? = contextExtractor.getPaymentContext()
         if (extractedContext == null) {
             promise?.resolve(
@@ -342,6 +347,7 @@ class TlPaymentSdkModule(reactContext: ReactApplicationContext) :
             )
             intent.putExtra("react-native", true)
             intent.putExtra("react-native-sdk-version", BuildConfig.RN_TL_SDK_VERSION)
+            intent.putExtra("theme", contextExtractor.themeMap)
             it.startActivityForResult(intent, 0)
         }
         mPromises.put(0, promise)
@@ -358,6 +364,7 @@ class TlPaymentSdkModule(reactContext: ReactApplicationContext) :
     override fun _processMandate(
         mandateContext: ReadableMap?,
         preferences: ReadableMap?,
+        theme: ReadableMap?,
         promise: Promise?
     ) {
         checkInitialized()?.let {
@@ -366,7 +373,7 @@ class TlPaymentSdkModule(reactContext: ReactApplicationContext) :
         }
 
         val activity = reactApplicationContext.currentActivity
-        val contextExtractor = TLReactNativeUtils.ContextExtractor(mandateContext, preferences)
+        val contextExtractor = TLReactNativeUtils.ContextExtractor(mandateContext, preferences, theme)
         val extractedContext: ProcessorContext.MandateContext? = contextExtractor.getMandateContext()
         if (extractedContext == null) {
             promise?.resolve(
@@ -382,6 +389,7 @@ class TlPaymentSdkModule(reactContext: ReactApplicationContext) :
             )
             intent.putExtra("react-native", true)
             intent.putExtra("react-native-sdk-version", BuildConfig.RN_TL_SDK_VERSION)
+            intent.putExtra("theme", contextExtractor.themeMap)
             it.startActivityForResult(intent, 0)
         }
         mPromises.put(0, promise)

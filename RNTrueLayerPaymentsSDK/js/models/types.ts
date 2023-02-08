@@ -15,6 +15,12 @@ export { PaymentPreferences } from "./payments/PaymentPreferences";
 
 export { MandatePreferences } from "./mandates/MandatePreferences";
 
+export { Theme } from "./theme/Theme";
+
+export { AndroidColors } from "./theme/AndroidColors";
+
+export { AndroidTypography } from "./theme/AndroidTypography";
+
 /**
  * Defines available environments
  */

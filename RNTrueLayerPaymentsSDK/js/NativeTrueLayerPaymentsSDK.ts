@@ -3,7 +3,7 @@ import { TurboModule, TurboModuleRegistry } from "react-native";
 import {
   ProcessorResult,
   PaymentStatusResult,
-  MandateStatusResult,
+  MandateStatusResult
 } from "./models/types";
 
 /**
@@ -32,6 +32,49 @@ interface Spec extends TurboModule {
     preferences?: {
       preferredCountryCode?: string;
       paymentUseCase: string;
+    },
+    theme?: {
+      android?: {
+        lightColors?: {
+          primary?: string;
+          background?: string;
+          onBackground?: string;
+          surface?: string;
+          onSurface?: string;
+          error?: string;
+        };
+        darkColors?: {
+          primary?: string;
+          background?: string;
+          onBackground?: string;
+          surface?: string;
+          onSurface?: string;
+          error?: string;
+        };
+        typography?: {
+          bodyLarge?: {
+            font?: string
+          };
+          bodyMedium?: {
+            font?: string
+          };
+          bodySmall?: {
+            font?: string
+          };
+          titleLarge?: {
+            font?: string
+          };
+          titleMedium?: {
+            font?: string
+          };
+          headlineSmall?: {
+            font?: string
+          };
+          labelLarge?: {
+            font?: string
+          };
+        }
+      }
     }
   ): Promise<ProcessorResult>;
 
@@ -46,6 +89,49 @@ interface Spec extends TurboModule {
     },
     preferences?: {
       preferredCountryCode?: string;
+    },
+    theme?: {
+      android?: {
+        lightColors?: {
+          primary?: string;
+          background?: string;
+          onBackground?: string;
+          surface?: string;
+          onSurface?: string;
+          error?: string;
+        };
+        darkColors?: {
+          primary?: string;
+          background?: string;
+          onBackground?: string;
+          surface?: string;
+          onSurface?: string;
+          error?: string;
+        };
+        typography?: {
+          bodyLarge?: {
+            font?: string
+          };
+          bodyMedium?: {
+            font?: string
+          };
+          bodySmall?: {
+            font?: string
+          };
+          titleLarge?: {
+            font?: string
+          };
+          titleMedium?: {
+            font?: string
+          };
+          headlineSmall?: {
+            font?: string
+          };
+          labelLarge?: {
+            font?: string
+          };
+        }
+      }
     }
   ): Promise<ProcessorResult>;
 
