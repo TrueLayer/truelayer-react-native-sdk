@@ -82,25 +82,6 @@ function processPayment(): void {
       `resource_token: ${processorContext.resource_token}`,
     )
 
-    const androidTheme =  {
-      lightColors: {
-        primary: "#FF32a852",
-        background: "#888888",
-        surface: "#888888",
-        error: "#000000"
-      },
-      darkColors: {
-        primary: "#888888",
-        background: "#000000",
-        error: "#cccccc"
-      },
-      typography: {
-        bodyLarge: {
-          font: "rainbow_2000"
-        }
-      }
-    }
-
     TrueLayerPaymentsSDKWrapper.processPayment(
       {
         paymentId: processorContext.id,
@@ -109,9 +90,6 @@ function processPayment(): void {
       },
       {
         paymentUseCase: PaymentUseCase.Default,
-      },
-      {
-        android: androidTheme
       }
     ).then(result => {
       switch (result.type) {
