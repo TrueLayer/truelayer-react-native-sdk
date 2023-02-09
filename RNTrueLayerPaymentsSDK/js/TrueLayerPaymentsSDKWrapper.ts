@@ -23,19 +23,20 @@ export abstract class TrueLayerPaymentsSDKWrapper {
    * Configures and initializes the SDK. This function must be called before
    * any other call can be made.
    * @param environment select which environment you want to connect to
+   * @param theme (optional) UI customisation options for the SDK
    * @see Environment
    */
   static configure(
-    environment: Environment = Environment.Production
+    environment: Environment = Environment.Production,
+    theme?: Theme
   ): Promise<void> {
-    return RNTrueLayerPaymentsSDK!!._configure(environment);
+    return RNTrueLayerPaymentsSDK!!._configure(environment, theme);
   }
 
   /**
    * Processes payment for a given context
    * @param paymentContext context of a payment to process
    * @param preferences (optional) extra preferences
-   * @param theme (optional) UI customisation options for the SDK
    *
    * @see PaymentContext
    * @see PaymentPreferences
@@ -46,13 +47,11 @@ export abstract class TrueLayerPaymentsSDKWrapper {
    */
   static processPayment(
     paymentContext: PaymentContext,
-    preferences?: PaymentPreferences,
-    theme?: Theme
+    preferences?: PaymentPreferences
   ): Promise<ProcessorResult> {
     return RNTrueLayerPaymentsSDK!!._processPayment(
       paymentContext,
-      preferences,
-      theme
+      preferences
     );
   }
 
@@ -60,7 +59,6 @@ export abstract class TrueLayerPaymentsSDKWrapper {
    * Processes mandate (recurring payment) for a given context
    * @param paymentContext context of a mandate to process
    * @param preferences (optional) extra preferences
-   * @param theme (optional) UI customisation options for the SDK
    *
    * @see MandateContext
    * @see MandatePreferences
@@ -71,13 +69,11 @@ export abstract class TrueLayerPaymentsSDKWrapper {
    */
   static processMandate(
     mandateContext: MandateContext,
-    preferences?: MandatePreferences,
-    theme?: Theme
+    preferences?: MandatePreferences
   ): Promise<ProcessorResult> {
     return RNTrueLayerPaymentsSDK!!._processMandate(
       mandateContext,
-      preferences,
-      theme
+      preferences
     );
   }
 

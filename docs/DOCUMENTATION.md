@@ -191,22 +191,21 @@ const androidTheme =  {
     }
   }
 }
+
+const theme =  {
+  android: androidTheme
+}
 ```
 
-That theme is then provided to the process payment or mandate method.
+That theme is then provided to the configure method.
 ```
-TrueLayerPaymentsSDKWrapper.processPayment(
-  {
-    paymentId: processorContext.id,
-    resourceToken: processorContext.resource_token,
-    redirectUri: 'truelayer://payments_sample',
+TrueLayerPaymentsSDKWrapper.configure(Environment.Sandbox, theme).then(
+  () => {
+    log('Configure success')
   },
-  {
-    paymentUseCase: PaymentUseCase.Default,
+  reason => {
+    log('Configure failed ' + reason)
   },
-  {
-    android: androidTheme
-  }
 )
 ```
 
