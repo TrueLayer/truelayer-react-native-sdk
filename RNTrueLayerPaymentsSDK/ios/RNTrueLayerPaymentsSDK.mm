@@ -8,6 +8,7 @@
 RCT_EXPORT_MODULE()
 
 RCT_EXPORT_METHOD(_configure:(NSString *)environment
+                  theme:(id <TrueLayerVisualSettingsProvider> _Nullable)theme
                   resolve:(RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject) 
 {
