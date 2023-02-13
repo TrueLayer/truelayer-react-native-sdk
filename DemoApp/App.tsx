@@ -43,7 +43,22 @@ export default function App() {
           onPress={() => {
             log('configure button clicked')
 
-            TrueLayerPaymentsSDKWrapper.configure(Environment.Sandbox).then(
+            TrueLayerPaymentsSDKWrapper.configure(
+              Environment.Sandbox, { 
+                ios: {
+                  lightColors: {
+                    backgroundColors: {
+                      backgroundPrimary: "#376623"
+                    }
+                  },
+                  darkColors: {
+                    accessoryColors: {
+                      separator: "#AAAAAA"
+                    }
+                  }
+                }
+              }
+            ).then(
               () => {
                 log('Configure success')
               },

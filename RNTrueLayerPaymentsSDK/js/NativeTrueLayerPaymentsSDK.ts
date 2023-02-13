@@ -61,6 +61,46 @@ interface Spec extends TurboModule {
             font?: string
           };
         }
+      },
+      ios?: {
+        lightColors?: {
+          backgroundColors?: {
+            backgroundPrimary?: string;
+            backgroundSecondary?: string;
+            backgroundActionPrimary?: string;
+            backgroundCell?: string;
+          },
+          contentColors?: {
+            contentPrimary?: string;
+            contentSecondary?: string;
+            contentPrimaryInverted?: string;
+            contentAction?: string;
+            contentError?: string;
+          },
+          accessoryColors?: {
+            separator?: string;
+            uiElementBorder?: string;
+          }
+        },
+        darkColors?: {
+          backgroundColors?: {
+            backgroundPrimary?: string;
+            backgroundSecondary?: string;
+            backgroundActionPrimary?: string;
+            backgroundCell?: string;
+          },
+          contentColors?: {
+            contentPrimary?: string;
+            contentSecondary?: string;
+            contentPrimaryInverted?: string;
+            contentAction?: string;
+            contentError?: string;
+          },
+          accessoryColors?: {
+            separator?: string;
+            uiElementBorder?: string;
+          }
+        }
       }
     }
   ): Promise<void>;

@@ -7,10 +7,11 @@
 
 RCT_EXPORT_MODULE()
 
-RCT_EXPORT_METHOD(_configure:(NSString *)environment
-                  theme:(id <TrueLayerVisualSettingsProvider> _Nullable)theme
-                  resolve:(RCTPromiseResolveBlock)resolve
-                  reject:(RCTPromiseRejectBlock)reject) 
+#ifdef RCT_NEW_ARCH_ENABLED
+- (void)_configure:(NSString *)environment
+             theme:(JS::NativeTrueLayerPaymentsSDK::Spec_configureTheme &)theme
+           resolve:(RCTPromiseResolveBlock)resolve
+            reject:(RCTPromiseRejectBlock)reject
 {
   // The Objective-C environment to convert the `NSString` `environment` value to,
   // so it can be passed to the Objective-C bridge of the TrueLayer SDK.
@@ -32,12 +33,21 @@ RCT_EXPORT_METHOD(_configure:(NSString *)environment
   }
   
   [TrueLayerPaymentsManager configureWithEnvironment:sdkEnvironment
+                                      visualSettings: NULL
                              additionalConfiguration:[NSDictionary dictionaryWithObjectsAndKeys:@"react-native", @"customIntegrationType", nil]];
   
   resolve(NULL);
 }
+#else
+RCT_EXPORT_METHOD(_configure:(NSString *)environment
+                       theme:(NSDictionary *)theme
+                     resolve:(RCTPromiseResolveBlock)resolve
+                      reject:(RCTPromiseRejectBlock)reject)
+{}
+#endif
 
 // MARK: Process Payment
+
 #ifdef RCT_NEW_ARCH_ENABLED
 - (void)_processPayment:(JS::NativeTrueLayerPaymentsSDK::Spec_processPaymentPaymentContext &)paymentContext
             preferences:(JS::NativeTrueLayerPaymentsSDK::Spec_processPaymentPreferences &)preferences
@@ -329,6 +339,9 @@ RCT_EXPORT_METHOD(_mandateStatus:(NSString *)mandateId
     }];
   }];
 }
+
+// MARK: Styling Object
+
 
 #ifdef RCT_NEW_ARCH_ENABLED
 - (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:
