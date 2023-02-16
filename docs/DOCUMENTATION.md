@@ -192,8 +192,18 @@ const androidTheme =  {
   }
 }
 
+const iOSTheme =  {
+  lightColors: {
+    backgroundPrimary: "#131313"
+  },
+  darkColors: {
+    contentSecondary: "#ABABAB"
+  }
+}
+
 const theme =  {
-  android: androidTheme
+  android: androidTheme,
+  ios: iOSTheme
 }
 ```
 
