@@ -166,3 +166,49 @@ The `processPayment` and `processMandate` methods return a `ProcessorResult` typ
 | `WaitAbandoned`                | The user abandoned the payment on the wait screen.                                                                                                                                                                                                                                |
 | `Unknown`                      | The `SDK` encountered an unexpected behavior.                                                                                                                                                                                                                                     |
 | `UserAborted`                  | The user canceled the payment or mandate.                                                                                                                                                                                                                                         |
+## Customising the UI
+You can customise the colors and fonts used within the SDK. Customisation options are unique for iOS and Android and must be passed when processing a payment or mandate.
+
+### Android
+Customising the look of the SDK on Android devices requires passing a theme with the following options.
+
+```
+const androidTheme =  {
+  lightColors: {
+    primary: "#FF32a852",
+    background: "#888888",
+    surface: "#888888",
+    error: "#000000"
+  },
+  darkColors: {
+    primary: "#888888",
+    background: "#000000",
+    error: "#cccccc"
+  },
+  typography: {
+    bodyLarge: {
+      font: "rainbow_2000"
+    }
+  }
+}
+
+const theme =  {
+  android: androidTheme
+}
+```
+
+That theme is then provided to the configure method.
+```
+TrueLayerPaymentsSDKWrapper.configure(Environment.Sandbox, theme).then(
+  () => {
+    log('Configure success')
+  },
+  reason => {
+    log('Configure failed ' + reason)
+  },
+)
+```
+
+Colors require a hexcode and supports both `RGB` and `ARGB`.
+
+Fonts support both `.ttf` and `.otf` formats and must be placed in the `android/app/src/main/res/font` folder. The file must be named in snake case to be recognised. Then you simply use the name of the file (without the extension) in your theme object.

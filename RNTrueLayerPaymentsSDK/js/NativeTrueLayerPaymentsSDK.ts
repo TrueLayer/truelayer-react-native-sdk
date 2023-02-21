@@ -3,7 +3,7 @@ import { TurboModule, TurboModuleRegistry } from "react-native";
 import {
   ProcessorResult,
   PaymentStatusResult,
-  MandateStatusResult,
+  MandateStatusResult
 } from "./models/types";
 
 /**
@@ -18,7 +18,52 @@ interface Spec extends TurboModule {
   /**
    * ReactNative raw interface. Do not use directly. Use TrueLayerPaymentsSDKWrapper class instead.
    */
-  _configure(environment: string): Promise<void>;
+  _configure(
+    environment: string,
+    theme?: {
+      android?: {
+        lightColors?: {
+          primary?: string;
+          background?: string;
+          onBackground?: string;
+          surface?: string;
+          onSurface?: string;
+          error?: string;
+        };
+        darkColors?: {
+          primary?: string;
+          background?: string;
+          onBackground?: string;
+          surface?: string;
+          onSurface?: string;
+          error?: string;
+        };
+        typography?: {
+          bodyLarge?: {
+            font?: string
+          };
+          bodyMedium?: {
+            font?: string
+          };
+          bodySmall?: {
+            font?: string
+          };
+          titleLarge?: {
+            font?: string
+          };
+          titleMedium?: {
+            font?: string
+          };
+          headlineSmall?: {
+            font?: string
+          };
+          labelLarge?: {
+            font?: string
+          };
+        }
+      }
+    }
+  ): Promise<void>;
 
   /**
    * ReactNative raw interface. Do not use directly. Use TrueLayerPaymentsSDKWrapper class instead.

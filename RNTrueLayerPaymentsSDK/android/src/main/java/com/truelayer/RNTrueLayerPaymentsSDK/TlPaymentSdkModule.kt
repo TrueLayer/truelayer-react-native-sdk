@@ -33,6 +33,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
+import java.util.HashMap
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
 
@@ -47,6 +48,7 @@ private class TLReactNativeUtils {
         val redirectUri: String?
         val preferredCountryCode: String?
         val paymentUseCase: PaymentUseCase
+
         init {
             mandateId = map?.getString("mandateId")
             paymentId = map?.getString("paymentId")
@@ -279,6 +281,7 @@ class TlPaymentSdkModule(reactContext: ReactApplicationContext) :
 
     val mPromises: SparseArray<Promise> = SparseArray()
     var trueLayerUI: TrueLayerUI? = null
+    var themeMap: HashMap<String, Any>? = null
 
     val scope = CoroutineScope(
         SupervisorJob() +
@@ -300,9 +303,12 @@ class TlPaymentSdkModule(reactContext: ReactApplicationContext) :
 
     override fun _configure(
         environment: String?,
+        theme: ReadableMap?,
         promise: Promise?
     ) {
         val env = environment.convertToEnvironment()
+        themeMap = theme?.getMap("android")?.toHashMap()
+
         // we ignore the outcome in here for now
         val out = TrueLayerUI.init(reactApplicationContext) {
             this.environment = env
@@ -342,6 +348,7 @@ class TlPaymentSdkModule(reactContext: ReactApplicationContext) :
             )
             intent.putExtra("react-native", true)
             intent.putExtra("react-native-sdk-version", BuildConfig.RN_TL_SDK_VERSION)
+            intent.putExtra("theme", themeMap)
             it.startActivityForResult(intent, 0)
         }
         mPromises.put(0, promise)
@@ -382,6 +389,7 @@ class TlPaymentSdkModule(reactContext: ReactApplicationContext) :
             )
             intent.putExtra("react-native", true)
             intent.putExtra("react-native-sdk-version", BuildConfig.RN_TL_SDK_VERSION)
+            intent.putExtra("theme", themeMap)
             it.startActivityForResult(intent, 0)
         }
         mPromises.put(0, promise)

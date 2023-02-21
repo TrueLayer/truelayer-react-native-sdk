@@ -8,6 +8,7 @@ import {
   ProcessorResult,
   MandateStatusResult,
   PaymentStatusResult,
+  Theme,
 } from "./models/types";
 
 /**
@@ -22,12 +23,14 @@ export abstract class TrueLayerPaymentsSDKWrapper {
    * Configures and initializes the SDK. This function must be called before
    * any other call can be made.
    * @param environment select which environment you want to connect to
+   * @param theme (optional) UI customisation options for the SDK
    * @see Environment
    */
   static configure(
-    environment: Environment = Environment.Production
+    environment: Environment = Environment.Production,
+    theme?: Theme
   ): Promise<void> {
-    return RNTrueLayerPaymentsSDK!!._configure(environment);
+    return RNTrueLayerPaymentsSDK!!._configure(environment, theme);
   }
 
   /**
