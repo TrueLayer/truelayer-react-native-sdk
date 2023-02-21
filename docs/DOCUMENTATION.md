@@ -230,7 +230,7 @@ const iOSTheme =  {
 }
 
 const theme =  {
-  android: androidTheme,
+  ios: iOSTheme,
 }
 ```
 
