@@ -883,7 +883,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   TrueLayerPaymentsSDK:
-    :commit: 636400b6a720c8e210a7f7ebafd851257f9239bf
+    :commit: e331337419141863bd4a8587014d9b2f1b5244dd
     :git: https://github.com/TrueLayer/TrueLayer-iOS-SDK
 
 SPEC CHECKSUMS:
