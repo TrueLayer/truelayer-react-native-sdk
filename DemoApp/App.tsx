@@ -31,6 +31,28 @@ export default function App() {
     flex: 1,
   }
 
+  const androidTheme =  {
+    lightColors: {
+      primary: "#FF32A852",
+      background: "#EEEEEE",
+      surface: "#CCCCCC",
+      error: "#000000"
+    },
+    darkColors: {
+      primary: "#888888",
+      background: "#000000"
+    },
+    typography: {
+      bodyLarge: {
+        font: "rainbow_2000"
+      }
+    }
+  }
+
+  const theme = {
+    android: androidTheme
+  }
+
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar
@@ -43,7 +65,7 @@ export default function App() {
           onPress={() => {
             log('configure button clicked')
 
-            TrueLayerPaymentsSDKWrapper.configure(Environment.Sandbox).then(
+            TrueLayerPaymentsSDKWrapper.configure(Environment.Sandbox, theme).then(
               () => {
                 log('Configure success')
               },
@@ -90,7 +112,7 @@ function processPayment(): void {
       },
       {
         paymentUseCase: PaymentUseCase.Default,
-      }
+      },
     ).then(result => {
       switch (result.type) {
         case ResultType.Success:
