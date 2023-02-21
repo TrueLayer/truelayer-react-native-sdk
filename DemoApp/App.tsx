@@ -31,7 +31,7 @@ export default function App() {
     flex: 1,
   }
 
-  const androidTheme =  {
+  const androidTheme = {
     lightColors: {
       primary: "#FF32A852",
       background: "#EEEEEE",
@@ -49,8 +49,13 @@ export default function App() {
     }
   }
 
+  const iOSTheme = {
+    fontFamilyName: "Kanit"
+  }
+
   const theme = {
-    android: androidTheme
+    android: androidTheme,
+    ios: iOSTheme
   }
 
   return (
