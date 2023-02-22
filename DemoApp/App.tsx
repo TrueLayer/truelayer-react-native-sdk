@@ -48,7 +48,7 @@ export default function App() {
       }
     }
   }
-
+  
   const iOSTheme = {
     fontFamilyName: "Kanit"
   }

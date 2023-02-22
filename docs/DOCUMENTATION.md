@@ -193,7 +193,7 @@ const androidTheme =  {
 }
 
 const theme =  {
-  android: androidTheme,
+  android: androidTheme
 }
 ```
 
@@ -249,3 +249,5 @@ TrueLayerPaymentsSDKWrapper.configure(Environment.Sandbox, theme).then(
 Colors are expected to be a hexcode. They may start with the pound sign (#) but that is not necessary. It supports hexcodes of 3, 4, 6 and 8 digits.
 
 The font should be added to the project and referenced in the `.plist` file, and then only the family name should be passed to the SDK. In case the SDK fails to fetch it it will fallback to the native iOS font.
+=======
+Fonts support both `.ttf` and `.otf` formats and must be placed in the `android/app/src/main/res/font` folder. The file must be named in snake case to be recognised. Then you simply use the name of the file (without the extension) in your theme object.
