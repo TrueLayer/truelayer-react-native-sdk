@@ -212,3 +212,42 @@ TrueLayerPaymentsSDKWrapper.configure(Environment.Sandbox, theme).then(
 Colors require a hexcode and supports both `RGB` and `ARGB`.
 
 Fonts support both `.ttf` and `.otf` formats and must be placed in the `android/app/src/main/res/font` folder. The file must be named in snake case to be recognised. Then you simply use the name of the file (without the extension) in your theme object.
+
+### iOS
+Customising the look of the SDK on iOS devices requires passing a theme with the following options.
+
+```
+const iOSTheme =  {
+  lightColors: {
+    backgroundPrimary: "#131313",
+    ...
+  },
+  darkColors: {
+    contentSecondary: "#ABABAB",
+    ...
+  },
+  fontFamilyName: "Kanit"
+}
+
+const theme =  {
+  ios: iOSTheme,
+}
+```
+
+That theme is then provided to the configure method.
+```
+TrueLayerPaymentsSDKWrapper.configure(Environment.Sandbox, theme).then(
+  () => {
+    log('Configure success')
+  },
+  reason => {
+    log('Configure failed ' + reason)
+  },
+)
+```
+
+Colors are expected to be a hexcode. They may start with the pound sign (#) but that is not necessary. It supports hexcodes of 3, 4, 6 and 8 digits.
+
+The font should be added to the project and referenced in the `.plist` file, and then only the family name should be passed to the SDK. In case the SDK fails to fetch it it will fallback to the native iOS font.
+=======
+Fonts support both `.ttf` and `.otf` formats and must be placed in the `android/app/src/main/res/font` folder. The file must be named in snake case to be recognised. Then you simply use the name of the file (without the extension) in your theme object.

@@ -13,6 +13,8 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		A461046685BD293A5CD37C2A /* libPods-DemoApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FD82E353F2750494F3D380EB /* libPods-DemoApp.a */; };
+		DEA79F5829A52A64009807F5 /* Kanit-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DEA79F5629A52A64009807F5 /* Kanit-Regular.ttf */; };
+		DEA79F5929A52A64009807F5 /* Kanit-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DEA79F5729A52A64009807F5 /* Kanit-Bold.ttf */; };
 		FDC7AE1C14321EEE88DCF00A /* libPods-DemoApp-DemoAppTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 33B84CE01E412034B6B6314D /* libPods-DemoApp-DemoAppTests.a */; };
 /* End PBXBuildFile section */
 
@@ -42,6 +44,8 @@
 		555F508998EDB1FE4CBE87D8 /* Pods-DemoApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DemoApp.release.xcconfig"; path = "Target Support Files/Pods-DemoApp/Pods-DemoApp.release.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = DemoApp/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8F722636BFF20BC5FE8C1380 /* Pods-DemoApp-DemoAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DemoApp-DemoAppTests.debug.xcconfig"; path = "Target Support Files/Pods-DemoApp-DemoAppTests/Pods-DemoApp-DemoAppTests.debug.xcconfig"; sourceTree = "<group>"; };
+		DEA79F5629A52A64009807F5 /* Kanit-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Kanit-Regular.ttf"; sourceTree = "<group>"; };
+		DEA79F5729A52A64009807F5 /* Kanit-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Kanit-Bold.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		FD82E353F2750494F3D380EB /* libPods-DemoApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DemoApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -86,6 +90,7 @@
 		13B07FAE1A68108700A75B9A /* DemoApp */ = {
 			isa = PBXGroup;
 			children = (
+				DEA79F5529A52A64009807F5 /* Fonts */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -146,6 +151,16 @@
 				13B766EEC7ACED750DF59209 /* Pods-DemoApp-DemoAppTests.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		DEA79F5529A52A64009807F5 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				DEA79F5629A52A64009807F5 /* Kanit-Regular.ttf */,
+				DEA79F5729A52A64009807F5 /* Kanit-Bold.ttf */,
+			);
+			name = Fonts;
+			path = DemoApp/Fonts;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -244,6 +259,8 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				DEA79F5829A52A64009807F5 /* Kanit-Regular.ttf in Resources */,
+				DEA79F5929A52A64009807F5 /* Kanit-Bold.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
