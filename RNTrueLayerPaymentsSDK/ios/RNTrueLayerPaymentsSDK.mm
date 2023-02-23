@@ -380,6 +380,10 @@ RCT_EXPORT_METHOD(_mandateStatus:(NSString *)mandateId
     bool hasLightColors = theme.ios().value().lightColors().has_value();
     bool hasDarkColors = theme.ios().value().darkColors().has_value();
     
+    if (theme.ios().value().fontFamilyName() != nil) {
+      visualSettings.fontFamilyName = theme.ios().value().fontFamilyName();
+    }
+    
     if (hasLightColors && hasDarkColors) {
       JS::NativeTrueLayerPaymentsSDK::Spec_configureThemeIosLightColors lightColors = theme.ios().value().lightColors().value();
       JS::NativeTrueLayerPaymentsSDK::Spec_configureThemeIosDarkColors darkColors = theme.ios().value().darkColors().value();
@@ -510,43 +514,47 @@ RCT_EXPORT_METHOD(_mandateStatus:(NSString *)mandateId
   NSError *error;
 
   if (theme[@"ios"] != nil) {
-      TrueLayerBackgroundColors *backgroundColors =
-      [[TrueLayerBackgroundColors alloc] initWithBackgroundPrimaryLightHex: theme[@"ios"][@"lightColors"][@"backgroundPrimary"]
-                                               backgroundSecondaryLightHex: theme[@"ios"][@"lightColors"][@"backgroundSecondary"]
-                                           backgroundActionPrimaryLightHex: theme[@"ios"][@"lightColors"][@"backgroundActionPrimary"]
-                                                    backgroundCellLightHex: theme[@"ios"][@"lightColors"][@"backgroundCell"]
-                                                  backgroundPrimaryDarkHex: theme[@"ios"][@"darkColors"][@"backgroundPrimary"]
-                                                backgroundSecondaryDarkHex: theme[@"ios"][@"darkColors"][@"backgroundSecondary"]
-                                            backgroundActionPrimaryDarkHex: theme[@"ios"][@"darkColors"][@"backgroundActionPrimary"]
-                                                     backgroundCellDarkHex: theme[@"ios"][@"darkColors"][@"backgroundCell"]
-                                                                     error: &error];
-
-      TrueLayerContentColors *contentColors =
-      [[TrueLayerContentColors alloc] initWithContentPrimaryLightHex: theme[@"ios"][@"lightColors"][@"contentPrimary"]
-                                            contentSecondaryLightHex: theme[@"ios"][@"lightColors"][@"contentSecondary"]
-                                      contentPrimaryInvertedLightHex: theme[@"ios"][@"lightColors"][@"contentPrimaryInverted"]
-                                               contentActionLightHex: theme[@"ios"][@"lightColors"][@"contentAction"]
-                                                contentErrorLightHex: theme[@"ios"][@"lightColors"][@"contentError"]
-                                               contentPrimaryDarkHex: theme[@"ios"][@"darkColors"][@"contentPrimary"]
-                                             contentSecondaryDarkHex: theme[@"ios"][@"darkColors"][@"contentSecondary"]
-                                       contentPrimaryInvertedDarkHex: theme[@"ios"][@"darkColors"][@"contentPrimaryInverted"]
-                                                contentActionDarkHex: theme[@"ios"][@"darkColors"][@"contentAction"]
-                                                 contentErrorDarkHex: theme[@"ios"][@"darkColors"][@"contentError"]
-                                                               error: &error];
-
-      TrueLayerAccessoryColors *accessoryColors =
-      [[TrueLayerAccessoryColors alloc] initWithSeparatorLightHex: theme[@"ios"][@"lightColors"][@"separator"]
-                                          uiElementBorderLightHex: theme[@"ios"][@"lightColors"][@"uiElementBorder"]
-                                                 separatorDarkHex: theme[@"ios"][@"darkColors"][@"separator"]
-                                           uiElementBorderDarkHex: theme[@"ios"][@"darkColors"][@"uiElementBorder"]
-                                                            error: &error];
-
-      visualSettings.colors.backgroundColors = backgroundColors;
-      visualSettings.colors.contentColors = contentColors;
-      visualSettings.colors.accessoryColors = accessoryColors;
-
+    if (theme[@"ios"][@"fontFamilyName"] != nil) {
+      visualSettings.fontFamilyName = theme[@"ios"][@"fontFamilyName"];
     }
-  
+
+    TrueLayerBackgroundColors *backgroundColors =
+    [[TrueLayerBackgroundColors alloc] initWithBackgroundPrimaryLightHex: theme[@"ios"][@"lightColors"][@"backgroundPrimary"]
+                                             backgroundSecondaryLightHex: theme[@"ios"][@"lightColors"][@"backgroundSecondary"]
+                                         backgroundActionPrimaryLightHex: theme[@"ios"][@"lightColors"][@"backgroundActionPrimary"]
+                                                  backgroundCellLightHex: theme[@"ios"][@"lightColors"][@"backgroundCell"]
+                                                backgroundPrimaryDarkHex: theme[@"ios"][@"darkColors"][@"backgroundPrimary"]
+                                              backgroundSecondaryDarkHex: theme[@"ios"][@"darkColors"][@"backgroundSecondary"]
+                                          backgroundActionPrimaryDarkHex: theme[@"ios"][@"darkColors"][@"backgroundActionPrimary"]
+                                                   backgroundCellDarkHex: theme[@"ios"][@"darkColors"][@"backgroundCell"]
+                                                                   error: &error];
+
+    TrueLayerContentColors *contentColors =
+    [[TrueLayerContentColors alloc] initWithContentPrimaryLightHex: theme[@"ios"][@"lightColors"][@"contentPrimary"]
+                                          contentSecondaryLightHex: theme[@"ios"][@"lightColors"][@"contentSecondary"]
+                                    contentPrimaryInvertedLightHex: theme[@"ios"][@"lightColors"][@"contentPrimaryInverted"]
+                                             contentActionLightHex: theme[@"ios"][@"lightColors"][@"contentAction"]
+                                              contentErrorLightHex: theme[@"ios"][@"lightColors"][@"contentError"]
+                                             contentPrimaryDarkHex: theme[@"ios"][@"darkColors"][@"contentPrimary"]
+                                           contentSecondaryDarkHex: theme[@"ios"][@"darkColors"][@"contentSecondary"]
+                                     contentPrimaryInvertedDarkHex: theme[@"ios"][@"darkColors"][@"contentPrimaryInverted"]
+                                              contentActionDarkHex: theme[@"ios"][@"darkColors"][@"contentAction"]
+                                               contentErrorDarkHex: theme[@"ios"][@"darkColors"][@"contentError"]
+                                                             error: &error];
+
+    TrueLayerAccessoryColors *accessoryColors =
+    [[TrueLayerAccessoryColors alloc] initWithSeparatorLightHex: theme[@"ios"][@"lightColors"][@"separator"]
+                                        uiElementBorderLightHex: theme[@"ios"][@"lightColors"][@"uiElementBorder"]
+                                               separatorDarkHex: theme[@"ios"][@"darkColors"][@"separator"]
+                                         uiElementBorderDarkHex: theme[@"ios"][@"darkColors"][@"uiElementBorder"]
+                                                          error: &error];
+
+    visualSettings.colors.backgroundColors = backgroundColors;
+    visualSettings.colors.contentColors = contentColors;
+    visualSettings.colors.accessoryColors = accessoryColors;
+
+  }
+
   if (error != nil) {
     return NULL;
   }
