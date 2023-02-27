@@ -7,41 +7,40 @@
 
 RCT_EXPORT_MODULE()
 
-RCT_EXPORT_METHOD(_configure:(NSString *)environment
-                  resolve:(RCTPromiseResolveBlock)resolve
-                  reject:(RCTPromiseRejectBlock)reject) 
+#ifdef RCT_NEW_ARCH_ENABLED
+- (void)_configure:(NSString *)environment
+             theme:(JS::NativeTrueLayerPaymentsSDK::Spec_configureTheme &)theme
+           resolve:(RCTPromiseResolveBlock)resolve
+            reject:(RCTPromiseRejectBlock)reject
 {
-  // The Objective-C environment to convert the `NSString` `environment` value to,
-  // so it can be passed to the Objective-C bridge of the TrueLayer SDK.
-  TrueLayerEnvironment sdkEnvironment;
-  
-  if (environment && [environment caseInsensitiveCompare:@"sandbox"] == NSOrderedSame) {
-    sdkEnvironment = TrueLayerEnvironmentSandbox;
-  } else if (environment && [environment caseInsensitiveCompare:@"production"] == NSOrderedSame) {
-    sdkEnvironment = TrueLayerEnvironmentProduction;
-  } else {
-    // Create an NSError object for the configuration error.
-    NSError *error = [self errorWithDescriptionKey:@"Invalid environment value passed."
-                             failureReasonErrorKey:@"The environment value passed does not match any expected cases."
-                        recoverySuggestionErrorKey:@"Please use either `sandbox` or `production`."
-                                              code:1];
-    
-    reject([@(error.code) stringValue], error.localizedDescription, error);
-    return;
-  }
-  
-  [TrueLayerPaymentsManager configureWithEnvironment:sdkEnvironment
-                             additionalConfiguration:[NSDictionary dictionaryWithObjectsAndKeys:@"react-native", @"customIntegrationType", nil]];
-  
-  resolve(NULL);
+  TrueLayerVisualSettings *visualSettings = [self setupVisualSettingsFromTheme: theme];
+  [self configureWithEnvironment:environment
+                  visualSettings:visualSettings
+                         resolve:resolve
+                          reject:reject];
 }
+#else
+RCT_EXPORT_METHOD(_configure:(NSString *)environment
+                  theme:(NSDictionary *)theme
+                  resolve:(RCTPromiseResolveBlock)resolve
+                  reject:(RCTPromiseRejectBlock)reject)
+{
+  TrueLayerVisualSettings *visualSettings = [self setupVisualSettingsFromDictionary: theme];
+  
+  [self configureWithEnvironment:environment
+                  visualSettings:visualSettings
+                         resolve:resolve
+                          reject:reject];
+}
+#endif
 
 // MARK: Process Payment
+
 #ifdef RCT_NEW_ARCH_ENABLED
 - (void)_processPayment:(JS::NativeTrueLayerPaymentsSDK::Spec_processPaymentPaymentContext &)paymentContext
             preferences:(JS::NativeTrueLayerPaymentsSDK::Spec_processPaymentPreferences &)preferences
                 resolve:(RCTPromiseResolveBlock)resolve
-                 reject:(RCTPromiseRejectBlock)reject 
+                 reject:(RCTPromiseRejectBlock)reject
 {
   [self executeProcessPayment:paymentContext.paymentId()
                 resourceToken:paymentContext.resourceToken()
@@ -52,9 +51,9 @@ RCT_EXPORT_METHOD(_configure:(NSString *)environment
 }
 #else
 RCT_EXPORT_METHOD(_processPayment:(NSDictionary *)paymentContext
-                      preferences:(NSDictionary *)preferences
-                          resolve:(RCTPromiseResolveBlock)resolve
-                           reject:(RCTPromiseRejectBlock)reject)
+                  preferences:(NSDictionary *)preferences
+                  resolve:(RCTPromiseResolveBlock)resolve
+                  reject:(RCTPromiseRejectBlock)reject)
 {
   [self executeProcessPayment:paymentContext[@"paymentId"]
                 resourceToken:paymentContext[@"resourceToken"]
@@ -68,9 +67,9 @@ RCT_EXPORT_METHOD(_processPayment:(NSDictionary *)paymentContext
 // MARK: Payment Status
 
 RCT_EXPORT_METHOD(_paymentStatus:(NSString *)paymentId
-                   resourceToken:(NSString *)resourceToken
-                         resolve:(RCTPromiseResolveBlock)resolve
-                          reject:(RCTPromiseRejectBlock)reject) 
+                  resourceToken:(NSString *)resourceToken
+                  resolve:(RCTPromiseResolveBlock)resolve
+                  reject:(RCTPromiseRejectBlock)reject)
 {
   // Check that the paymentId and resourceToken values are non-nil.
   if (paymentId == nil || resourceToken == nil) {
@@ -118,7 +117,7 @@ RCT_EXPORT_METHOD(_paymentStatus:(NSString *)paymentId
 - (void)_processMandate:(JS::NativeTrueLayerPaymentsSDK::Spec_processMandateMandateContext &)mandateContext
             preferences:(JS::NativeTrueLayerPaymentsSDK::Spec_processMandatePreferences &)preferences
                 resolve:(RCTPromiseResolveBlock)resolve
-                 reject:(RCTPromiseRejectBlock)reject 
+                 reject:(RCTPromiseRejectBlock)reject
 {
   [self executeProcessMandate:mandateContext.mandateId()
                 resourceToken:mandateContext.resourceToken()
@@ -128,9 +127,9 @@ RCT_EXPORT_METHOD(_paymentStatus:(NSString *)paymentId
 }
 #else
 RCT_EXPORT_METHOD(_processMandate:(NSDictionary *)paymentContext
-                      preferences:(NSDictionary *)preferences
-                          resolve:(RCTPromiseResolveBlock)resolve
-                           reject:(RCTPromiseRejectBlock)reject)
+                  preferences:(NSDictionary *)preferences
+                  resolve:(RCTPromiseResolveBlock)resolve
+                  reject:(RCTPromiseRejectBlock)reject)
 {
   [self executeProcessMandate:paymentContext[@"mandateId"]
                 resourceToken:paymentContext[@"resourceToken"]
@@ -143,9 +142,9 @@ RCT_EXPORT_METHOD(_processMandate:(NSDictionary *)paymentContext
 // MARK: Mandate Status
 
 RCT_EXPORT_METHOD(_mandateStatus:(NSString *)mandateId
-                   resourceToken:(NSString *)resourceToken
-                         resolve:(RCTPromiseResolveBlock)resolve
-                          reject:(RCTPromiseRejectBlock)reject) 
+                  resourceToken:(NSString *)resourceToken
+                  resolve:(RCTPromiseResolveBlock)resolve
+                  reject:(RCTPromiseRejectBlock)reject)
 {
   // Check that the mandateId and resourceToken values are non-nil.
   if (mandateId == nil || resourceToken == nil) {
@@ -188,6 +187,47 @@ RCT_EXPORT_METHOD(_mandateStatus:(NSString *)mandateId
 }
 
 // MARK: - Helpers
+
+-(void)configureWithEnvironment:(NSString *)environment
+                 visualSettings:(TrueLayerVisualSettings *)visualSettings
+                        resolve:(RCTPromiseResolveBlock)resolve
+                         reject:(RCTPromiseRejectBlock)reject {
+  // The Objective-C environment to convert the `NSString` `environment` value to,
+  // so it can be passed to the Objective-C bridge of the TrueLayer SDK.
+  TrueLayerEnvironment sdkEnvironment;
+  
+  if (visualSettings == NULL) {
+    // Create an NSError object for the configuration error.
+    NSError *error = [self errorWithDescriptionKey:@"Invalid HEX color."
+                             failureReasonErrorKey:@"One of the passed colors is invalid."
+                        recoverySuggestionErrorKey:@"Make sure it's a valid HEX color."
+                                              code:2];
+    
+    reject([@(error.code) stringValue], error.localizedDescription, error);
+    return;
+  }
+  
+  if (environment && [environment caseInsensitiveCompare:@"sandbox"] == NSOrderedSame) {
+    sdkEnvironment = TrueLayerEnvironmentSandbox;
+  } else if (environment && [environment caseInsensitiveCompare:@"production"] == NSOrderedSame) {
+    sdkEnvironment = TrueLayerEnvironmentProduction;
+  } else {
+    // Create an NSError object for the configuration error.
+    NSError *error = [self errorWithDescriptionKey:@"Invalid environment value passed."
+                             failureReasonErrorKey:@"The environment value passed does not match any expected cases."
+                        recoverySuggestionErrorKey:@"Please use either `sandbox` or `production`."
+                                              code:1];
+    
+    reject([@(error.code) stringValue], error.localizedDescription, error);
+    return;
+  }
+  
+  [TrueLayerPaymentsManager configureWithEnvironment: sdkEnvironment
+                                      visualSettings: visualSettings
+                             additionalConfiguration: [NSDictionary dictionaryWithObjectsAndKeys:@"React Native", @"customIntegrationType", nil]];
+  
+  resolve(NULL);
+}
 
 /// Creates an `NSError` with the domain `TrueLayerPaymentsSDK.TrueLayerObjectiveCError` and a given description, failure reason, recovery suggestion, and code.
 /// - Parameters:
@@ -328,6 +368,200 @@ RCT_EXPORT_METHOD(_mandateStatus:(NSString *)mandateId
     }];
   }];
 }
+
+// MARK: Styling Helper
+
+#ifdef RCT_NEW_ARCH_ENABLED
+- (TrueLayerVisualSettings * _Nullable)setupVisualSettingsFromTheme:(JS::NativeTrueLayerPaymentsSDK::Spec_configureTheme &)theme {
+  TrueLayerVisualSettings *visualSettings = [[TrueLayerVisualSettings alloc] init];
+  NSError *error;
+  
+  if (theme.ios().has_value()) {
+    bool hasLightColors = theme.ios().value().lightColors().has_value();
+    bool hasDarkColors = theme.ios().value().darkColors().has_value();
+    
+    if (theme.ios().value().fontFamilyName() != nil) {
+      visualSettings.fontFamilyName = theme.ios().value().fontFamilyName();
+    }
+    
+    if (hasLightColors && hasDarkColors) {
+      JS::NativeTrueLayerPaymentsSDK::Spec_configureThemeIosLightColors lightColors = theme.ios().value().lightColors().value();
+      JS::NativeTrueLayerPaymentsSDK::Spec_configureThemeIosDarkColors darkColors = theme.ios().value().darkColors().value();
+      
+      TrueLayerBackgroundColors *backgroundColors =
+      [[TrueLayerBackgroundColors alloc] initWithBackgroundPrimaryLightHex: lightColors.backgroundPrimary()
+                                               backgroundSecondaryLightHex: lightColors.backgroundSecondary()
+                                           backgroundActionPrimaryLightHex: lightColors.backgroundActionPrimary()
+                                                    backgroundCellLightHex: lightColors.backgroundCell()
+                                                  backgroundPrimaryDarkHex: darkColors.backgroundPrimary()
+                                                backgroundSecondaryDarkHex: darkColors.backgroundSecondary()
+                                            backgroundActionPrimaryDarkHex: darkColors.backgroundActionPrimary()
+                                                     backgroundCellDarkHex: darkColors.backgroundCell()
+                                                                     error: &error];
+      
+      TrueLayerContentColors *contentColors =
+      [[TrueLayerContentColors alloc] initWithContentPrimaryLightHex: lightColors.contentPrimary()
+                                            contentSecondaryLightHex: lightColors.contentSecondary()
+                                      contentPrimaryInvertedLightHex: lightColors.contentPrimaryInverted()
+                                               contentActionLightHex: lightColors.contentAction()
+                                                contentErrorLightHex: lightColors.contentError()
+                                               contentPrimaryDarkHex: darkColors.contentPrimary()
+                                             contentSecondaryDarkHex: darkColors.contentSecondary()
+                                       contentPrimaryInvertedDarkHex: darkColors.contentPrimaryInverted()
+                                                contentActionDarkHex: darkColors.contentAction()
+                                                 contentErrorDarkHex: darkColors.contentError()
+                                                               error: &error];
+      
+      TrueLayerAccessoryColors *accessoryColors =
+      [[TrueLayerAccessoryColors alloc] initWithSeparatorLightHex: lightColors.separator()
+                                          uiElementBorderLightHex: lightColors.uiElementBorder()
+                                                 separatorDarkHex: darkColors.separator()
+                                           uiElementBorderDarkHex: darkColors.uiElementBorder()
+                                                            error: &error];
+      
+      visualSettings.colors.backgroundColors = backgroundColors;
+      visualSettings.colors.contentColors = contentColors;
+      visualSettings.colors.accessoryColors = accessoryColors;
+      
+    } else if (hasLightColors) {
+      JS::NativeTrueLayerPaymentsSDK::Spec_configureThemeIosLightColors lightColors = theme.ios().value().lightColors().value();
+      
+      TrueLayerBackgroundColors *backgroundColors =
+      [[TrueLayerBackgroundColors alloc] initWithBackgroundPrimaryLightHex: lightColors.backgroundPrimary()
+                                               backgroundSecondaryLightHex: lightColors.backgroundSecondary()
+                                           backgroundActionPrimaryLightHex: lightColors.backgroundActionPrimary()
+                                                    backgroundCellLightHex: lightColors.backgroundCell()
+                                                  backgroundPrimaryDarkHex: NULL
+                                                backgroundSecondaryDarkHex: NULL
+                                            backgroundActionPrimaryDarkHex: NULL
+                                                     backgroundCellDarkHex: NULL
+                                                                     error: &error];
+      
+      TrueLayerContentColors *contentColors =
+      [[TrueLayerContentColors alloc] initWithContentPrimaryLightHex: lightColors.contentPrimary()
+                                            contentSecondaryLightHex: lightColors.contentSecondary()
+                                      contentPrimaryInvertedLightHex: lightColors.contentPrimaryInverted()
+                                               contentActionLightHex: lightColors.contentAction()
+                                                contentErrorLightHex: lightColors.contentError()
+                                               contentPrimaryDarkHex: NULL
+                                             contentSecondaryDarkHex: NULL
+                                       contentPrimaryInvertedDarkHex: NULL
+                                                contentActionDarkHex: NULL
+                                                 contentErrorDarkHex: NULL
+                                                               error: &error];
+      
+      TrueLayerAccessoryColors *accessoryColors =
+      [[TrueLayerAccessoryColors alloc] initWithSeparatorLightHex: lightColors.separator()
+                                          uiElementBorderLightHex: lightColors.uiElementBorder()
+                                                 separatorDarkHex: NULL
+                                           uiElementBorderDarkHex: NULL
+                                                            error: &error];
+      
+      visualSettings.colors.backgroundColors = backgroundColors;
+      visualSettings.colors.contentColors = contentColors;
+      visualSettings.colors.accessoryColors = accessoryColors;
+    } else if (hasDarkColors) {
+      JS::NativeTrueLayerPaymentsSDK::Spec_configureThemeIosDarkColors darkColors = theme.ios().value().darkColors().value();
+      
+      TrueLayerBackgroundColors *backgroundColors =
+      [[TrueLayerBackgroundColors alloc] initWithBackgroundPrimaryLightHex: NULL
+                                               backgroundSecondaryLightHex: NULL
+                                           backgroundActionPrimaryLightHex: NULL
+                                                    backgroundCellLightHex: NULL
+                                                  backgroundPrimaryDarkHex: darkColors.backgroundPrimary()
+                                                backgroundSecondaryDarkHex: darkColors.backgroundSecondary()
+                                            backgroundActionPrimaryDarkHex: darkColors.backgroundActionPrimary()
+                                                     backgroundCellDarkHex: darkColors.backgroundCell()
+                                                                     error: &error];
+      
+      TrueLayerContentColors *contentColors =
+      [[TrueLayerContentColors alloc] initWithContentPrimaryLightHex: NULL
+                                            contentSecondaryLightHex: NULL
+                                      contentPrimaryInvertedLightHex: NULL
+                                               contentActionLightHex: NULL
+                                                contentErrorLightHex: NULL
+                                               contentPrimaryDarkHex: darkColors.contentPrimary()
+                                             contentSecondaryDarkHex: darkColors.contentSecondary()
+                                       contentPrimaryInvertedDarkHex: darkColors.contentPrimaryInverted()
+                                                contentActionDarkHex: darkColors.contentAction()
+                                                 contentErrorDarkHex: darkColors.contentError()
+                                                               error: &error];
+      
+      TrueLayerAccessoryColors *accessoryColors =
+      [[TrueLayerAccessoryColors alloc] initWithSeparatorLightHex: NULL
+                                          uiElementBorderLightHex: NULL
+                                                 separatorDarkHex: darkColors.separator()
+                                           uiElementBorderDarkHex: darkColors.uiElementBorder()
+                                                            error: &error];
+      
+      visualSettings.colors.backgroundColors = backgroundColors;
+      visualSettings.colors.contentColors = contentColors;
+      visualSettings.colors.accessoryColors = accessoryColors;
+    }
+  } else {
+    return visualSettings;
+  }
+  
+  if (error != nil) {
+    return NULL;
+  }
+  
+  return visualSettings;
+}
+#else
+- (TrueLayerVisualSettings * _Nullable)setupVisualSettingsFromDictionary:(NSDictionary *)theme {
+  TrueLayerVisualSettings *visualSettings = [[TrueLayerVisualSettings alloc] init];
+  NSError *error;
+
+  if (theme[@"ios"] != nil) {
+    if (theme[@"ios"][@"fontFamilyName"] != nil) {
+      visualSettings.fontFamilyName = theme[@"ios"][@"fontFamilyName"];
+    }
+
+    TrueLayerBackgroundColors *backgroundColors =
+    [[TrueLayerBackgroundColors alloc] initWithBackgroundPrimaryLightHex: theme[@"ios"][@"lightColors"][@"backgroundPrimary"]
+                                             backgroundSecondaryLightHex: theme[@"ios"][@"lightColors"][@"backgroundSecondary"]
+                                         backgroundActionPrimaryLightHex: theme[@"ios"][@"lightColors"][@"backgroundActionPrimary"]
+                                                  backgroundCellLightHex: theme[@"ios"][@"lightColors"][@"backgroundCell"]
+                                                backgroundPrimaryDarkHex: theme[@"ios"][@"darkColors"][@"backgroundPrimary"]
+                                              backgroundSecondaryDarkHex: theme[@"ios"][@"darkColors"][@"backgroundSecondary"]
+                                          backgroundActionPrimaryDarkHex: theme[@"ios"][@"darkColors"][@"backgroundActionPrimary"]
+                                                   backgroundCellDarkHex: theme[@"ios"][@"darkColors"][@"backgroundCell"]
+                                                                   error: &error];
+
+    TrueLayerContentColors *contentColors =
+    [[TrueLayerContentColors alloc] initWithContentPrimaryLightHex: theme[@"ios"][@"lightColors"][@"contentPrimary"]
+                                          contentSecondaryLightHex: theme[@"ios"][@"lightColors"][@"contentSecondary"]
+                                    contentPrimaryInvertedLightHex: theme[@"ios"][@"lightColors"][@"contentPrimaryInverted"]
+                                             contentActionLightHex: theme[@"ios"][@"lightColors"][@"contentAction"]
+                                              contentErrorLightHex: theme[@"ios"][@"lightColors"][@"contentError"]
+                                             contentPrimaryDarkHex: theme[@"ios"][@"darkColors"][@"contentPrimary"]
+                                           contentSecondaryDarkHex: theme[@"ios"][@"darkColors"][@"contentSecondary"]
+                                     contentPrimaryInvertedDarkHex: theme[@"ios"][@"darkColors"][@"contentPrimaryInverted"]
+                                              contentActionDarkHex: theme[@"ios"][@"darkColors"][@"contentAction"]
+                                               contentErrorDarkHex: theme[@"ios"][@"darkColors"][@"contentError"]
+                                                             error: &error];
+
+    TrueLayerAccessoryColors *accessoryColors =
+    [[TrueLayerAccessoryColors alloc] initWithSeparatorLightHex: theme[@"ios"][@"lightColors"][@"separator"]
+                                        uiElementBorderLightHex: theme[@"ios"][@"lightColors"][@"uiElementBorder"]
+                                               separatorDarkHex: theme[@"ios"][@"darkColors"][@"separator"]
+                                         uiElementBorderDarkHex: theme[@"ios"][@"darkColors"][@"uiElementBorder"]
+                                                          error: &error];
+
+    visualSettings.colors.backgroundColors = backgroundColors;
+    visualSettings.colors.contentColors = contentColors;
+    visualSettings.colors.accessoryColors = accessoryColors;
+
+  }
+
+  if (error != nil) {
+    return NULL;
+  }
+
+  return visualSettings;
+}
+#endif
 
 #ifdef RCT_NEW_ARCH_ENABLED
 - (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:
