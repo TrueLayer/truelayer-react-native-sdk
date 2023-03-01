@@ -8,54 +8,29 @@ import {
   View,
 } from 'react-native'
 
-import React from 'react'
+import { NavigationContainer } from '@react-navigation/native'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import React, { useState } from 'react'
 
 import { TrueLayerPaymentsSDKWrapper } from 'rn-truelayer-payments-sdk/js/TrueLayerPaymentsSDKWrapper'
 
 import {
   Environment,
   PaymentUseCase,
-  ResultType
+  ResultType,
 } from 'rn-truelayer-payments-sdk/js/models/types'
 
 import uuid from 'react-native-uuid'
 import { Colors } from 'react-native/Libraries/NewAppScreen'
 import { log } from './utils/logger'
 
-
 export default function App() {
+  const [view, setView] = useState<'base' | 'stacked'>('base')
   const isDarkMode = useColorScheme() === 'dark'
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
     flex: 1,
-  }
-
-  const androidTheme = {
-    lightColors: {
-      primary: "#FF32A852",
-      background: "#EEEEEE",
-      surface: "#CCCCCC",
-      error: "#000000"
-    },
-    darkColors: {
-      primary: "#888888",
-      background: "#000000"
-    },
-    typography: {
-      bodyLarge: {
-        font: "rainbow_2000"
-      }
-    }
-  }
-  
-  const iOSTheme = {
-    fontFamilyName: "Kanit"
-  }
-
-  const theme = {
-    android: androidTheme,
-    ios: iOSTheme
   }
 
   return (
@@ -64,39 +39,136 @@ export default function App() {
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         backgroundColor={backgroundStyle.backgroundColor}
       />
-      <View style={{ flex: 1, justifyContent: 'center' }}>
-        <Pressable
-          style={styles.button}
-          onPress={() => {
-            log('configure button clicked')
-
-            TrueLayerPaymentsSDKWrapper.configure(Environment.Sandbox, theme).then(
-              () => {
-                log('Configure success')
-              },
-              reason => {
-                log('Configure failed ' + (JSON.stringify(reason.userInfo, null, 4)))
-              },
-            )
-          }}
-        >
-          <Text style={styles.text}> Start SDK </Text>
-        </Pressable>
-        <Pressable style={styles.button} onPress={processPayment}>
-          <Text style={styles.text}> Process Single Payment </Text>
-        </Pressable>
-        <Pressable style={styles.button} onPress={getSinglePaymentStatus}>
-          <Text style={styles.text}> Get Single Payment Status </Text>
-        </Pressable>
-        <Pressable style={styles.button} onPress={processMandate}>
-          <Text style={styles.text}> Process Mandate </Text>
-        </Pressable>
-        <Pressable style={styles.button} onPress={getMandateStatus}>
-          <Text style={styles.text}> Get Mandate Status </Text>
-        </Pressable>
-      </View>
+      {view === 'base' && <BaseView setView={setView} />}
+      {view === 'stacked' && <StackedView setView={setView} />}
     </SafeAreaView>
   )
+}
+
+function StackedView(props: { setView(v: 'base' | 'stacked'): void }) {
+  return (
+    <div>
+      <h1>this page is the first page</h1>
+      <Pressable style={styles.button} onPress={() => props.setView('base')}>
+        <Text style={styles.text}> Go back to </Text>
+      </Pressable>
+      <StackedApp {...props} />
+    </div>
+  )
+}
+
+const Stack = createNativeStackNavigator()
+
+function StackedApp(props: { setView(v: 'base' | 'stacked'): void }) {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="second">
+        <Stack.Screen name="second" component={SecondScreen} />
+        <Stack.Screen
+          name="third"
+          component={() => <ThirdScreen {...props} />}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
+  )
+}
+
+function SecondScreen({
+  navigation,
+}: {
+  navigation: { navigate: (s: string) => void }
+}) {
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Text>second page</Text>
+      <Pressable
+        style={styles.button}
+        onPress={() => navigation.navigate('base')}
+      >
+        <Text style={styles.text}> Go back to </Text>
+      </Pressable>
+    </View>
+  )
+}
+
+function ThirdScreen(props: { setView(v: 'base' | 'stacked'): void }) {
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Text>third page</Text>
+      <BaseView {...props} />
+    </View>
+  )
+}
+
+function BaseView(props: { setView(v: 'base' | 'stacked'): void }) {
+  return (
+    <View style={{ flex: 1, justifyContent: 'center' }}>
+      <Pressable
+        style={styles.button}
+        onPress={() => {
+          log('configure button clicked')
+
+          TrueLayerPaymentsSDKWrapper.configure(
+            Environment.Sandbox,
+            theme,
+          ).then(
+            () => {
+              log('Configure success')
+            },
+            reason => {
+              log(
+                'Configure failed ' + JSON.stringify(reason.userInfo, null, 4),
+              )
+            },
+          )
+        }}
+      >
+        <Text style={styles.text}> Start SDK </Text>
+      </Pressable>
+      <Pressable style={styles.button} onPress={processPayment}>
+        <Text style={styles.text}> Process Single Payment </Text>
+      </Pressable>
+      <Pressable style={styles.button} onPress={getSinglePaymentStatus}>
+        <Text style={styles.text}> Get Single Payment Status </Text>
+      </Pressable>
+      <Pressable style={styles.button} onPress={processMandate}>
+        <Text style={styles.text}> Process Mandate </Text>
+      </Pressable>
+      <Pressable style={styles.button} onPress={getMandateStatus}>
+        <Text style={styles.text}> Get Mandate Status </Text>
+      </Pressable>
+      <Pressable style={styles.button} onPress={() => props.setView('stacked')}>
+        <Text style={styles.text}> Go to a list of navigatable pages </Text>
+      </Pressable>
+    </View>
+  )
+}
+
+const androidTheme = {
+  lightColors: {
+    primary: '#FF32A852',
+    background: '#EEEEEE',
+    surface: '#CCCCCC',
+    error: '#000000',
+  },
+  darkColors: {
+    primary: '#888888',
+    background: '#000000',
+  },
+  typography: {
+    bodyLarge: {
+      font: 'rainbow_2000',
+    },
+  },
+}
+
+const iOSTheme = {
+  fontFamilyName: 'Kanit',
+}
+
+const theme = {
+  android: androidTheme,
+  ios: iOSTheme,
 }
 
 function processPayment(): void {
@@ -124,7 +196,9 @@ function processPayment(): void {
           log(`processPayment success at step: ${result.step}`)
           break
         case ResultType.Failure:
-          log(`Oh we've failed processPayment with following reason: ${result.reason}`)
+          log(
+            `Oh we've failed processPayment with following reason: ${result.reason}`,
+          )
           break
       }
     })
@@ -149,7 +223,9 @@ function getSinglePaymentStatus(): void {
           log(`getSinglePaymentStatus success at step: ${result.status}`)
           break
         case ResultType.Failure:
-          log(`Oh we've failed getSinglePaymentStatus with following reason: ${result.failure}`)
+          log(
+            `Oh we've failed getSinglePaymentStatus with following reason: ${result.failure}`,
+          )
           break
       }
     })
@@ -175,7 +251,9 @@ function processMandate(): void {
           log(`processMandate success at step: ${result.step}`)
           break
         case ResultType.Failure:
-          log(`Oh we've failed processMandate with following reason: ${result.reason}`)
+          log(
+            `Oh we've failed processMandate with following reason: ${result.reason}`,
+          )
           break
       }
     })
@@ -193,14 +271,16 @@ function getMandateStatus(): void {
     )
     TrueLayerPaymentsSDKWrapper.mandateStatus(
       processorContext.id,
-      processorContext.resource_token
+      processorContext.resource_token,
     ).then(result => {
       switch (result.type) {
         case ResultType.Success:
           log(`getMandateStatus success: ${result.status}`)
           break
         case ResultType.Failure:
-          log(`Oh we've failed getMandateStatus with following reason: ${result.failure}`)
+          log(
+            `Oh we've failed getMandateStatus with following reason: ${result.failure}`,
+          )
           break
       }
     })
