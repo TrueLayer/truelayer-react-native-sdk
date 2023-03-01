@@ -47,13 +47,13 @@ export default function App() {
 
 function StackedView(props: { setView(v: 'base' | 'stacked'): void }) {
   return (
-    <div>
+    <SafeAreaView>
       <Text>this page is the first page</Text>
       <Pressable style={styles.button} onPress={() => props.setView('base')}>
         <Text style={styles.text}> Go back to </Text>
       </Pressable>
       <StackedApp {...props} />
-    </div>
+    </SafeAreaView>
   )
 }
 
