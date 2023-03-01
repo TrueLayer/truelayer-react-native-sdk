@@ -48,7 +48,7 @@ export default function App() {
 function StackedView(props: { setView(v: 'base' | 'stacked'): void }) {
   return (
     <div>
-      <h1>this page is the first page</h1>
+      <Text>this page is the first page</Text>
       <Pressable style={styles.button} onPress={() => props.setView('base')}>
         <Text style={styles.text}> Go back to </Text>
       </Pressable>
