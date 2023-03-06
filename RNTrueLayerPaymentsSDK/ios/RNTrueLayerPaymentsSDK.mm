@@ -46,6 +46,7 @@ RCT_EXPORT_METHOD(_configure:(NSString *)environment
                 resourceToken:paymentContext.resourceToken()
                   redirectURI:paymentContext.redirectUri()
          preferredCountryCode:preferences.preferredCountryCode()
+               paymentUseCase:preferences.paymentUseCase()
                       resolve:resolve
                        reject:reject];
 }
@@ -59,6 +60,7 @@ RCT_EXPORT_METHOD(_processPayment:(NSDictionary *)paymentContext
                 resourceToken:paymentContext[@"resourceToken"]
                   redirectURI:paymentContext[@"redirectUri"]
          preferredCountryCode:preferences[@"preferredCountryCode"]
+               paymentUseCase:preferences[@"paymentUseCase"]
                       resolve:resolve
                        reject:reject];
 }
@@ -255,6 +257,7 @@ RCT_EXPORT_METHOD(_mandateStatus:(NSString *)mandateId
                resourceToken:(NSString *)resourceToken
                  redirectURI:(NSString *)redirectURI
         preferredCountryCode:(nullable NSString *)preferredCountryCode
+              paymentUseCase:(nullable NSString *)paymentUseCase
                      resolve:(RCTPromiseResolveBlock)resolve
                       reject:(RCTPromiseRejectBlock)reject
 {
@@ -273,12 +276,24 @@ RCT_EXPORT_METHOD(_mandateStatus:(NSString *)mandateId
     // Capture the presented view controller.
     // We use the main thread here as `RCTPresentedViewController.init` accesses the main application window.
     UIViewController *reactViewController = RCTPresentedViewController();
+
+    TrueLayerTransactionUseCase transactionUseCase;
+    
+    if ((paymentUseCase && [paymentUseCase caseInsensitiveCompare:@"Default"] == NSOrderedSame) ||
+        (paymentUseCase && [paymentUseCase caseInsensitiveCompare:@"Send"] == NSOrderedSame)) {
+      transactionUseCase = TrueLayerTransactionUseCaseSend;
+    } else if (paymentUseCase && [paymentUseCase caseInsensitiveCompare:@"SignUpPlus"] == NSOrderedSame) {
+      transactionUseCase = TrueLayerTransactionUseCaseSignupPlus;
+    } else {
+      transactionUseCase = TrueLayerTransactionUseCaseSend;
+    }
     
     // Create the context required by the ObjC bridge in TrueLayerSDK.
     TrueLayerPresentationStyle *presentationStyle = [[TrueLayerPresentationStyle alloc] initWithPresentOn:reactViewController
                                                                                                     style:UIModalPresentationAutomatic];
     TrueLayerSinglePaymentPreferences *trueLayerPreferences = [[TrueLayerSinglePaymentPreferences alloc] initWithPresentationStyle:presentationStyle
-                                                                                                              preferredCountryCode:preferredCountryCode];
+                                                                                                              preferredCountryCode:preferredCountryCode
+                                                                                                                transactionUseCase:transactionUseCase];
     TrueLayerSinglePaymentContext *context = [[TrueLayerSinglePaymentContext alloc] initWithIdentifier:paymentId
                                                                                                  token:resourceToken
                                                                                            redirectURL:[NSURL URLWithString:redirectURI]
