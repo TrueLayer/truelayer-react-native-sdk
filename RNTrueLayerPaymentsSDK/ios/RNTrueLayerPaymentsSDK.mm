@@ -277,23 +277,23 @@ RCT_EXPORT_METHOD(_mandateStatus:(NSString *)mandateId
     // We use the main thread here as `RCTPresentedViewController.init` accesses the main application window.
     UIViewController *reactViewController = RCTPresentedViewController();
 
-    TrueLayerTransactionUseCase transactionUseCase;
-    
+    TrueLayerSinglePaymentUseCase useCase;
+
     if ((paymentUseCase && [paymentUseCase caseInsensitiveCompare:@"Default"] == NSOrderedSame) ||
         (paymentUseCase && [paymentUseCase caseInsensitiveCompare:@"Send"] == NSOrderedSame)) {
-      transactionUseCase = TrueLayerTransactionUseCaseSend;
+      useCase = TrueLayerSinglePaymentUseCaseSend;
     } else if (paymentUseCase && [paymentUseCase caseInsensitiveCompare:@"SignUpPlus"] == NSOrderedSame) {
-      transactionUseCase = TrueLayerTransactionUseCaseSignupPlus;
+      useCase = TrueLayerSinglePaymentUseCaseSignupPlus;
     } else {
-      transactionUseCase = TrueLayerTransactionUseCaseSend;
+      useCase = TrueLayerSinglePaymentUseCaseSend;
     }
-    
+
     // Create the context required by the ObjC bridge in TrueLayerSDK.
     TrueLayerPresentationStyle *presentationStyle = [[TrueLayerPresentationStyle alloc] initWithPresentOn:reactViewController
                                                                                                     style:UIModalPresentationAutomatic];
     TrueLayerSinglePaymentPreferences *trueLayerPreferences = [[TrueLayerSinglePaymentPreferences alloc] initWithPresentationStyle:presentationStyle
                                                                                                               preferredCountryCode:preferredCountryCode
-                                                                                                                transactionUseCase:transactionUseCase];
+                                                                                                                useCase:useCase];
     TrueLayerSinglePaymentContext *context = [[TrueLayerSinglePaymentContext alloc] initWithIdentifier:paymentId
                                                                                                  token:resourceToken
                                                                                            redirectURL:[NSURL URLWithString:redirectURI]
