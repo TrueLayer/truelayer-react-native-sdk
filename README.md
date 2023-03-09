@@ -23,6 +23,19 @@ Using npm:
 
 `npm install rn-truelayer-payments-sdk --save`
 
+In your iOS folder, run the Cocoapods install command:
+
+- If using the [New Architecture](https://reactnative.dev/docs/new-architecture-intro), run:
+
+	```
+	RCT_NEW_ARCH_ENABLED=1 bundle exec pod install
+	```
+- If using the old architecture, run:
+
+	```
+	bundle exec pod install
+	```
+
 ## Setup
 
 ### Prerequisites

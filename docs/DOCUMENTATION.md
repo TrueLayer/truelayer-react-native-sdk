@@ -4,6 +4,8 @@ This a high level documentation on how to use the React Native TrueLayer SDK.
 
 Once your app has obtained the payment (or mandate) identifier and resource token from the backend (see [Setup](../README.md)), you can use the React Native SDK to process the payment.
 
+> Note: when processing a single payment or mandate, ensure the top-most view that is visible *remains* in memory. It should not be hidden or deallocated while the SDK is displayed. The iOS SDK keeps a reference to this view to dismiss itself when the flow is complete.
+
 ## Single Payment
 
 ### Creating a payment
