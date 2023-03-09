@@ -116,7 +116,7 @@ function processPayment(): void {
         redirectUri: 'truelayer://payments_sample',
       },
       {
-        paymentUseCase: PaymentUseCase.Default,
+        paymentUseCase: PaymentUseCase.Send,
       },
     ).then(result => {
       switch (result.type) {

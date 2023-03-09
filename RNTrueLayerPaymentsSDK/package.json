@@ -1,7 +1,7 @@
 {
   "name": "rn-truelayer-payments-sdk",
-  "version": "1.0.0",
-  "description": "RN wrapper for TrueLyaer's payments SDK",
+  "version": "1.1.0",
+  "description": "RN wrapper for TrueLayer's payments SDK",
   "react-native": "js/index",
   "source": "js/index",
   "files": [

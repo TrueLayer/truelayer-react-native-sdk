@@ -697,14 +697,14 @@ PODS:
     - React-jsi (= 0.70.5)
     - React-logger (= 0.70.5)
     - React-perflogger (= 0.70.5)
-  - rn-truelayer-payments-sdk (1.0.0):
+  - rn-truelayer-payments-sdk (1.1.0):
     - RCT-Folly
     - RCTRequired
     - RCTTypeSafety
     - React-Codegen
     - React-Core
     - ReactCommon/turbomodule/core
-    - TrueLayerPaymentsSDK
+    - TrueLayerPaymentsSDK (= 2.3.0)
   - SocketRocket (0.6.0)
   - TrueLayerPaymentsSDK (2.3.0)
   - Yoga (1.14.0)
@@ -777,7 +777,7 @@ DEPENDENCIES:
   - React-runtimeexecutor (from `../node_modules/react-native/ReactCommon/runtimeexecutor`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - rn-truelayer-payments-sdk (from `../node_modules/rn-truelayer-payments-sdk`)
-  - TrueLayerPaymentsSDK (from `https://github.com/TrueLayer/TrueLayer-iOS-SDK`, branch `release/2.3.0`)
+  - TrueLayerPaymentsSDK (from `https://github.com/TrueLayer/TrueLayer-iOS-SDK.git`, branch `release/2.4.0`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -876,15 +876,15 @@ EXTERNAL SOURCES:
   rn-truelayer-payments-sdk:
     :path: "../node_modules/rn-truelayer-payments-sdk"
   TrueLayerPaymentsSDK:
-    :branch: release/2.3.0
-    :git: https://github.com/TrueLayer/TrueLayer-iOS-SDK
+    :branch: release/2.4.0
+    :git: https://github.com/TrueLayer/TrueLayer-iOS-SDK.git
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 CHECKOUT OPTIONS:
   TrueLayerPaymentsSDK:
-    :commit: e331337419141863bd4a8587014d9b2f1b5244dd
-    :git: https://github.com/TrueLayer/TrueLayer-iOS-SDK
+    :commit: bee70152d436b0e90ae844d98e8d45ce72724633
+    :git: https://github.com/TrueLayer/TrueLayer-iOS-SDK.git
 
 SPEC CHECKSUMS:
   boost: a7c83b31436843459a1961bfd74b96033dc77234
@@ -937,12 +937,12 @@ SPEC CHECKSUMS:
   React-rncore: e2856a5f65ec840ffe2dfdc14ac84e1ee1a18c25
   React-runtimeexecutor: 7401c4a40f8728fd89df4a56104541b760876117
   ReactCommon: c9246996e73bf75a2c6c3ff15f1e16707cdc2da9
-  rn-truelayer-payments-sdk: 79de81c45aa2e0f3e9286537df9fc90888bb37df
+  rn-truelayer-payments-sdk: 0574bcb5581bb7fa2a763ec9a2d47e91945f8f63
   SocketRocket: fccef3f9c5cedea1353a9ef6ada904fde10d6608
   TrueLayerPaymentsSDK: 12e11262751dca7937c551ac0a2b23bf2e6b6d24
   Yoga: eca980a5771bf114c41a754098cd85e6e0d90ed7
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 0e846ae6b7b529247fc95e6f417d7f8512f851df
+PODFILE CHECKSUM: 76a6f23630f9fc11851ee09ba70a0cd6207d20c1
 
 COCOAPODS: 1.11.3
