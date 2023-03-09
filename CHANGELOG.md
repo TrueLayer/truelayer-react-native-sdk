@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file. To know better on how to write and maintain a changelog, refer to [this link](https://keepachangelog.com/en/1.0.0/).
 
+## [1.2.0]
+
+- Android SDK now supports API level 21 - please check readme on how to configure your Android project gradle files.
+
 ## [1.0.0]
 
 ### Added
