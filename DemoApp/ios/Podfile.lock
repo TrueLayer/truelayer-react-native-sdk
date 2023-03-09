@@ -777,6 +777,7 @@ DEPENDENCIES:
   - React-runtimeexecutor (from `../node_modules/react-native/ReactCommon/runtimeexecutor`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - rn-truelayer-payments-sdk (from `../node_modules/rn-truelayer-payments-sdk`)
+  - TrueLayerPaymentsSDK (from `https://github.com/TrueLayer/TrueLayer-iOS-SDK.git`, branch `release/2.4.0`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -795,7 +796,6 @@ SPEC REPOS:
     - libevent
     - OpenSSL-Universal
     - SocketRocket
-    - TrueLayerPaymentsSDK
     - YogaKit
 
 EXTERNAL SOURCES:
@@ -875,8 +875,16 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   rn-truelayer-payments-sdk:
     :path: "../node_modules/rn-truelayer-payments-sdk"
+  TrueLayerPaymentsSDK:
+    :branch: release/2.4.0
+    :git: https://github.com/TrueLayer/TrueLayer-iOS-SDK.git
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
+
+CHECKOUT OPTIONS:
+  TrueLayerPaymentsSDK:
+    :commit: bee70152d436b0e90ae844d98e8d45ce72724633
+    :git: https://github.com/TrueLayer/TrueLayer-iOS-SDK.git
 
 SPEC CHECKSUMS:
   boost: a7c83b31436843459a1961bfd74b96033dc77234
@@ -935,6 +943,6 @@ SPEC CHECKSUMS:
   Yoga: eca980a5771bf114c41a754098cd85e6e0d90ed7
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: f031d28059765713ce5e10f73a0d172aa3e4739f
+PODFILE CHECKSUM: 76a6f23630f9fc11851ee09ba70a0cd6207d20c1
 
 COCOAPODS: 1.11.3

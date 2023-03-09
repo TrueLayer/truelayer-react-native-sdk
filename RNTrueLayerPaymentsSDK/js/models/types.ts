@@ -1,11 +1,11 @@
 import { MandateStatus } from "./mandates/MandateStatus";
 import { PaymentStatus } from "./payments/PaymentStatus";
 
-export type { PaymentStatus, MandateStatus };
+export { PaymentStatus, MandateStatus };
 
 export type { PaymentContext } from "./payments/PaymentContext";
 
-export type { PaymentUseCase } from "./payments/PaymentUseCase";
+export { PaymentUseCase } from "./payments/PaymentUseCase";
 
 export type { MandateContext } from "./mandates/MandateContext";
 
