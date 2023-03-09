@@ -279,8 +279,7 @@ RCT_EXPORT_METHOD(_mandateStatus:(NSString *)mandateId
 
     TrueLayerSinglePaymentUseCase useCase;
 
-    if ((paymentUseCase && [paymentUseCase caseInsensitiveCompare:@"Default"] == NSOrderedSame) ||
-        (paymentUseCase && [paymentUseCase caseInsensitiveCompare:@"Send"] == NSOrderedSame)) {
+    if (paymentUseCase && [paymentUseCase caseInsensitiveCompare:@"Send"] == NSOrderedSame) {
       useCase = TrueLayerSinglePaymentUseCaseSend;
     } else if (paymentUseCase && [paymentUseCase caseInsensitiveCompare:@"SignUpPlus"] == NSOrderedSame) {
       useCase = TrueLayerSinglePaymentUseCaseSignupPlus;
