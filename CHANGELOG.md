@@ -5,7 +5,12 @@ All notable changes to this project will be documented in this file. To know bet
 
 ### Added
 
-- Android SDK now supports API level 21 - please check readme on how to configure your Android project gradle files.
+- Support for Signup+.
+
+### Changed
+
+- Android SDK support target lowered to API level 21
+- Updated the underlying iOS SDK to version [2.4.0](https://github.com/TrueLayer/TrueLayer-iOS-SDK/releases/tag/2.4.0).
 - Updated the underlying Android SDK to version [2.3.0](https://docs.truelayer.com/docs/android-sdk-release-history).
 
 
@@ -15,9 +20,11 @@ All notable changes to this project will be documented in this file. To know bet
 
 - Support for color customisation on iOS and Android.
 - Support for font customisation on iOS and Android.
+
+### Changed
+
 - Updated the underlying iOS SDK to version [2.3.0](https://github.com/TrueLayer/TrueLayer-iOS-SDK/releases/tag/2.3.0).
 - Updated the underlying Android SDK to version [2.2.1](https://docs.truelayer.com/docs/android-sdk-release-history).
-
 
 ## [1.0.0]
 
