@@ -223,11 +223,16 @@ RCT_EXPORT_METHOD(_mandateStatus:(NSString *)mandateId
     reject([@(error.code) stringValue], error.localizedDescription, error);
     return;
   }
-  
+
+  NSDictionary *additionalConfiguration = @{
+    @"customIntegrationType": @"React Native",
+    @"customIntegrationVersion": @"1.2.0"
+  };
+
   [TrueLayerPaymentsManager configureWithEnvironment: sdkEnvironment
                                       visualSettings: visualSettings
-                             additionalConfiguration: [NSDictionary dictionaryWithObjectsAndKeys:@"React Native", @"customIntegrationType", nil]];
-  
+                             additionalConfiguration: additionalConfiguration];
+
   resolve(NULL);
 }
 
