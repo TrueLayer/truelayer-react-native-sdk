@@ -30,7 +30,8 @@ yarn start
 
 // For iOS, from the root of the project
 cd ios
-pod install
+**NEW REACT ARCHITECTURE**: RCT_NEW_ARCH_ENABLED=1 bundle exec pod install
+**OLD REACT ARCHITECTURE**: pod install
 cd ..
 yarn ios
 ```
