@@ -54,13 +54,12 @@ Alternatively, you can use our [open source server](https://github.com/TrueLayer
 1.  Import the SDK:
 
 ```typescript
-import { TrueLayerPaymentsSDKWrapper } from "rn-truelayer-payments-sdk/js/TrueLayerPaymentsSDKWrapper";
-
 import {
+  TrueLayerPaymentsSDKWrapper,
   Environment,
   PaymentUseCase,
-  ResultType,
-} from "rn-truelayer-payments-sdk/js/models/types";
+  ResultType
+} from "rn-truelayer-payments-sdk";
 ```
 
 2.  Configure the SDK with the given environment (`Environment.Sandbox` or `Environment.Production`):
