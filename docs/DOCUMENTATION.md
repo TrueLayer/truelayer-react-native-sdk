@@ -40,7 +40,7 @@ The parameters used in `PaymentContext` are explained below:
 The parameters used in the `PaymentPreferences` are explained below:
 
 - `preferredCountryCode`: the preferred country to use when displaying the providers. If the country is invalid, or does not include any providers, the value will fallback to the user's locale.
-- `paymentUseCase`: dictates the wording to display to the user when sending a payment, to clarify what the payment is used for. For example, for SignUp+, use `PaymentUseCase.SignUpPlus`.
+- `paymentUseCase`: dictates the wording to display to the user when sending a payment, to clarify what the payment is used for. For example, for SignUp+, use `PaymentUseCase.SignUpPlus`. For a standard payment, use `PaymentUseCase.Send`, which is also the default value.
 
 ### Getting Payment Status
 
