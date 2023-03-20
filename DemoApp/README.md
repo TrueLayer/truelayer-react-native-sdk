@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-Since `yarn link/unlink` does not work with react-native. Install `yalc` globally. This is a tool that allows you to test local packages without publishing them to npm.
+Since `yarn link/unlink` does not work with react-native. Install [yalc](https://www.npmjs.com/package/yalc) globally. This is a tool that allows you to test local packages without publishing them to npm.
 
 // from the root of the project
 // N.B these commands will need to be re-run if you make any changes to the SDK
