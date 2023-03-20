@@ -10,6 +10,7 @@ yarn add -g yalc
 Build the SDK
 ```
 // from the root of the project
+// N.B these commands will need to be re-run if you make any changes to the SDK
 cd RNTureLayerPaymentsSDK
 yarn build
 yalc publish
@@ -30,7 +31,7 @@ cd DemoApp
 yarn install
 yarn start
 
-// For iOS
+// For iOS, from the root of the project
 cd ios
 pod install
 cd ..
