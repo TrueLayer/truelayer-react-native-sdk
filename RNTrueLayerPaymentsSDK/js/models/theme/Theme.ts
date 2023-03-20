@@ -11,6 +11,6 @@ export type Theme = Partial<{
   ios: Partial<{
     lightColors: iOSColors;
     darkColors: iOSColors;
-    fontFamilyName: string;
+    fontFamilyName?: string;
   }>
 }>;
