@@ -223,11 +223,16 @@ RCT_EXPORT_METHOD(_mandateStatus:(NSString *)mandateId
     reject([@(error.code) stringValue], error.localizedDescription, error);
     return;
   }
-  
+
+  NSDictionary *additionalConfiguration = @{
+    @"customIntegrationType": @"React Native",
+    @"customIntegrationVersion": @"1.2.0"
+  };
+
   [TrueLayerPaymentsManager configureWithEnvironment: sdkEnvironment
                                       visualSettings: visualSettings
-                             additionalConfiguration: [NSDictionary dictionaryWithObjectsAndKeys:@"React Native", @"customIntegrationType", nil]];
-  
+                             additionalConfiguration: additionalConfiguration];
+
   resolve(NULL);
 }
 
@@ -395,7 +400,7 @@ RCT_EXPORT_METHOD(_mandateStatus:(NSString *)mandateId
     bool hasDarkColors = theme.ios().value().darkColors().has_value();
     
     if (theme.ios().value().fontFamilyName() != nil) {
-      visualSettings.fontFamilyName = theme.ios().value().fontFamilyName();
+      visualSettings.customFontFamilyName = theme.ios().value().fontFamilyName();
     }
     
     if (hasLightColors && hasDarkColors) {
@@ -529,7 +534,7 @@ RCT_EXPORT_METHOD(_mandateStatus:(NSString *)mandateId
 
   if (theme[@"ios"] != nil) {
     if (theme[@"ios"][@"fontFamilyName"] != nil) {
-      visualSettings.fontFamilyName = theme[@"ios"][@"fontFamilyName"];
+      visualSettings.customFontFamilyName = theme[@"ios"][@"fontFamilyName"];
     }
 
     TrueLayerBackgroundColors *backgroundColors =
