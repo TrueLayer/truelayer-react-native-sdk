@@ -89,7 +89,7 @@ interface Spec extends TurboModule {
           separator?: string;
           uiElementBorder?: string;
         },
-        fontFamilyName: string
+        fontFamilyName?: string
       }
     }
   ): Promise<void>;
