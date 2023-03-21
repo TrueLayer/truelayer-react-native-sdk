@@ -1,25 +1,23 @@
 import { MandateStatus } from "./mandates/MandateStatus";
 import { PaymentStatus } from "./payments/PaymentStatus";
 
-export { PaymentContext } from "./payments/PaymentContext";
+export { PaymentStatus, MandateStatus };
 
-export { PaymentStatus } from "./payments/PaymentStatus";
+export type { PaymentContext } from "./payments/PaymentContext";
 
 export { PaymentUseCase } from "./payments/PaymentUseCase";
 
-export { MandateContext } from "./mandates/MandateContext";
+export type { MandateContext } from "./mandates/MandateContext";
 
-export { MandateStatus } from "./mandates/MandateStatus";
+export type { PaymentPreferences } from "./payments/PaymentPreferences";
 
-export { PaymentPreferences } from "./payments/PaymentPreferences";
+export type { MandatePreferences } from "./mandates/MandatePreferences";
 
-export { MandatePreferences } from "./mandates/MandatePreferences";
+export type { Theme } from "./theme/Theme";
 
-export { Theme } from "./theme/Theme";
+export type { AndroidColors } from "./theme/AndroidColors";
 
-export { AndroidColors } from "./theme/AndroidColors";
-
-export { AndroidTypography } from "./theme/AndroidTypography";
+export type { AndroidTypography } from "./theme/AndroidTypography";
 
 /**
  * Defines available environments

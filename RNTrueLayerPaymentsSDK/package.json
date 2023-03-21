@@ -1,10 +1,11 @@
 {
   "name": "rn-truelayer-payments-sdk",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "RN wrapper for TrueLayer's payments SDK",
-  "react-native": "js/index",
-  "source": "js/index",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "files": [
+    "lib/**/*",
     "js",
     "android",
     "ios",
@@ -15,6 +16,9 @@
     "!**/__fixtures__",
     "!**/__mocks__"
   ],
+  "scripts": {
+    "build": "tsc"
+  },
   "keywords": [
     "react-native",
     "ios",

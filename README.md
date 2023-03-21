@@ -23,6 +23,19 @@ Using npm:
 
 `npm install rn-truelayer-payments-sdk --save`
 
+In your iOS folder, run the Cocoapods install command:
+
+- If using the [New Architecture](https://reactnative.dev/docs/new-architecture-intro), run:
+
+	```
+	RCT_NEW_ARCH_ENABLED=1 bundle exec pod install
+	```
+- If using the old architecture, run:
+
+	```
+	bundle exec pod install
+	```
+
 ## Setup
 
 ### Prerequisites
@@ -47,20 +60,48 @@ Alternatively, you can use our [open source server](https://github.com/TrueLayer
 #### Minimum Versions
 
 - Xcode 14.x and iOS 14.0.
-- Android 7.0 (API level 24)
+- Android 5.0 (API level 21)
+
+### Android specific setup
+
+Enable Core Library Desugaring and update packing options to remove excess LICENSE-MIT files.
+
+In order to be able to run on API level below 26 the SDK requires your application to have core library desugaring enabled. Without this the SDK will crash. 
+
+```groovy
+android {
+    // this part will enable core library desugaing
+    compileOptions {
+        coreLibraryDesugaringEnabled true
+    }
+    
+    // this part will remove excess LICENSE-MIT files
+    packagingOptions {
+        resources {
+            pickFirsts += ['META-INF/LICENSE-MIT']
+        }
+    }
+}
+
+dependencies {
+    // Add to your projects `build.gradle`.
+    // We are currently using following version of desuga libraries
+    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:1.2.2"
+}
+```
+
 
 ## How to Use the SDK
 
 1.  Import the SDK:
 
 ```typescript
-import { TrueLayerPaymentsSDKWrapper } from "rn-truelayer-payments-sdk/js/TrueLayerPaymentsSDKWrapper";
-
 import {
+  TrueLayerPaymentsSDKWrapper,
   Environment,
   PaymentUseCase,
   ResultType,
-} from "rn-truelayer-payments-sdk/js/models/types";
+} from "rn-truelayer-payments-sdk";
 ```
 
 2.  Configure the SDK with the given environment (`Environment.Sandbox` or `Environment.Production`):
