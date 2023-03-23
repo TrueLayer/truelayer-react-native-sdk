@@ -6,9 +6,10 @@ orbs:
 jobs:
   build-and-publish:
     executor: node/default
-    working_directory: RNTrueLayerPaymentsSDK
+    working_directory: ~/project/RNTrueLayerPaymentsSDK
     steps:
-      - checkout
+      - checkout:
+          path: ~/project
       - node/install-packages:
           pkg-manager: yarn
       - run:
