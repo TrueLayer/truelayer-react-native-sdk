@@ -13,8 +13,7 @@ jobs:
           name: Change to RNTrueLayerPaymentsSDK directory
           command: |
             cd RNTrueLayerPaymentsSDK
-      - node/install:
-          install-yarn: true
+      - node/install-packages:
           pkg-manager: yarn
       - run:
           name: Build SDK
