@@ -6,7 +6,6 @@
   "types": "lib/index.d.ts",
   "files": [
     "lib",
-    "js",
     "android",
     "ios",
     "rn-truelayer-payments-sdk.podspec",
