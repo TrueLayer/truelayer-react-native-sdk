@@ -30,15 +30,23 @@ jobs:
               echo "No git tag found. Exiting."
               exit 1
             fi
-      - run:
-          name: Publish to npm
-          command: |
-            echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
-            if << parameters.isDryRun >>; then
-              npm publish --dry-run
-            else
-              npm publish
-            fi
+
+      - when:
+          condition: << parameters.isDryRun >>
+          steps:
+            - run:
+                name: Publish to npm (dry run)
+                command: |
+                  echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
+                  npm publish --dry-run
+      - unless:
+          condition: not <<parameters.custom_checkout>>
+          steps:
+            - run:
+                name: Publish to npm (actual)
+                command: |
+                  echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
+                  npm publish
 
 workflows:
   version: 2
