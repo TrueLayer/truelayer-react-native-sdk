@@ -7,6 +7,10 @@ jobs:
   build-and-publish:
     executor: node/default
     working_directory: ~/project/RNTrueLayerPaymentsSDK
+    parameters:
+      isDryRun:
+        type: boolean
+        default: true
     steps:
       - checkout:
           path: ~/project
@@ -30,10 +34,25 @@ jobs:
           name: Publish to npm
           command: |
             echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
-            npm publish --dry-run
+            if << parameters.isDryRun >>; then
+              npm publish --dry-run
+            else
+              npm publish
+            fi
 
 workflows:
   version: 2
-  build-and-publish:
+  build-and-publish-workflow:
     jobs:
-      - build-and-publish
+      - build-and-publish:
+          name: build-and-publish-dry-run
+          isDryRun: true
+      - approval:
+          type: approval
+          requires:
+            - build-and-publish-dry-run
+      - build-and-publish:
+          name: build-and-publish-real
+          isDryRun: false
+          requires:
+            - approval
