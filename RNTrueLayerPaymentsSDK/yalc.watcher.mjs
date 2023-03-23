@@ -18,7 +18,7 @@ const publishAndUpdate = () => {
   })
 };
 
-const watcher = chokidar.watch(['ios', 'android', 'js', './package.json'], {
+const watcher = chokidar.watch(['ios', 'android', 'js'], {
   ignored: /(^|[\/\\])\../, // Ignore dotfiles
   persistent: true,
 });
