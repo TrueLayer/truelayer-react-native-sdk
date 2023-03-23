@@ -52,6 +52,5 @@
     "android": {
       "javaPackageName": "com.truelayerpayments"
     }
-  },
-  "dependencies": {}
+  }
 }
