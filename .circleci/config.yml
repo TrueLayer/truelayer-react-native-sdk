@@ -5,8 +5,7 @@ orbs:
 
 jobs:
   build-and-publish:
-    docker:
-      - image: node/default
+    executor: node/default
     steps:
       - checkout
       - run:
