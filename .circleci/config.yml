@@ -51,8 +51,14 @@ workflows:
           type: approval
           requires:
             - build-and-publish-dry-run
+          filters: &main_and_semver_filters
+            branches:
+              only: main
+            tags:
+              only: /^(\d+\.){2}\d+$/
       - build-and-publish:
           name: build-and-publish-real
           isDryRun: false
           requires:
             - approval
+          filters: *main_and_semver_filters
