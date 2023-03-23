@@ -21,7 +21,6 @@ import uuid from 'react-native-uuid'
 import { Colors } from 'react-native/Libraries/NewAppScreen'
 import { log } from './utils/logger'
 
-
 export default function App() {
   const isDarkMode = useColorScheme() === 'dark'
 
@@ -32,29 +31,29 @@ export default function App() {
 
   const androidTheme = {
     lightColors: {
-      primary: "#FF32A852",
-      background: "#EEEEEE",
-      surface: "#CCCCCC",
-      error: "#000000"
+      primary: '#FF32A852',
+      background: '#EEEEEE',
+      surface: '#CCCCCC',
+      error: '#000000',
     },
     darkColors: {
-      primary: "#888888",
-      background: "#000000"
+      primary: '#888888',
+      background: '#000000',
     },
     typography: {
       bodyLarge: {
-        font: "rainbow_2000"
-      }
-    }
+        font: 'rainbow_2000',
+      },
+    },
   }
-  
+
   const iOSTheme = {
-    fontFamilyName: "Kanit"
+    fontFamilyName: 'Kanit',
   }
 
   const theme = {
     android: androidTheme,
-    ios: iOSTheme
+    ios: iOSTheme,
   }
 
   return (
@@ -69,12 +68,18 @@ export default function App() {
           onPress={() => {
             log('configure button clicked')
 
-            TrueLayerPaymentsSDKWrapper.configure(Environment.Sandbox, theme).then(
+            TrueLayerPaymentsSDKWrapper.configure(
+              Environment.Sandbox,
+              theme,
+            ).then(
               () => {
                 log('Configure success')
               },
               reason => {
-                log('Configure failed ' + (JSON.stringify(reason.userInfo, null, 4)))
+                log(
+                  'Configure failed ' +
+                    JSON.stringify(reason.userInfo, null, 4),
+                )
               },
             )
           }}
@@ -123,7 +128,9 @@ function processPayment(): void {
           log(`processPayment success at step: ${result.step}`)
           break
         case ResultType.Failure:
-          log(`Oh we've failed processPayment with following reason: ${result.reason}`)
+          log(
+            `Oh we've failed processPayment with following reason: ${result.reason}`,
+          )
           break
       }
     })
@@ -148,7 +155,9 @@ function getSinglePaymentStatus(): void {
           log(`getSinglePaymentStatus success at step: ${result.status}`)
           break
         case ResultType.Failure:
-          log(`Oh we've failed getSinglePaymentStatus with following reason: ${result.failure}`)
+          log(
+            `Oh we've failed getSinglePaymentStatus with following reason: ${result.failure}`,
+          )
           break
       }
     })
@@ -174,7 +183,9 @@ function processMandate(): void {
           log(`processMandate success at step: ${result.step}`)
           break
         case ResultType.Failure:
-          log(`Oh we've failed processMandate with following reason: ${result.reason}`)
+          log(
+            `Oh we've failed processMandate with following reason: ${result.reason}`,
+          )
           break
       }
     })
@@ -192,14 +203,16 @@ function getMandateStatus(): void {
     )
     TrueLayerPaymentsSDKWrapper.mandateStatus(
       processorContext.id,
-      processorContext.resource_token
+      processorContext.resource_token,
     ).then(result => {
       switch (result.type) {
         case ResultType.Success:
           log(`getMandateStatus success: ${result.status}`)
           break
         case ResultType.Failure:
-          log(`Oh we've failed getMandateStatus with following reason: ${result.failure}`)
+          log(
+            `Oh we've failed getMandateStatus with following reason: ${result.failure}`,
+          )
           break
       }
     })

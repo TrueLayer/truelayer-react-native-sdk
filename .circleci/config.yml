@@ -1,0 +1,43 @@
+version: 2.1
+
+orbs:
+  node: circleci/node@5.1.0
+
+jobs:
+  build-and-publish:
+    docker:
+      - image: node/default
+    steps:
+      - checkout
+      - run:
+          name: Change to RNTrueLayerPaymentsSDK directory
+          command: |
+            cd RNTrueLayerPaymentsSDK
+      - node/install:
+          install-yarn: true
+          pkg-manager: yarn
+      - run:
+          name: Build SDK
+          command: yarn build
+      - run:
+          name: Set npm version from git tag
+          command: |
+            GIT_TAG=$(git describe --tags --exact-match)
+            if [ ! -z "$GIT_TAG" ]; then
+              VERSION="${GIT_TAG}"
+              npm version --no-git-tag-version $VERSION
+            else
+              echo "No git tag found. Exiting."
+              exit 1
+            fi
+      - run:
+          name: Publish to npm
+          command: |
+            echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
+            npm publish --dry-run
+
+workflows:
+  version: 2
+  build-and-publish:
+    jobs:
+      - build-and-publish
