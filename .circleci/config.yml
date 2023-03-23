@@ -49,7 +49,7 @@ workflows:
           isDryRun: true
           filters: &main_and_semver_filters
             branches:
-              only: main
+              ignore: /.*/
             tags:
               only: /^(\d+\.){2}\d+$/
       - approval:
