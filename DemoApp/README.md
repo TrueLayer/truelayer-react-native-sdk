@@ -12,11 +12,14 @@ you to test local packages without publishing them to npm.
 
 ```sh
 cd RNTureLayerPaymentsSDK
+yarn install
+yarn build
 ```
 
 2. Publish the project using yalc:
 
 ```sh
+
 npx yalc publish
 ```
 
