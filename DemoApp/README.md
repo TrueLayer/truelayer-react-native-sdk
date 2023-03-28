@@ -19,7 +19,6 @@ yarn build
 2. Publish the project using yalc:
 
 ```sh
-
 npx yalc publish
 ```
 
