@@ -63,7 +63,7 @@ workflows:
           isDryRun: true
           filters: *release_branch_filter
           requires:
-            - build-and-publish-dry-run
+            - verify-package-version
 
   build-and-publish-workflow:
     jobs:
