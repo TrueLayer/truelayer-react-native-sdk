@@ -5,7 +5,7 @@ const publishAndUpdate = () => {
   exec('yarn build', (err) => {
     if (!err) {
       console.log('Build successful');
-      exec('npx yalc push', (err) => {
+      exec('npx yalc push --replace', (err) => {
         if (err) {
           console.error('yalc push failed:', err);
           return;

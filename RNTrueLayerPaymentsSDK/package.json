@@ -1,6 +1,6 @@
 {
   "name": "rn-truelayer-payments-sdk",
-  "version": "0.0.0",
+  "version": "1.2.1",
   "description": "RN wrapper for TrueLayer's payments SDK",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -8,6 +8,7 @@
     "lib",
     "android",
     "ios",
+    "js",
     "rn-truelayer-payments-sdk.podspec",
     "!android/build",
     "!ios/build",

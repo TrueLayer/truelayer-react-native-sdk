@@ -368,7 +368,7 @@ PODS:
     - React-jsi (= 0.70.5)
     - React-logger (= 0.70.5)
     - React-perflogger (= 0.70.5)
-  - rn-truelayer-payments-sdk (1.2.1):
+  - rn-truelayer-payments-sdk (0.0.0):
     - React-Core
     - TrueLayerPaymentsSDK (= 2.4.0)
   - SocketRocket (0.6.0)
@@ -577,7 +577,7 @@ SPEC CHECKSUMS:
   React-RCTVibration: 8e5c8c5d17af641f306d7380d8d0fe9b3c142c48
   React-runtimeexecutor: 7401c4a40f8728fd89df4a56104541b760876117
   ReactCommon: c9246996e73bf75a2c6c3ff15f1e16707cdc2da9
-  rn-truelayer-payments-sdk: a28d17e3a72c9891bc0398e4e55259a8e96bf5c9
+  rn-truelayer-payments-sdk: 923a44da9f672703f832cb637ed4c03f73b82f48
   SocketRocket: fccef3f9c5cedea1353a9ef6ada904fde10d6608
   TrueLayerPaymentsSDK: 4469b20294c5ab4198bf5944f2ee610456bdcf94
   Yoga: eca980a5771bf114c41a754098cd85e6e0d90ed7
