@@ -15,7 +15,7 @@ jobs:
       - checkout
       - run:
           name: Verify package.json version matches branch release number
-          command: ./RNTrueLayerPaymentsSDK/scripts/create_tag.sh
+          command: ./RNTrueLayerPaymentsSDK/scripts/check_package_version_against_branch.sh
 
   build-and-publish:
     executor: node/default
