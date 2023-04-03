@@ -18,7 +18,8 @@
   ],
   "scripts": {
     "build": "node esbuild.config.mjs",
-    "yalc:watch": "node yalc.watcher.mjs"
+    "yalc:watch": "node yalc.watcher.mjs",
+    "create:tag": "./scripts/create_tag.sh"
   },
   "keywords": [
     "react-native",

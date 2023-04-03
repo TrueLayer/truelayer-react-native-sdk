@@ -2,7 +2,7 @@
 set -e
 
 # Extract the version from package.json
-PACKAGE_VERSION=$(jq -r '.version' RNTrueLayerPaymentsSDK/package.json)
+PACKAGE_VERSION=$(jq -r '.version' package.json)
 # Extract the version from the branch name
 BRANCH_VERSION=$(echo $CIRCLE_BRANCH | sed 's/^release\///')
 
