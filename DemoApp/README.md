@@ -1,12 +1,18 @@
-### Building and Testing the DemoApp
+# Building and Testing the DemoApp
 
-#### Prerequisites
+## Prerequisites
 
 Since `yarn link/unlink` doesn't work with React Native, you need to install
-[yalc](https://www.npmjs.com/package/yalc) globally. Yalc is a tool that enables
+[yalc](https://www.npmjs.com/package/yalc). Yalc is a tool that enables
 you to test local packages without publishing them to npm.
 
-#### To install and publish the SDK using yalc, follow these steps:
+```sh
+npx yalc --version
+```
+
+You may be prompted to install yalc. If so, accept the installation and then continue with the steps below.
+
+## To install and publish the SDK using yalc, follow these steps:
 
 1. Navigate to the root of the RNTureLayerPaymentsSDK project:
 
@@ -31,7 +37,7 @@ yarn yalc:watch
 If you are prompted to install a yalc package, accept the installation and rerun
 the `yarn yalc:watch` command.
 
-#### To install the SDK in the DemoApp, follow these steps:
+## To install the SDK in the DemoApp, follow these steps:
 
 1. Navigate to the root of the DemoApp project:
 
@@ -45,7 +51,7 @@ cd DemoApp
 npx yalc add rn-truelayer-payments-sdk
 ```
 
-#### Running the DemoApp
+## Running the DemoApp
 
 1. Navigate to the root of the DemoApp project:
 
@@ -73,20 +79,19 @@ cd ios
 
 5. Install the necessary pods:
 
-- For the new React architecture:
+- For the new React architecture
+  ```sh
+  RCT_NEW_ARCH_ENABLED=1 bundle exec pod install
+  ```
 
-```sh
-RCT_NEW_ARCH_ENABLED=1 bundle exec pod install
-```
+
 
 - For the old React architecture:
-
-```sh
-pod install
-```
+  ```sh
+  pod install
+  ```
 
 6. Navigate back to the root of the DemoApp project and run the DemoApp on iOS:
-
 ```sh
 yarn ios
 ```
