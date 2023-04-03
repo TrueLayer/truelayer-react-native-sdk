@@ -3,7 +3,20 @@ version: 2.1
 orbs:
   node: circleci/node@5.1.0
 
+executors:
+  base_executor:
+    docker:
+      - image: cimg/base:2023.04
+
 jobs:
+  verify-package-version:
+    executor: base_executor
+    steps:
+      - checkout
+      - run:
+          name: Verify package.json version matches branch release number
+          command: ./.circleci/scripts/check_version.sh
+
   build-and-publish:
     executor: node/default
     working_directory: ~/project/RNTrueLayerPaymentsSDK
@@ -19,18 +32,6 @@ jobs:
       - run:
           name: Build SDK
           command: yarn build
-      - run:
-          name: Set npm version from git tag
-          command: |
-            GIT_TAG=$(git describe --tags --exact-match)
-            if [ ! -z "$GIT_TAG" ]; then
-              VERSION="${GIT_TAG}"
-              npm version --no-git-tag-version $VERSION
-            else
-              echo "No git tag found. Exiting."
-              exit 1
-            fi
-
       - when:
           condition: << parameters.isDryRun >>
           steps:
@@ -50,6 +51,20 @@ jobs:
 
 workflows:
   version: 2
+  verify-version:
+    jobs:
+      - verify-package-version:
+          name: "verify-package-version"
+          filters: &release_branch_filter
+            branches:
+              only: /^release\/.*/
+      - build-and-publish:
+          name: build-and-publish-dry-run
+          isDryRun: true
+          filters: *release_branch_filter
+          requires:
+            - build-and-publish-dry-run
+
   build-and-publish-workflow:
     jobs:
       - build-and-publish:
