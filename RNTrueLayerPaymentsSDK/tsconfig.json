@@ -1,17 +1,15 @@
 {
   "compilerOptions": {
-    "target": "ESNext",
+    "target": "ES2017",
     "module": "ESNext",
-    "declaration": true,
-    "outDir": "./lib",
     "strict": true,
+    "esModuleInterop": true,
+    "declaration": true,
     "jsx": "react-native",
     "skipLibCheck": true,
+    "outDir": "lib",
+    "rootDir": "js"
   },
-  "include": [
-    "js"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["js/**/*"],
+  "exclude": ["node_modules", "lib"]
 }
