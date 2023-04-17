@@ -52,6 +52,7 @@ export type FailureReason =
   | "PaymentFailed"
   | "WaitAbandoned"
   | "ProcessorContextNotAvailable"
+  | "ProviderOffline"
   | "Unknown";
 
 /**
