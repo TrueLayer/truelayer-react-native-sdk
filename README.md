@@ -12,6 +12,7 @@ The SDK presents native screens that allow your users to select their bank and c
       1. [Setting Up Your Backend](#setting-up-your-backend)
       2. [Minimum Versions](#minimum-versions)
 3. [How to Use the SDK](#how-to-use-the-sdk)
+4. [How to setup the DemoApp](#how-to-setup-the-demoapp)
 
 ## How to Install the SDK
 
@@ -118,3 +119,7 @@ TrueLayerPaymentsSDKWrapper.configure(Environment.Sandbox).then(
 ```
 
 3.  Checkout [Documentation](docs/DOCUMENTATION.md).
+
+
+## How to setup the DemoApp
+Go to [DemoApp](DemoApp/README.md) for more information.

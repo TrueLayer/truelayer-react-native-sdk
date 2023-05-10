@@ -1,0 +1,88 @@
+version: 2.1
+
+orbs:
+  node: circleci/node@5.1.0
+
+executors:
+  base_executor:
+    docker:
+      - image: cimg/base:2023.04
+
+jobs:
+  verify-package-version:
+    executor: base_executor
+    steps:
+      - checkout
+      - run:
+          name: Verify package.json version matches branch release number
+          command: ./RNTrueLayerPaymentsSDK/scripts/check_package_version_against_branch.sh
+
+  build-and-publish:
+    executor: node/default
+    working_directory: ~/project/RNTrueLayerPaymentsSDK
+    parameters:
+      isDryRun:
+        type: boolean
+        default: true
+    steps:
+      - checkout:
+          path: ~/project
+      - node/install-packages:
+          pkg-manager: yarn
+      - run:
+          name: Build SDK
+          command: yarn build
+      - when:
+          condition: << parameters.isDryRun >>
+          steps:
+            - run:
+                name: Publish to npm (dry run)
+                command: |
+                  echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
+                  npm publish --dry-run
+      - unless:
+          condition: not <<parameters.isDryRun>>
+          steps:
+            - run:
+                name: Publish to npm (actual)
+                command: |
+                  echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
+                  npm publish
+
+workflows:
+  version: 2
+  verify-version:
+    jobs:
+      - verify-package-version:
+          name: "verify-package-version"
+          filters: &release_branch_filter
+            branches:
+              only: /^release\/.*/
+      - build-and-publish:
+          name: build-and-publish-dry-run
+          isDryRun: true
+          filters: *release_branch_filter
+          requires:
+            - verify-package-version
+
+  build-and-publish-workflow:
+    jobs:
+      - build-and-publish:
+          name: build-and-publish-dry-run
+          isDryRun: true
+          filters: &main_and_semver_filters
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^(\d+\.){2}\d+$/
+      - approval:
+          type: approval
+          requires:
+            - build-and-publish-dry-run
+          filters: *main_and_semver_filters
+      - build-and-publish:
+          name: build-and-publish-real
+          isDryRun: false
+          requires:
+            - approval
+          filters: *main_and_semver_filters

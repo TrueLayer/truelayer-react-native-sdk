@@ -1,14 +1,14 @@
 {
   "name": "rn-truelayer-payments-sdk",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "RN wrapper for TrueLayer's payments SDK",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "files": [
-    "lib/**/*",
-    "js",
+    "lib",
     "android",
     "ios",
+    "js",
     "rn-truelayer-payments-sdk.podspec",
     "!android/build",
     "!ios/build",
@@ -17,7 +17,9 @@
     "!**/__mocks__"
   ],
   "scripts": {
-    "build": "tsc"
+    "build": "node esbuild.config.mjs",
+    "yalc:watch": "node yalc.watcher.mjs",
+    "create:tag": "./scripts/create_tag.sh"
   },
   "keywords": [
     "react-native",
@@ -36,6 +38,9 @@
     "@types/react": "^18.0.25",
     "@types/react-native": "^0.70.6",
     "@types/react-test-renderer": "^18.0.0",
+    "chokidar": "^3.5.3",
+    "esbuild": "^0.17.12",
+    "esbuild-plugin-clean": "^1.0.1",
     "typescript": "^4.9.3"
   },
   "peerDependencies": {

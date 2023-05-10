@@ -112,10 +112,13 @@ private class TLReactNativeUtils {
                   | "ProcessorContextNotAvailable"
                   | "Unknown";
              */
+            
             return when (reason) {
                 ProcessorResult.FailureReason.NoInternet -> "NoInternet"
                 ProcessorResult.FailureReason.UserAborted -> "UserAborted"
+                ProcessorResult.FailureReason.UserAbortedProviderTemporarilyUnavailable -> "ProviderOffline"
                 ProcessorResult.FailureReason.UserAbortedFailedToNotifyBackend -> "UserAborted"
+                ProcessorResult.FailureReason.UserAbortedProviderTemporarilyUnavailableFailedToNotifyBackend -> "ProviderOffline"
                 ProcessorResult.FailureReason.CommunicationIssue -> "CommunicationIssue"
                 ProcessorResult.FailureReason.ConnectionSecurityIssue -> "ConnectionSecurityIssue"
                 ProcessorResult.FailureReason.PaymentFailed -> "PaymentFailed"

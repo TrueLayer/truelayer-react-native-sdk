@@ -58,6 +58,9 @@
     
   case TrueLayerSinglePaymentErrorUserCanceled:
     return @"UserAborted";
+
+  case TrueLayerSinglePaymentErrorProviderOffline:
+    return @"ProviderOffline";
   }
 }
 
@@ -132,6 +135,9 @@
     
   case TrueLayerMandateErrorUserCanceled:
     return @"UserAborted";
+
+  case TrueLayerMandateErrorProviderOffline:
+    return @"ProviderOffline";
   }
 }
 

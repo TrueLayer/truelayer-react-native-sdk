@@ -168,6 +168,7 @@ The `processPayment` and `processMandate` methods return a `ProcessorResult` typ
 | `WaitAbandoned`                | The user abandoned the payment on the wait screen.                                                                                                                                                                                                                                |
 | `Unknown`                      | The `SDK` encountered an unexpected behavior.                                                                                                                                                                                                                                     |
 | `UserAborted`                  | The user canceled the payment or mandate.                                                                                                                                                                                                                                         |
+| `ProviderOffline`                  | The pre-selected provider was offline.                                                                                                                                                                                                                                   |
 ## Customising the UI
 You can customise the colors and fonts used within the SDK. Customisation options are unique for iOS and Android and must be passed when processing a payment or mandate.
 

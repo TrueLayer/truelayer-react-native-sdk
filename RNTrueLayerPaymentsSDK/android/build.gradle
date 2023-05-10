@@ -1,3 +1,11 @@
+import groovy.json.JsonSlurper
+
+def getVersionFromPackageJson() {
+    def packageJsonFile = file('../package.json')
+    def packageJson = new JsonSlurper().parseText(packageJsonFile.text)
+    return packageJson.version
+}
+
 buildscript {
   ext.safeExtGet = {prop, fallback ->
     rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
@@ -23,7 +31,8 @@ apply plugin: 'kotlin-android'
 android {
   compileSdkVersion safeExtGet('compileSdkVersion', 33)
   defaultConfig {
-    buildConfigField "String", "RN_TL_SDK_VERSION", "\"1.2.0\""
+    def packageJsonVersion = getVersionFromPackageJson()
+    buildConfigField "String", "RN_TL_SDK_VERSION", "\"${packageJsonVersion}\""
     buildConfigField("boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString())
   }
   sourceSets {
@@ -48,5 +57,5 @@ repositories {
 
 dependencies {
   implementation 'com.facebook.react:react-native:+'
-  implementation 'com.truelayer.payments:ui:2.3.0'
+  implementation 'com.truelayer.payments:ui:2.4.0'
 }
