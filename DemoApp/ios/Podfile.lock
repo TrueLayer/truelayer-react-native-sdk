@@ -368,7 +368,7 @@ PODS:
     - React-jsi (= 0.70.5)
     - React-logger (= 0.70.5)
     - React-perflogger (= 0.70.5)
-  - rn-truelayer-payments-sdk (1.2.1):
+  - rn-truelayer-payments-sdk (1.2.0):
     - React-Core
     - TrueLayerPaymentsSDK (= 2.4.0)
   - SocketRocket (0.6.0)
@@ -437,6 +437,7 @@ DEPENDENCIES:
   - React-runtimeexecutor (from `../node_modules/react-native/ReactCommon/runtimeexecutor`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - rn-truelayer-payments-sdk (from `../node_modules/rn-truelayer-payments-sdk`)
+  - TrueLayerPaymentsSDK (from `https://github.com/TrueLayer/TrueLayer-iOS-SDK.git`, branch `release/2.5.0`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -455,7 +456,6 @@ SPEC REPOS:
     - libevent
     - OpenSSL-Universal
     - SocketRocket
-    - TrueLayerPaymentsSDK
     - YogaKit
 
 EXTERNAL SOURCES:
@@ -527,8 +527,16 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   rn-truelayer-payments-sdk:
     :path: "../node_modules/rn-truelayer-payments-sdk"
+  TrueLayerPaymentsSDK:
+    :branch: release/2.5.0
+    :git: https://github.com/TrueLayer/TrueLayer-iOS-SDK.git
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
+
+CHECKOUT OPTIONS:
+  TrueLayerPaymentsSDK:
+    :commit: aea4dbc99fe733c898e07afd585f141ad4dfb2fe
+    :git: https://github.com/TrueLayer/TrueLayer-iOS-SDK.git
 
 SPEC CHECKSUMS:
   boost: a7c83b31436843459a1961bfd74b96033dc77234
@@ -577,12 +585,12 @@ SPEC CHECKSUMS:
   React-RCTVibration: 8e5c8c5d17af641f306d7380d8d0fe9b3c142c48
   React-runtimeexecutor: 7401c4a40f8728fd89df4a56104541b760876117
   ReactCommon: c9246996e73bf75a2c6c3ff15f1e16707cdc2da9
-  rn-truelayer-payments-sdk: a28d17e3a72c9891bc0398e4e55259a8e96bf5c9
+  rn-truelayer-payments-sdk: 8ece99b3a68a2cb217b0cfd4185858f81268eacb
   SocketRocket: fccef3f9c5cedea1353a9ef6ada904fde10d6608
   TrueLayerPaymentsSDK: 4469b20294c5ab4198bf5944f2ee610456bdcf94
   Yoga: eca980a5771bf114c41a754098cd85e6e0d90ed7
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: f031d28059765713ce5e10f73a0d172aa3e4739f
+PODFILE CHECKSUM: 0f1e3ae4d6621e50c8db5ae78fb95659f0094842
 
 COCOAPODS: 1.11.3
