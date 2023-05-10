@@ -12,6 +12,10 @@ All notable changes to this project will be documented in this file. To know bet
 - Updated the underlying iOS SDK to version [2.5.0](https://github.com/TrueLayer/TrueLayer-iOS-SDK/releases/tag/2.5.0).
 - Updated the underlying Android SDK to version [2.4.0](https://docs.truelayer.com/docs/android-sdk-release-history).
 
+### Fixed
+
+- Error when running version 1.1.0 ([#35](https://github.com/TrueLayer/truelayer-react-native-sdk/issues/35)).
+
 ## [1.2.0]
 
 ### Added
