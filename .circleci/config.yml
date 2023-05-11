@@ -41,7 +41,9 @@ jobs:
                   echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
                   npm publish --dry-run
       - unless:
-          condition: not <<parameters.isDryRun>>
+          condition:
+            and:
+              - not: << parameters.isDryRun >>
           steps:
             - run:
                 name: Publish to npm (actual)
