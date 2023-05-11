@@ -72,7 +72,7 @@ jobs:
                 command: |
                   echo "This is a dry run: parameters.isDryRun is true."
       - when:
-          condition: not <<parameters.isDryRun>>
+          condition: not << parameters.isDryRun >>
           steps:
             - run:
                 name: Publish to npm (actual)
