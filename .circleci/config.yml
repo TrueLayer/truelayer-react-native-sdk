@@ -49,6 +49,37 @@ jobs:
                   echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
                   npm publish
 
+  build-and-publish-test:
+    executor: node/default
+    working_directory: ~/project/RNTrueLayerPaymentsSDK
+    parameters:
+      isDryRun:
+        type: boolean
+        default: true
+    steps:
+      - checkout:
+          path: ~/project
+      - node/install-packages:
+          pkg-manager: yarn
+      - run:
+          name: Build SDK
+          command: yarn build
+      - when:
+          condition: << parameters.isDryRun >>
+          steps:
+            - run:
+                name: Publish to npm (dry run)
+                command: |
+                  echo "This is a dry run: parameters.isDryRun is true."
+      - when:
+          condition: not <<parameters.isDryRun>>
+          steps:
+            - run:
+                name: Publish to npm (actual)
+                command: |
+                  echo "This is the real test run: parameters.isDryRun is false."
+
+
 workflows:
   version: 2
   verify-version:
@@ -64,6 +95,33 @@ workflows:
           filters: *release_branch_filter
           requires:
             - verify-package-version
+            
+  test-config-yaml-changes:
+    jobs:
+      - build-and-publish-test:
+          name: build-and-publish-test-dry-run
+          isDryRun: true
+          filters:
+            branches:
+              only:
+                - feature/test-config-yaml-update-for-tag
+      - approval:
+          type: approval
+          requires:
+            - build-and-publish-test-dry-run
+          filters:
+            branches:
+              only:
+                - feature/test-config-yaml-update-for-tag
+      - build-and-publish-test:
+          name: build-and-publish-test-real
+          isDryRun: false
+          requires:
+            - approval
+          filters:
+            branches:
+              only:
+                - feature/test-config-yaml-update-for-tag
 
   build-and-publish-workflow:
     jobs:
