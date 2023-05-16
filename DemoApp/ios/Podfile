@@ -39,5 +39,13 @@ target 'DemoApp' do
       :mac_catalyst_enabled => false
     )
     __apply_Xcode_12_5_M1_post_install_workaround(installer)
+
+    # Workaround for Xcode 14.3:
+    # https://github.com/facebook/react-native/issues/34106#issuecomment-1417685116
+    installer.pods_project.targets.each do |target|
+      target.build_configurations.each do |config|
+        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '12.4'
+      end
+    end
   end
 end

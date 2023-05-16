@@ -34,7 +34,10 @@
     
   case TrueLayerSinglePaymentErrorGeneric:
     return @"Unknown";
-    
+
+  case TrueLayerSinglePaymentErrorInvalidRedirectURI:
+    return @"InvalidRedirectURI";
+
   case TrueLayerSinglePaymentErrorInvalidToken:
     return @"ConnectionSecurityIssue";
     
@@ -114,7 +117,10 @@
     
   case TrueLayerMandateErrorMandateExpired:
     return @"PaymentFailed";
-    
+
+  case TrueLayerMandateErrorInvalidRedirectURI:
+    return @"InvalidRedirectURI";
+
   case TrueLayerMandateErrorMandateNotFound:
     return @"PaymentFailed";
     
