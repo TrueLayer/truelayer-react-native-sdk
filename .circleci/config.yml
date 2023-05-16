@@ -40,7 +40,7 @@ jobs:
                 command: |
                   echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
                   npm publish --dry-run
-      - unless:
+      - when:
           condition:
             and:
               - not: << parameters.isDryRun >>

@@ -49,6 +49,7 @@ export type FailureReason =
   | "UserAborted"
   | "CommunicationIssue"
   | "ConnectionSecurityIssue"
+  | "InvalidRedirectURI"
   | "PaymentFailed"
   | "WaitAbandoned"
   | "ProcessorContextNotAvailable"
