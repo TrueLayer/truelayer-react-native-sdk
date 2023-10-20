@@ -123,10 +123,14 @@ In your `app.json` file you need to add the following configuration for `expo-bu
 }
 ```
 
+For the above to work you need to have `expo-build-properties` package installed. If you don't, install it with:
+
+`npx expo install expo-build-properties`
+
 ### Using the SDK with Expo
 
 The React Native SDK is a wrapper around a native mobile TrueLayer Payments SDK. It is not possible to use it with Expo for web.
-It is also not possible to use the SDK withing Expo Go app. In order to test the SDK you will have to build the Android and iOS app.
+It is also not possible to use the SDK within the Expo Go app. To test the SDK, you must build the Android and iOS apps.
 You can do that by running the following commands:
 
 For Android
