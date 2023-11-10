@@ -18,8 +18,8 @@ import {
 } from 'rn-truelayer-payments-sdk'
 
 import uuid from 'react-native-uuid'
-import { Colors } from 'react-native/Libraries/NewAppScreen'
-import { log } from './utils/logger'
+import {Colors} from 'react-native/Libraries/NewAppScreen'
+import {log} from './utils/logger'
 
 function App(): JSX.Element {
   const isDarkMode = useColorScheme() === 'dark'
@@ -62,7 +62,7 @@ function App(): JSX.Element {
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         backgroundColor={backgroundStyle.backgroundColor}
       />
-      <View style={{ flex: 1, justifyContent: 'center' }}>
+      <View style={{flex: 1, justifyContent: 'center'}}>
         <Pressable
           style={styles.button}
           onPress={() => {
@@ -78,12 +78,11 @@ function App(): JSX.Element {
               reason => {
                 log(
                   'Configure failed ' +
-                  JSON.stringify(reason.userInfo, null, 4),
+                    JSON.stringify(reason.userInfo, null, 4),
                 )
               },
             )
-          }}
-        >
+          }}>
           <Text style={styles.text}> Start SDK </Text>
         </Pressable>
         <Pressable style={styles.button} onPress={processPayment}>
@@ -289,4 +288,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default App;
+export default App
