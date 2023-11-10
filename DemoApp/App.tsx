@@ -1,60 +1,66 @@
+/**
+ * Sample React Native App
+ * https://github.com/facebook/react-native
+ *
+ * @format
+ */
+
+import React from 'react';
+import type {PropsWithChildren} from 'react';
 import {
-  Pressable,
   SafeAreaView,
+  ScrollView,
   StatusBar,
   StyleSheet,
   Text,
   useColorScheme,
   View,
-} from 'react-native'
-
-import React from 'react'
+} from 'react-native';
 
 import {
-  TrueLayerPaymentsSDKWrapper,
-  Environment,
-  PaymentUseCase,
-  ResultType,
-} from 'rn-truelayer-payments-sdk'
+  Colors,
+  DebugInstructions,
+  Header,
+  LearnMoreLinks,
+  ReloadInstructions,
+} from 'react-native/Libraries/NewAppScreen';
 
-import uuid from 'react-native-uuid'
-import { Colors } from 'react-native/Libraries/NewAppScreen'
-import { log } from './utils/logger'
+type SectionProps = PropsWithChildren<{
+  title: string;
+}>;
 
-export default function App() {
-  const isDarkMode = useColorScheme() === 'dark'
+function Section({children, title}: SectionProps): JSX.Element {
+  const isDarkMode = useColorScheme() === 'dark';
+  return (
+    <View style={styles.sectionContainer}>
+      <Text
+        style={[
+          styles.sectionTitle,
+          {
+            color: isDarkMode ? Colors.white : Colors.black,
+          },
+        ]}>
+        {title}
+      </Text>
+      <Text
+        style={[
+          styles.sectionDescription,
+          {
+            color: isDarkMode ? Colors.light : Colors.dark,
+          },
+        ]}>
+        {children}
+      </Text>
+    </View>
+  );
+}
+
+function App(): JSX.Element {
+  const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-    flex: 1,
-  }
-
-  const androidTheme = {
-    lightColors: {
-      primary: '#FF32A852',
-      background: '#EEEEEE',
-      surface: '#CCCCCC',
-      error: '#000000',
-    },
-    darkColors: {
-      primary: '#888888',
-      background: '#000000',
-    },
-    typography: {
-      bodyLarge: {
-        font: 'rainbow_2000',
-      },
-    },
-  }
-
-  const iOSTheme = {
-    fontFamilyName: 'Kanit',
-  }
-
-  const theme = {
-    android: androidTheme,
-    ios: iOSTheme,
-  }
+  };
 
   return (
     <SafeAreaView style={backgroundStyle}>
@@ -62,229 +68,51 @@ export default function App() {
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         backgroundColor={backgroundStyle.backgroundColor}
       />
-      <View style={{ flex: 1, justifyContent: 'center' }}>
-        <Pressable
-          style={styles.button}
-          onPress={() => {
-            log('configure button clicked')
-
-            TrueLayerPaymentsSDKWrapper.configure(
-              Environment.Sandbox,
-              theme,
-            ).then(
-              () => {
-                log('Configure success')
-              },
-              reason => {
-                log(
-                  'Configure failed ' +
-                    JSON.stringify(reason.userInfo, null, 4),
-                )
-              },
-            )
-          }}
-        >
-          <Text style={styles.text}> Start SDK </Text>
-        </Pressable>
-        <Pressable style={styles.button} onPress={processPayment}>
-          <Text style={styles.text}> Process Single Payment </Text>
-        </Pressable>
-        <Pressable style={styles.button} onPress={getSinglePaymentStatus}>
-          <Text style={styles.text}> Get Single Payment Status </Text>
-        </Pressable>
-        <Pressable style={styles.button} onPress={processMandate}>
-          <Text style={styles.text}> Process Mandate </Text>
-        </Pressable>
-        <Pressable style={styles.button} onPress={getMandateStatus}>
-          <Text style={styles.text}> Get Mandate Status </Text>
-        </Pressable>
-      </View>
+      <ScrollView
+        contentInsetAdjustmentBehavior="automatic"
+        style={backgroundStyle}>
+        <Header />
+        <View
+          style={{
+            backgroundColor: isDarkMode ? Colors.black : Colors.white,
+          }}>
+          <Section title="Step One">
+            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
+            screen and then come back to see your edits.
+          </Section>
+          <Section title="See Your Changes">
+            <ReloadInstructions />
+          </Section>
+          <Section title="Debug">
+            <DebugInstructions />
+          </Section>
+          <Section title="Learn More">
+            Read the docs to discover what to do next:
+          </Section>
+          <LearnMoreLinks />
+        </View>
+      </ScrollView>
     </SafeAreaView>
-  )
-}
-
-function processPayment(): void {
-  log('processPayment button clicked')
-
-  getPaymentContext('payment').then(processorContext => {
-    log(
-      `payment`,
-      `id: ${processorContext.id}`,
-      `resource_token: ${processorContext.resource_token}`,
-    )
-
-    TrueLayerPaymentsSDKWrapper.processPayment(
-      {
-        paymentId: processorContext.id,
-        resourceToken: processorContext.resource_token,
-        redirectUri: 'truelayer://payments_sample',
-      },
-      {
-        paymentUseCase: PaymentUseCase.Send,
-      },
-    ).then(result => {
-      switch (result.type) {
-        case ResultType.Success:
-          log(`processPayment success at step: ${result.step}`)
-          break
-        case ResultType.Failure:
-          log(
-            `Oh we've failed processPayment with following reason: ${result.reason}`,
-          )
-          break
-      }
-    })
-  })
-}
-
-function getSinglePaymentStatus(): void {
-  log('getSinglePaymentStatus button clicked')
-  getPaymentContext('payment').then(processorContext => {
-    log(
-      `payment`,
-      `id: ${processorContext.id}`,
-      `resource_token: ${processorContext.resource_token}`,
-    )
-
-    TrueLayerPaymentsSDKWrapper.paymentStatus(
-      processorContext.id,
-      processorContext.resource_token,
-    ).then(result => {
-      switch (result.type) {
-        case ResultType.Success:
-          log(`getSinglePaymentStatus success at step: ${result.status}`)
-          break
-        case ResultType.Failure:
-          log(
-            `Oh we've failed getSinglePaymentStatus with following reason: ${result.failure}`,
-          )
-          break
-      }
-    })
-  })
-}
-
-function processMandate(): void {
-  log('processMandate button clicked')
-
-  getPaymentContext('mandate').then(processorContext => {
-    log(
-      `mandate`,
-      `id: ${processorContext.id}`,
-      `resource_token: ${processorContext.resource_token}`,
-    )
-    TrueLayerPaymentsSDKWrapper.processMandate({
-      mandateId: processorContext.id,
-      resourceToken: processorContext.resource_token,
-      redirectUri: 'truelayer://payments_sample',
-    }).then(result => {
-      switch (result.type) {
-        case ResultType.Success:
-          log(`processMandate success at step: ${result.step}`)
-          break
-        case ResultType.Failure:
-          log(
-            `Oh we've failed processMandate with following reason: ${result.reason}`,
-          )
-          break
-      }
-    })
-  })
-}
-
-function getMandateStatus(): void {
-  log('getMandateStatus button clicked')
-
-  getPaymentContext('mandate').then(processorContext => {
-    log(
-      `mandate`,
-      `id: ${processorContext.id}`,
-      `resource_token: ${processorContext.resource_token}`,
-    )
-    TrueLayerPaymentsSDKWrapper.mandateStatus(
-      processorContext.id,
-      processorContext.resource_token,
-    ).then(result => {
-      switch (result.type) {
-        case ResultType.Success:
-          log(`getMandateStatus success: ${result.status}`)
-          break
-        case ResultType.Failure:
-          log(
-            `Oh we've failed getMandateStatus with following reason: ${result.failure}`,
-          )
-          break
-      }
-    })
-  })
-}
-
-interface SamplePaymentContext {
-  id: string
-  resource_token: string
-}
-
-/**
- * This one will fetch the token for mandate from the payments quickstart project
- * Amend the url to match your instance.
- */
-async function getPaymentContext(
-  type: 'mandate' | 'payment',
-): Promise<SamplePaymentContext> {
-  return await fetch('http://localhost:3000/v3/' + type, {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      id: uuid.v4(),
-      amount_in_minor: '1',
-      currency: 'GBP',
-      payment_method: {
-        statement_reference: 'some ref',
-        type: 'bank_transfer',
-      },
-      beneficiary: {
-        type: 'external_account',
-        name: 'John Doe',
-        reference: 'Test Ref',
-        scheme_identifier: {
-          type: 'sort_code_account_number',
-          account_number: '12345677',
-          sort_code: '123456',
-        },
-      },
-    }),
-  })
-    .then(response => response.json())
-    .then(json => {
-      log(json)
-      return json
-    })
-    .catch(error => {
-      console.error(error)
-      return null
-    })
+  );
 }
 
 const styles = StyleSheet.create({
-  button: {
-    alignItems: 'center',
-    paddingVertical: 12,
-    marginHorizontal: 32,
-    marginBottom: 12,
-    borderRadius: 4,
-    backgroundColor: 'black',
+  sectionContainer: {
+    marginTop: 32,
+    paddingHorizontal: 24,
   },
-  text: {
-    fontSize: 16,
-    lineHeight: 21,
-    fontWeight: 'bold',
-    letterSpacing: 0.25,
-    color: 'white',
+  sectionTitle: {
+    fontSize: 24,
+    fontWeight: '600',
+  },
+  sectionDescription: {
+    marginTop: 8,
+    fontSize: 18,
+    fontWeight: '400',
   },
   highlight: {
     fontWeight: '700',
   },
-})
+});
+
+export default App;
