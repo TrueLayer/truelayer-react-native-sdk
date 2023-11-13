@@ -71,20 +71,20 @@ jobs:
             yarn build
             yalc publish
       - run:
-          name: Install DempApp dependencies
+          name: Install DemoApp dependencies
           command: |
-            cd ~/project/DempApp
+            cd ~/project/DemoApp
             npx yalc add rn-truelayer-payments-sdk
             yarn install
       - run:
           name: Install pods
           command: |
-            cd ~/project/DempApp/ios
+            cd ~/project/DemoApp/ios
             pod install
       - run:
           name: build ios
           command: |
-            cd ~/project/DempApp/ios
+            cd ~/project/DemoApp/ios
             yarn ios
 
 workflows:
