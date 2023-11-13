@@ -126,6 +126,6 @@ workflows:
           name: build-ios-demo
           filters:
             branches:
-              only: /^PX-415&/
+              only: /^PX-415$/
             tags:
               ignore: /.*/
