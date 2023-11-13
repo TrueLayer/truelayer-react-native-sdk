@@ -54,7 +54,7 @@ jobs:
                   npm publish
 
   build-ios-demo:
-    executor: rn
+    executor: rn/linux_js
     steps:
       - checkout:
           path: ~/project
