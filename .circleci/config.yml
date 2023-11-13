@@ -61,12 +61,12 @@ jobs:
       - run:
           name: Install Yalc
           command: |
-            yarn global add yalc
+            sudo npm install -g yalc
       - run:
           name: Publish Yalc
           command: |
             cd ~/project/RNTrueLayerPaymentsSDK
-            npx yalc --version
+            yalc --version
             yarn install
             yarn build
             yalc publish
