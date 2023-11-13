@@ -1,79 +1,97 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Building and Testing the DemoApp
 
-# Getting Started
+## Prerequisites
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+Since `yarn link/unlink` doesn't work with React Native, you need to install
+[yalc](https://www.npmjs.com/package/yalc). Yalc is a tool that enables
+you to test local packages without publishing them to npm.
 
-## Step 1: Start the Metro Server
+```sh
+npx yalc --version
+```
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
+You may be prompted to install yalc. If so, accept the installation and then continue with the steps below.
 
-To start Metro, run the following command from the _root_ of your React Native project:
+## To install and publish the SDK using yalc, follow these steps:
 
-```bash
-# using npm
-npm start
+1. Navigate to the root of the RNTureLayerPaymentsSDK project:
 
-# OR using Yarn
+```sh
+cd RNTureLayerPaymentsSDK
+yarn install
+yarn build
+```
+
+2. Publish the project using yalc:
+
+```sh
+npx yalc publish
+```
+
+3. Build and watch for changes in the SDK project:
+
+```sh
+yarn yalc:watch
+```
+
+If you are prompted to install a yalc package, accept the installation and rerun
+the `yarn yalc:watch` command.
+
+## To install the SDK in the DemoApp, follow these steps:
+
+1. Navigate to the root of the DemoApp project:
+
+```sh
+cd DemoApp
+```
+
+2. Add the SDK using yalc:
+
+```sh
+npx yalc add rn-truelayer-payments-sdk
+```
+
+## Running the DemoApp
+
+1. Navigate to the root of the DemoApp project:
+
+```sh
+cd DemoApp
+```
+
+2. Install the dependencies:
+
+```sh
+yarn install
+```
+
+3. Start the development server:
+
+```sh
 yarn start
 ```
 
-## Step 2: Start your Application
+4. For iOS, navigate to the ios directory from the root of the DemoApp project:
 
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
-
-### For Android
-
-```bash
-# using npm
-npm run android
-
-# OR using Yarn
-yarn android
+```sh
+cd ios
 ```
 
-### For iOS
+5. Install the necessary pods:
 
-```bash
-# using npm
-npm run ios
+- For the new React architecture
+  ```sh
+  RCT_NEW_ARCH_ENABLED=1 bundle exec pod install
+  ```
 
-# OR using Yarn
+
+
+- For the old React architecture:
+  ```sh
+  pod install
+  ```
+
+6. Navigate back to the root of the DemoApp project and run the DemoApp on iOS:
+```sh
 yarn ios
 ```
-
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
-
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
-
-## Step 3: Modifying your App
-
-Now that you have successfully run the app, let's modify it.
-
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
-
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
