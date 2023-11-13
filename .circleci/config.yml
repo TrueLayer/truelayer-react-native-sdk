@@ -56,32 +56,32 @@ jobs:
   build-ios-demo:
     executor: rn
     steps:
-      -checkout:
-        path: ~/project
-      -run:
-        name: Publish Yalc
-        command: |
-          cd ~/project/RNTrueLayerPaymentsSDK
-          npx yalc --version
-          yarn install
-          yarn build
-          yalc publish
-      -run:
-        name: Install DempApp dependencies
-        command: |
-          cd ~/project/DempApp
-          npx yalc add rn-truelayer-payments-sdk
-          yarn install
-      -run:
-        name: Install pods
-        command: |
-          cd ~/project/DempApp/ios
-          pod install
-      -run:
-        name: build ios
-        command: |
-          cd ~/project/DempApp/ios
-          yarn ios
+      - checkout:
+          path: ~/project
+      - run:
+          name: Publish Yalc
+          command: |
+            cd ~/project/RNTrueLayerPaymentsSDK
+            npx yalc --version
+            yarn install
+            yarn build
+            yalc publish
+      - run:
+          name: Install DempApp dependencies
+          command: |
+            cd ~/project/DempApp
+            npx yalc add rn-truelayer-payments-sdk
+            yarn install
+      - run:
+          name: Install pods
+          command: |
+            cd ~/project/DempApp/ios
+            pod install
+      - run:
+          name: build ios
+          command: |
+            cd ~/project/DempApp/ios
+            yarn ios
 
 workflows:
   version: 2
