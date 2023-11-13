@@ -61,7 +61,9 @@ jobs:
       - run:
           name: Install Yalc
           command: |
-            sudo yarn global add yalc --non-interactive
+            yarn global add yalc --non-interactive
+            node -v
+            npx --version
       - run:
           name: Publish Yalc
           command: |
