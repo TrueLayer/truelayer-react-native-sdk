@@ -62,6 +62,7 @@ jobs:
           name: Install Yalc
           command: |
             yarn global add yalc --non-interactive
+            npx i yalc -g
             node -v
             npx --version
       - run:
