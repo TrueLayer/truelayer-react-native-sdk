@@ -59,6 +59,10 @@ jobs:
       - checkout:
           path: ~/project
       - run:
+          name: Install Yalc
+          command: |
+            yarn global add yalc
+      - run:
           name: Publish Yalc
           command: |
             cd ~/project/RNTrueLayerPaymentsSDK
