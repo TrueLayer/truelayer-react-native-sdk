@@ -79,15 +79,10 @@ jobs:
             npx yalc add rn-truelayer-payments-sdk
             yarn install
       - run:
-          name: Install pods
+          name: build android
           command: |
-            cd ~/project/DemoApp/ios
-            pod install
-      - run:
-          name: build ios
-          command: |
-            cd ~/project/DemoApp/ios
-            yarn ios
+            cd ~/project/DemoApp
+            yarn android
 
 workflows:
   version: 2
