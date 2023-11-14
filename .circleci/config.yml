@@ -53,7 +53,7 @@ jobs:
                   echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
                   npm publish
 
-  build-ios-demo:
+  build-android-demo-app:
     executor:
       name: android/android-machine
       tag: 2023.09.1
@@ -86,6 +86,40 @@ jobs:
             yarn react-native bundle --dev false --platform android --entry-file index.js --bundle-output ./android/app/src/main/assets/index.android.bundle --assets-dest ./android/app/src/main/res
             cd android
             ./gradlew assembleDebug
+  build-ios-demo-app:
+    macos:
+      xcode: 15.0.0
+    resource_class: macos.m1.medium.gen1
+    working_directory: /Users/distiller/project
+    
+    steps:
+      - checkout
+      - run:
+          name: Install Yalc
+          command: |
+            npm i yalc -g
+      - run:
+          name: Publish Yalc
+          command: |
+            cd /Users/distiller/project/RNTrueLayerPaymentsSDK
+            yalc --version
+            yarn install
+            yarn build
+            yalc publish
+      - run:
+          name: Install DemoApp dependencies
+          command: |
+            cd /Users/distiller/project/DemoApp
+            npx yalc add rn-truelayer-payments-sdk
+            yarn install
+      - run:
+          name: build ios
+          command: |
+            cd /Users/distiller/project/DemoApp/ios
+            pod install
+            cd /Users/distiller/project/DemoApp
+            yarn ios
+            
 
 workflows:
   version: 2
@@ -124,10 +158,17 @@ workflows:
           requires:
             - approval
           filters: *main_and_semver_filters
-  build-ios-demo-app:
+  build-demo-apps:
     jobs:
-      - build-ios-demo:
-          name: build-ios-demo
+      - build-android-demo-app:
+          name: build-android-demo-app
+          filters:
+            branches:
+              only: /^PX-415$/
+            tags:
+              ignore: /.*/
+      - build-ios-demo-app:
+          name: build-ios-demo-app
           filters:
             branches:
               only: /^PX-415$/
