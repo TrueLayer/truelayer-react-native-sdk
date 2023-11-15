@@ -118,7 +118,9 @@ jobs:
             gem install cocoapods
             bundle exec pod install
             cd /Users/distiller/project/DemoApp
-            yarn react-native build-ios
+            yarn react-native bundle --entry-file index.js --platform ios --dev false --bundle-output ios/main.jsbundle --assets-dest ios
+            cd ios
+            xcodebuild -workspace DemoApp.xcworkspace -scheme DemoApp -destination generic/platform=iOS CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED="NO" CODE_SIGN_ENTITLEMENTS="" CODE_SIGNING_ALLOWED="NO"
             
 workflows:
   version: 2
