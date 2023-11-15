@@ -83,9 +83,10 @@ jobs:
           command: |
             cd ~/project/DemoApp
             mkdir ./android/app/src/main/assets/
-            yarn react-native bundle --dev false --platform android --entry-file index.js --bundle-output ./android/app/src/main/assets/index.android.bundle --assets-dest ./android/app/src/main/res
-            cd android
-            ./gradlew assembleDebug
+#            yarn react-native bundle --dev false --platform android --entry-file index.js --bundle-output ./android/app/src/main/assets/index.android.bundle --assets-dest ./android/app/src/main/res
+            yarn react-native build-android
+#            cd android
+#            ./gradlew assembleDebug
   build-ios-demo-app:
     macos:
       xcode: 15.0.0
@@ -116,11 +117,12 @@ jobs:
           name: build ios
           command: |
             cd /Users/distiller/project/DemoApp/ios
-            pod install
+            bundle install
+            gem install cocoapods
+            bundle exec pod install
             cd /Users/distiller/project/DemoApp
-            yarn ios
+            yarn react-native build-ios
             
-
 workflows:
   version: 2
   verify-version:
