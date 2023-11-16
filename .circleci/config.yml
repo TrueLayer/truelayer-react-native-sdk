@@ -140,6 +140,16 @@ workflows:
           filters: *release_branch_filter
           requires:
             - verify-package-version
+      - build-android-demo-app:
+          name: build-android-demo-app
+          filters: &release_branch_filter
+            branches:
+              only: /^release\/.*/
+      - build-ios-demo-app:
+          name: build-ios-demo-app
+          filters: &release_branch_filter
+            branches:
+              only: /^release\/.*/
 
   build-and-publish-workflow:
     jobs:
@@ -151,9 +161,25 @@ workflows:
               ignore: /.*/
             tags:
               only: /^(\d+\.){2}\d+$/
+      - build-android-demo-app:
+          name: build-android-demo-app
+          filters: &main_and_semver_filters
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^(\d+\.){2}\d+$/
+      - build-ios-demo-app:
+          name: build-ios-demo-app
+          filters: &main_and_semver_filters
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^(\d+\.){2}\d+$/
       - approval:
           type: approval
           requires:
+            - build-android-demo-app
+            - build-ios-demo-app
             - build-and-publish-dry-run
           filters: *main_and_semver_filters
       - build-and-publish:
@@ -162,19 +188,3 @@ workflows:
           requires:
             - approval
           filters: *main_and_semver_filters
-  build-demo-apps:
-    jobs:
-      - build-android-demo-app:
-          name: build-android-demo-app
-          filters:
-            branches:
-              only: /^PX-415$/
-            tags:
-              ignore: /.*/
-      - build-ios-demo-app:
-          name: build-ios-demo-app
-          filters:
-            branches:
-              only: /^PX-415$/
-            tags:
-              ignore: /.*/
