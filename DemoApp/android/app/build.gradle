@@ -80,6 +80,7 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     signingConfigs {
         debug {
@@ -129,6 +130,12 @@ dependencies {
     } else {
         implementation jscFlavor
     }
+
+    androidTestImplementation ("androidx.test:runner:1.5.2")
+    androidTestImplementation ("androidx.test:core:1.5.0")
+    androidTestImplementation ("androidx.test:rules:1.5.0")
+    androidTestImplementation('androidx.test.uiautomator:uiautomator:2.3.0-alpha05')
+    testImplementation ('junit:junit:4.13.2')
 }
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
