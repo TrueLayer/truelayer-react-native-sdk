@@ -94,22 +94,22 @@ jobs:
           avd-name: test
           post-emulator-launch-assemble-command: "" # this can now be empty as the build was done in build-all step
           additional-args: "-partition-size 4096"
-      -run:
-        name: Setup quick-start service
-        command: |
-          cd ~
-          git clone -b main git@github.com:TrueLayer/payments-quickstart.git
-          cd payments-quickstart
-          yarn start
-        background: true
-      -run:
-        name: build uiautomator app
-        command: |
-          adb reverse tcp:3000 tcp:3000
-          cd ~/project/DemoApp/android
-          ./gradlew app:assembleDebugAndroidTest
-          ./gradlew app:installDebug
-          ./gradlew app:connectedDebugAndroidTest
+      - run:
+          name: Setup quick-start service
+          command: |
+            cd ~
+            git clone -b main git@github.com:TrueLayer/payments-quickstart.git
+            cd payments-quickstart
+            yarn start
+          background: true
+      - run:
+          name: build uiautomator app
+          command: |
+            adb reverse tcp:3000 tcp:3000
+            cd ~/project/DemoApp/android
+            ./gradlew app:assembleDebugAndroidTest
+            ./gradlew app:installDebug
+            ./gradlew app:connectedDebugAndroidTest
 
   build-ios-demo-app:
     macos:
