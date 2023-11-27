@@ -148,8 +148,8 @@ jobs:
             cd /Users/distiller/project/DemoApp
             yarn react-native bundle --entry-file index.js --platform ios --dev false --bundle-output ios/main.jsbundle --assets-dest ios
             cd ios
-            xcodebuild -workspace DemoApp.xcworkspace -scheme DemoApp -destination generic/platform=iOS CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED="NO" CODE_SIGN_ENTITLEMENTS="" CODE_SIGNING_ALLOWED="NO"
-            xcodebuild -workspace DemoApp.xcworkspace -scheme DemoApp -destination 'platform=iOS Simulator,name=iPhone 15 Pro,OS=17.0' CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED="NO" CODE_SIGN_ENTITLEMENTS="" CODE_SIGNING_ALLOWED="NO" test 
+            xcodebuild -workspace DemoApp.xcworkspace -scheme DemoApp -destination generic/platform=iOS CODE_SIGN_IDENTITY="iPhone Developer"
+            xcodebuild -workspace DemoApp.xcworkspace -scheme DemoApp -destination 'platform=iOS Simulator,name=iPhone 15 Pro,OS=17.0' CODE_SIGN_IDENTITY="iPhone Developer" test 
 
 workflows:
   version: 2
