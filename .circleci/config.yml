@@ -123,7 +123,6 @@ jobs:
       - checkout
       - macos/preboot-simulator:
           device: "iPhone 15 Pro"
-          platform: "iOS"
           version: "17.0.1"
       - run:
           name: Setup quick-start service
