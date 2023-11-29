@@ -45,7 +45,7 @@ target 'DemoApp' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
-  target 'DemoAppTests' do
+  target 'DemoAppUITests' do
     inherit! :complete
     # Pods for testing
   end
