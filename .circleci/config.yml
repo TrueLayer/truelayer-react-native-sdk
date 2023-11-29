@@ -121,9 +121,6 @@ jobs:
 
     steps:
       - checkout
-      - macos/preboot-simulator:
-          device: "iPhone 15 Pro"
-          version: "17.0"
       - run:
           name: Setup quick-start service
           command: |
@@ -161,7 +158,7 @@ jobs:
             cd /Users/distiller/project/DemoApp
             yarn react-native bundle --entry-file index.js --platform ios --dev false --bundle-output ios/main.jsbundle --assets-dest ios
             cd ios
-            xcodebuild -workspace DemoApp.xcworkspace -scheme DemoAppUITests -destination 'platform=iOS Simulator,name=iPhone 15 Pro,OS=17.0' -configuration Debug test 
+            xcodebuild -workspace DemoApp.xcworkspace -scheme DemoAppUITests -destination 'platform=iOS Simulator,name=iPhone 15 Pro,OS=17.0.1' -configuration Debug test 
 
 workflows:
   version: 2
