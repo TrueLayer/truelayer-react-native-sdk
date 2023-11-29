@@ -83,19 +83,29 @@ function App(): JSX.Element {
               },
             )
           }}>
-          <Text style={styles.text}> Start SDK </Text>
+          <Text testID={'init'} style={styles.text}>
+            Start SDK
+          </Text>
         </Pressable>
         <Pressable style={styles.button} onPress={processPayment}>
-          <Text style={styles.text}> Process Single Payment </Text>
+          <Text testID={'processPayment'} style={styles.text}>
+            Process Single Payment
+          </Text>
         </Pressable>
         <Pressable style={styles.button} onPress={getSinglePaymentStatus}>
-          <Text style={styles.text}> Get Single Payment Status </Text>
+          <Text testID={'getPayment'} style={styles.text}>
+            Get Single Payment Status
+          </Text>
         </Pressable>
         <Pressable style={styles.button} onPress={processMandate}>
-          <Text style={styles.text}> Process Mandate </Text>
+          <Text testID={'processMandate'} style={styles.text}>
+            Process Mandate
+          </Text>
         </Pressable>
         <Pressable style={styles.button} onPress={getMandateStatus}>
-          <Text style={styles.text}> Get Mandate Status </Text>
+          <Text testID={'getMandate'} style={styles.text}>
+            Get Mandate Status
+          </Text>
         </Pressable>
       </View>
     </SafeAreaView>
