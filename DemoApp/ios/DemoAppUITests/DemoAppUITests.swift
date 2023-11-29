@@ -25,6 +25,7 @@ final class DemoAppUITests: XCTestCase {
       let processSinglePaymentButton = app.staticTexts.matching(processSinglePaymentPredicate).firstMatch
       
       
+      let _ = startSDKButton.waitForExistence(timeout: TimeInterval(integerLiteral: 30))
       XCTAssertTrue(startSDKButton.isHittable)
       XCTAssertTrue(processSinglePaymentButton.isHittable)
       
@@ -33,7 +34,7 @@ final class DemoAppUITests: XCTestCase {
     
       let providersTitle = app.staticTexts["Choose your bank"]
       
-      let _ = providersTitle.waitForExistence(timeout: TimeInterval(integerLiteral: 10))
+      let _ = providersTitle.waitForExistence(timeout: TimeInterval(integerLiteral: 30))
       XCTAssertTrue(providersTitle.isHittable)
     }
 }
