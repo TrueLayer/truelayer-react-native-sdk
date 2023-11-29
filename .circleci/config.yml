@@ -199,14 +199,14 @@ workflows:
           name: build-android-demo-app
           filters: &main_and_semver_filters
             branches:
-              only: /PX-98/
+              ignore: /.*/
             tags:
               only: /^(\d+\.){2}\d+$/
       - build-ios-demo-app:
           name: build-ios-demo-app
           filters: &main_and_semver_filters
             branches:
-              only: /PX-98/
+              ignore: /.*/
             tags:
               only: /^(\d+\.){2}\d+$/
       - approval:
