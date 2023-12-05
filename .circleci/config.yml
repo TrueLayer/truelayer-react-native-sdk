@@ -86,15 +86,49 @@ jobs:
             yarn react-native bundle --dev false --platform android --entry-file index.js --bundle-output ./android/app/src/main/assets/index.android.bundle --assets-dest ./android/app/src/main/res
             cd android
             ./gradlew assembleDebug
+      - android/create-avd:
+          avd-name: test
+          install: true
+          system-image: "system-images;android-23;default;x86"
+      - android/start-emulator:
+          avd-name: test
+          post-emulator-launch-assemble-command: "" # this can now be empty as the build was done in build-all step
+          additional-args: "-partition-size 4096"
+      - run:
+          name: Setup quick-start service
+          command: |
+            cd ~
+            git clone -b main git@github.com:TrueLayer/payments-quickstart.git
+            cd payments-quickstart
+            yarn install
+            yarn start
+          background: true
+      - run:
+          name: build uiautomator app
+          command: |
+            adb reverse tcp:3000 tcp:3000
+            cd ~/project/DemoApp/android
+            ./gradlew app:assembleDebugAndroidTest
+            ./gradlew app:installDebug
+            ./gradlew app:connectedDebugAndroidTest
 
   build-ios-demo-app:
     macos:
-      xcode: 15.0.0
-    resource_class: macos.m1.medium.gen1
+      xcode: 15.0.1
+    resource_class: macos.m1.large.gen1
     working_directory: /Users/distiller/project
-    
+
     steps:
       - checkout
+      - run:
+          name: Setup quick-start service
+          command: |
+            cd ~
+            git clone -b main git@github.com:TrueLayer/payments-quickstart.git
+            cd payments-quickstart
+            yarn install
+            yarn start
+          background: true
       - run:
           name: Install Yalc
           command: |
@@ -123,8 +157,8 @@ jobs:
             cd /Users/distiller/project/DemoApp
             yarn react-native bundle --entry-file index.js --platform ios --dev false --bundle-output ios/main.jsbundle --assets-dest ios
             cd ios
-            xcodebuild -workspace DemoApp.xcworkspace -scheme DemoApp -destination generic/platform=iOS CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED="NO" CODE_SIGN_ENTITLEMENTS="" CODE_SIGNING_ALLOWED="NO"
-            
+            xcodebuild -workspace DemoApp.xcworkspace -scheme DemoAppUITests -destination 'platform=iOS Simulator,name=iPhone 15 Pro,OS=17.0.1' -configuration Debug test 
+
 workflows:
   version: 2
   verify-version:
