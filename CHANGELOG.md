@@ -1,6 +1,14 @@
 # CHANGELOG
 All notable changes to this project will be documented in this file. To know better on how to write and maintain a changelog, refer to [this link](https://keepachangelog.com/en/1.0.0/).
 
+## [1.4.0]
+
+### Changed
+
+- Updated the underlying iOS SDK to version [2.7.1](https://github.com/TrueLayer/TrueLayer-iOS-SDK/releases/tag/2.7.1).
+- Updated the underlying Android SDK to version [2.6.0](https://docs.truelayer.com/docs/android-sdk-release-history).
+
+
 ## [1.3.1]
 
 ### Added
