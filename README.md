@@ -11,6 +11,9 @@ The SDK presents native screens that allow your users to select their bank and c
    1. [Prerequisites](#prerequisites)
       1. [Setting Up Your Backend](#setting-up-your-backend)
       2. [Minimum Versions](#minimum-versions)
+   2. [Android specific setup](#android-specific-setup)
+   3. [Additional setup to use the SDK with Expo](#additional-setup-to-use-the-sdk-with-expo)
+   4. [Using the SDK with Expo](#using-the-sdk-with-expo)
 3. [How to Use the SDK](#how-to-use-the-sdk)
 4. [How to setup the DemoApp](#how-to-setup-the-demoapp)
 
@@ -91,6 +94,55 @@ dependencies {
 }
 ```
 
+### Additional setup to use the SDK with Expo
+
+In your `app.json` file you need to add the following configuration for `expo-build-properties`
+
+```json
+{
+  "expo": {
+    "plugins": [
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "compileSdkVersion": 33,
+            "targetSdkVersion": 33,
+            "buildToolsVersion": "33.0.0",
+            "packagingOptions": {
+              "exclude": ["META-INF/LICENSE-MIT"]
+            }
+          },
+          "ios": {
+            "deploymentTarget": "14.0"
+          }
+        }
+      ]
+    ]        
+  }
+}
+```
+
+For the above to work you need to have `expo-build-properties` package installed. If you don't, install it with:
+
+`npx expo install expo-build-properties`
+
+### Using the SDK with Expo
+
+The React Native SDK is a wrapper around a native mobile TrueLayer Payments SDK. It is not possible to use it with Expo for web.
+It is also not possible to use the SDK within the Expo Go app. To test the SDK, you must build the Android and iOS apps.
+You can do that by running the following commands:
+
+For Android
+```text
+npx expo prebuild
+npx expo run:android
+```
+For iOS
+```text
+npx expo prebuild
+npx expo run:ios
+```
 
 ## How to Use the SDK
 
