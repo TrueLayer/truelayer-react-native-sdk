@@ -35,6 +35,16 @@ android {
     buildConfigField "String", "RN_TL_SDK_VERSION", "\"${packageJsonVersion}\""
     buildConfigField("boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString())
   }
+
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_17
+    targetCompatibility JavaVersion.VERSION_17
+  }
+
+  kotlinOptions {
+    jvmTarget = '17'
+  }
+
   sourceSets {
     main {
       if (isNewArchitectureEnabled()) {
@@ -57,5 +67,5 @@ repositories {
 
 dependencies {
   implementation 'com.facebook.react:react-native:+'
-  implementation 'com.truelayer.payments:ui:2.4.0'
+  implementation 'com.truelayer.payments:ui:2.6.0'
 }

@@ -105,6 +105,7 @@ private class TLReactNativeUtils {
                 export type FailureReason =
                   | "NoInternet"
                   | "UserAborted"
+                  | "ProviderOffline"
                   | "CommunicationIssue"
                   | "ConnectionSecurityIssue"
                   | "PaymentFailed"
@@ -125,6 +126,9 @@ private class TLReactNativeUtils {
                 ProcessorResult.FailureReason.WaitAbandoned -> "WaitAbandoned"
                 ProcessorResult.FailureReason.WaitTokenExpired -> "CommunicationIssue"
                 ProcessorResult.FailureReason.ProcessorContextNotAvailable -> "ProcessorContextNotAvailable"
+                ProcessorResult.FailureReason.ResourceIdNotAvailable -> "Unknown"
+                ProcessorResult.FailureReason.ResourceTokenNotAvailable -> "Unknown"
+                ProcessorResult.FailureReason.InvalidResource -> "Unknown"
                 ProcessorResult.FailureReason.Unknown -> "Unknown"
             }
         }
