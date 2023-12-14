@@ -14,10 +14,10 @@ You may be prompted to install yalc. If so, accept the installation and then con
 
 ## To install and publish the SDK using yalc, follow these steps:
 
-1. Navigate to the root of the RNTureLayerPaymentsSDK project:
+1. Navigate to the root of the RNTrueLayerPaymentsSDK project:
 
 ```sh
-cd RNTureLayerPaymentsSDK
+cd RNTrueLayerPaymentsSDK
 yarn install
 yarn build
 ```
