@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- For snapshot testing & storing orchestrator test results -->
+    <!-- https://issuetracker.google.com/issues/123987001 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/> <!-- Compliant -->
+
+    <!-- Allow http requests only for androidTests -->
+    <application android:usesCleartextTraffic="true" android:requestLegacyExternalStorage="true" tools:targetApi="28">
+        <!-- Mocking activities for testing -->
+        <activity android:name="androidx.activity.ComponentActivity" />
+    </application>
+</manifest>

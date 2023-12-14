@@ -18,10 +18,10 @@ import {
 } from 'rn-truelayer-payments-sdk'
 
 import uuid from 'react-native-uuid'
-import { Colors } from 'react-native/Libraries/NewAppScreen'
-import { log } from './utils/logger'
+import {Colors} from 'react-native/Libraries/NewAppScreen'
+import {log} from './utils/logger'
 
-export default function App() {
+function App(): JSX.Element {
   const isDarkMode = useColorScheme() === 'dark'
 
   const backgroundStyle = {
@@ -62,7 +62,7 @@ export default function App() {
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         backgroundColor={backgroundStyle.backgroundColor}
       />
-      <View style={{ flex: 1, justifyContent: 'center' }}>
+      <View style={{flex: 1, justifyContent: 'center'}}>
         <Pressable
           style={styles.button}
           onPress={() => {
@@ -82,21 +82,30 @@ export default function App() {
                 )
               },
             )
-          }}
-        >
-          <Text style={styles.text}> Start SDK </Text>
+          }}>
+          <Text testID={'init'} style={styles.text}>
+            Start SDK
+          </Text>
         </Pressable>
         <Pressable style={styles.button} onPress={processPayment}>
-          <Text style={styles.text}> Process Single Payment </Text>
+          <Text testID={'processPayment'} style={styles.text}>
+            Process Single Payment
+          </Text>
         </Pressable>
         <Pressable style={styles.button} onPress={getSinglePaymentStatus}>
-          <Text style={styles.text}> Get Single Payment Status </Text>
+          <Text testID={'getPayment'} style={styles.text}>
+            Get Single Payment Status
+          </Text>
         </Pressable>
         <Pressable style={styles.button} onPress={processMandate}>
-          <Text style={styles.text}> Process Mandate </Text>
+          <Text testID={'processMandate'} style={styles.text}>
+            Process Mandate
+          </Text>
         </Pressable>
         <Pressable style={styles.button} onPress={getMandateStatus}>
-          <Text style={styles.text}> Get Mandate Status </Text>
+          <Text testID={'getMandate'} style={styles.text}>
+            Get Mandate Status
+          </Text>
         </Pressable>
       </View>
     </SafeAreaView>
@@ -288,3 +297,5 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
 })
+
+export default App
