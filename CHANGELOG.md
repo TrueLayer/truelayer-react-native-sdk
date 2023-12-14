@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file. To know bet
 
 ### Changed
 
-- Updated the underlying iOS SDK to version [2.6.0](https://github.com/TrueLayer/TrueLayer-iOS-SDK/releases/tag/2.6.0).
+- Updated the underlying iOS SDK to version [2.7.1](https://github.com/TrueLayer/TrueLayer-iOS-SDK/releases/tag/2.7.1).
 
 ## [1.3.1]
 
