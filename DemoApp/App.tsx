@@ -25,7 +25,7 @@ import uuid from 'react-native-uuid'
 import { Colors } from 'react-native/Libraries/NewAppScreen'
 import { log } from './utils/logger'
 
-function App(): JSX.Element {
+function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark'
 
   const backgroundStyle = {

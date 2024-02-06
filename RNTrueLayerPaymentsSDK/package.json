@@ -54,8 +54,5 @@
     "android": {
       "javaPackageName": "com.truelayerpayments"
     }
-  },
-  "dependencies": {
-    "rn-truelayer-payments-sdk": "file:.yalc/rn-truelayer-payments-sdk"
   }
 }
