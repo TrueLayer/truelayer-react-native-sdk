@@ -62,13 +62,13 @@ function App(): React.JSX.Element {
 
   const getUrlAsync = async () => {
     // Get the deep link used to open the app
-    const initialUrl = await Linking.getInitialURL();
+    const initialUrl = await Linking.getInitialURL()
     if(initialUrl) {
       handleRedirect(initialUrl)
     }
-  };
+  }
 
-  getUrlAsync();
+  getUrlAsync()
 
   Linking.addEventListener("url", (event) => {
     handleRedirect(event.url)
@@ -135,12 +135,12 @@ function App(): React.JSX.Element {
   )
 }
 
-const redirectUri = 'truelayer://payments_sample';
+const redirectUri = 'truelayer://payments_sample'
 
 function processPayment(currency: 'GBP' | 'EUR'): void {
   log(`processPayment button clicked for ${currency}`)
 
-  const type = currency == 'GBP' ? 'payment' : 'payment/euro';
+  const type = currency == 'GBP' ? 'payment' : 'payment/euro'
 
   getPaymentContext(type).then(processorContext => {
     log(
@@ -256,13 +256,11 @@ function getMandateStatus(): void {
 }
 
 async function handleRedirect(url: string) {
-  console.log("Url: " + url)
     // launch result screen
   const isPayment = url.includes("payment_id")
   const isMandate = url.includes("mandate_id")
 
-  const context = await AsyncStorage.getItem('@Store:context');
-  console.log(context);
+  const context = await AsyncStorage.getItem('@Store:context')
 
   if(isPayment) {
     // relaunch sdk with processPayment
@@ -271,7 +269,7 @@ async function handleRedirect(url: string) {
     // relaunch sdk with processMandate
   }
   else {
-    Alert.alert("Error", "Invalid deep link received", [{ text: "OK" }]);
+    Alert.alert("Error", "Invalid deep link received", [{ text: "OK" }])
   }
 }
 
@@ -316,7 +314,7 @@ async function getPaymentContext(
     .then(response => response.json())
     .then(json => {
       log(json)
-      AsyncStorage.setItem('@Store:context', JSON.stringify(json));
+      AsyncStorage.setItem('@Store:context', JSON.stringify(json))
       return json
     })
     .catch(error => {
