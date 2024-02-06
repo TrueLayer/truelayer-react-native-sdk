@@ -1066,6 +1066,22 @@ PODS:
     - React-Core
     - ReactCommon/turbomodule/core
     - TrueLayerPaymentsSDK (= 2.7.1)
+  - RNCAsyncStorage (1.21.0):
+    - hermes-engine
+    - RCT-Folly (= 2021.07.22.00)
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Codegen
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-graphics
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-utils
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - Yoga
   - SocketRocket (0.6.1)
   - TrueLayerPaymentsSDK (2.7.1)
   - Yoga (1.14.0)
@@ -1140,6 +1156,7 @@ DEPENDENCIES:
   - React-utils (from `../node_modules/react-native/ReactCommon/react/utils`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - rn-truelayer-payments-sdk (from `../node_modules/rn-truelayer-payments-sdk`)
+  - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -1246,6 +1263,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   rn-truelayer-payments-sdk:
     :path: "../node_modules/rn-truelayer-payments-sdk"
+  RNCAsyncStorage:
+    :path: "../node_modules/@react-native-async-storage/async-storage"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -1289,7 +1308,7 @@ SPEC CHECKSUMS:
   React-perflogger: e3596db7e753f51766bceadc061936ef1472edc3
   React-RCTActionSheet: 17ab132c748b4471012abbcdcf5befe860660485
   React-RCTAnimation: c8bbaab62be5817d2a31c36d5f2571e3f7dcf099
-  React-RCTAppDelegate: fd960beac9581a1c4ed68e1633f5f1a7d7f2292d
+  React-RCTAppDelegate: 98616e27bbd74e2f0cad6727968a4ddaec066d8c
   React-RCTBlob: 1bcf3a0341eb8d6950009b1ddb8aefaf46996b8c
   React-RCTFabric: 2d72175df6e0e230a13ec2a7eef184ac0a122fd3
   React-RCTImage: 670a3486b532292649b1aef3ffddd0b495a5cee4
@@ -1304,6 +1323,7 @@ SPEC CHECKSUMS:
   React-utils: fa59c9a3375fb6f4aeb66714fd3f7f76b43a9f16
   ReactCommon: dd03c17275c200496f346af93a7b94c53f3093a4
   rn-truelayer-payments-sdk: 8952c34b4025ef0f57bf22cdd2c5b08713d43c63
+  RNCAsyncStorage: 7fcd057e8656cf7d626ee62798158ab18d04b9de
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   TrueLayerPaymentsSDK: 90112a7c9f2d39cd83ffc3501044bd5c42766754
   Yoga: b76f1acfda8212aa16b7e26bcce3983230c82603
