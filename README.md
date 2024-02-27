@@ -6,16 +6,19 @@ The SDK presents native screens that allow your users to select their bank and c
 
 ## Table of Contents
 
-1. [How to Install the SDK](#how-to-install-the-sdk)
-2. [Setup](#setup)
-   1. [Prerequisites](#prerequisites)
-      1. [Setting Up Your Backend](#setting-up-your-backend)
-      2. [Minimum Versions](#minimum-versions)
-   2. [Android specific setup](#android-specific-setup)
-   3. [Additional setup to use the SDK with Expo](#additional-setup-to-use-the-sdk-with-expo)
-   4. [Using the SDK with Expo](#using-the-sdk-with-expo)
-3. [How to Use the SDK](#how-to-use-the-sdk)
-4. [How to setup the DemoApp](#how-to-setup-the-demoapp)
+- [TrueLayer Payments SDK](#truelayer-payments-sdk)
+  - [Table of Contents](#table-of-contents)
+  - [How to Install the SDK](#how-to-install-the-sdk)
+  - [Setup](#setup)
+    - [Prerequisites](#prerequisites)
+      - [Setting Up Your Backend](#setting-up-your-backend)
+      - [Payments Quickstart](#payments-quickstart)
+      - [Minimum Versions](#minimum-versions)
+    - [Android specific setup](#android-specific-setup)
+    - [Additional setup to use the SDK with Expo](#additional-setup-to-use-the-sdk-with-expo)
+    - [Using the SDK with Expo](#using-the-sdk-with-expo)
+  - [How to Use the SDK](#how-to-use-the-sdk)
+  - [How to setup the DemoApp](#how-to-setup-the-demoapp)
 
 ## How to Install the SDK
 
@@ -152,7 +155,6 @@ npx expo run:ios
 import {
   TrueLayerPaymentsSDKWrapper,
   Environment,
-  PaymentUseCase,
   ResultType,
 } from "rn-truelayer-payments-sdk";
 ```

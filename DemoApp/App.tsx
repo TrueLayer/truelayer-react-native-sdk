@@ -6,9 +6,13 @@ import {
   Text,
   useColorScheme,
   View,
+  Linking,
+  Alert
 } from 'react-native'
 
 import React from 'react'
+
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import {
   TrueLayerPaymentsSDKWrapper,
@@ -18,10 +22,10 @@ import {
 } from 'rn-truelayer-payments-sdk'
 
 import uuid from 'react-native-uuid'
-import {Colors} from 'react-native/Libraries/NewAppScreen'
-import {log} from './utils/logger'
+import { Colors } from 'react-native/Libraries/NewAppScreen'
+import { log } from './utils/logger'
 
-function App(): JSX.Element {
+function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark'
 
   const backgroundStyle = {
@@ -56,6 +60,20 @@ function App(): JSX.Element {
     ios: iOSTheme,
   }
 
+  const getUrlAsync = async () => {
+    // Get the deep link used to open the app
+    const initialUrl = await Linking.getInitialURL()
+    if(initialUrl) {
+      handleRedirect(initialUrl)
+    }
+  }
+
+  getUrlAsync()
+
+  Linking.addEventListener("url", (event) => {
+    handleRedirect(event.url)
+  })
+
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar
@@ -87,9 +105,14 @@ function App(): JSX.Element {
             Start SDK
           </Text>
         </Pressable>
-        <Pressable style={styles.button} onPress={processPayment}>
-          <Text testID={'processPayment'} style={styles.text}>
-            Process Single Payment
+        <Pressable style={styles.button} onPress={() => processPayment('GBP')}>
+          <Text testID={'processPaymentGBP'} style={styles.text}>
+            Process Single Payment GBP
+          </Text>
+        </Pressable>
+        <Pressable style={styles.button} onPress={() => processPayment('EUR')}>
+          <Text testID={'processPaymentEUR'} style={styles.text}>
+            Process Single Payment EUR
           </Text>
         </Pressable>
         <Pressable style={styles.button} onPress={getSinglePaymentStatus}>
@@ -112,10 +135,14 @@ function App(): JSX.Element {
   )
 }
 
-function processPayment(): void {
-  log('processPayment button clicked')
+const redirectUri = 'truelayer://payments_sample'
 
-  getPaymentContext('payment').then(processorContext => {
+function processPayment(currency: 'GBP' | 'EUR'): void {
+  log(`processPayment button clicked for ${currency}`)
+
+  const type = currency == 'GBP' ? 'payment' : 'payment/euro'
+
+  getPaymentContext(type).then(processorContext => {
     log(
       `payment`,
       `id: ${processorContext.id}`,
@@ -185,7 +212,7 @@ function processMandate(): void {
     TrueLayerPaymentsSDKWrapper.processMandate({
       mandateId: processorContext.id,
       resourceToken: processorContext.resource_token,
-      redirectUri: 'truelayer://payments_sample',
+      redirectUri: redirectUri,
     }).then(result => {
       switch (result.type) {
         case ResultType.Success:
@@ -228,6 +255,24 @@ function getMandateStatus(): void {
   })
 }
 
+async function handleRedirect(url: string) {
+    // launch result screen
+  const isPayment = url.includes("payment_id")
+  const isMandate = url.includes("mandate_id")
+
+  const context = await AsyncStorage.getItem('@Store:context')
+
+  if(isPayment) {
+    // relaunch sdk with processPayment
+  }
+  else if (isMandate) {
+    // relaunch sdk with processMandate
+  }
+  else {
+    Alert.alert("Error", "Invalid deep link received", [{ text: "OK" }])
+  }
+}
+
 interface SamplePaymentContext {
   id: string
   resource_token: string
@@ -238,7 +283,7 @@ interface SamplePaymentContext {
  * Amend the url to match your instance.
  */
 async function getPaymentContext(
-  type: 'mandate' | 'payment',
+  type: 'mandate' | 'payment' | 'payment/euro',
 ): Promise<SamplePaymentContext> {
   return await fetch('http://localhost:3000/v3/' + type, {
     method: 'POST',
@@ -269,6 +314,7 @@ async function getPaymentContext(
     .then(response => response.json())
     .then(json => {
       log(json)
+      AsyncStorage.setItem('@Store:context', JSON.stringify(json))
       return json
     })
     .catch(error => {

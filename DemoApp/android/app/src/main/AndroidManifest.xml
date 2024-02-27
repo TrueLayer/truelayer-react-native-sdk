@@ -20,6 +20,14 @@
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
+        <intent-filter android:label="TrueLayer Payment Status">
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.DEFAULT" />
+            <category android:name="android.intent.category.BROWSABLE" />
+            <!-- Accepts URIs beginning with "truelayer://payments_sample” -->
+            <!-- Make sure to add to `Allowed redirect URIs` here https://console.truelayer.com/settings/ -->
+            <data android:scheme="truelayer" android:host="payments_sample"  />
+        </intent-filter>
       </activity>
     </application>
 </manifest>

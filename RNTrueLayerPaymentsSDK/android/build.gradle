@@ -15,8 +15,8 @@ buildscript {
     gradlePluginPortal()
   }
   dependencies {
-    classpath("com.android.tools.build:gradle:7.4.2")
-    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.20"
+    classpath("com.android.tools.build:gradle:8.2.1")
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.20"
   }
 }
 
@@ -29,7 +29,7 @@ apply plugin: 'com.facebook.react'
 apply plugin: 'kotlin-android'
 
 android {
-  compileSdkVersion safeExtGet('compileSdkVersion', 33)
+  compileSdkVersion safeExtGet('compileSdkVersion', 34)
   defaultConfig {
     def packageJsonVersion = getVersionFromPackageJson()
     buildConfigField "String", "RN_TL_SDK_VERSION", "\"${packageJsonVersion}\""
