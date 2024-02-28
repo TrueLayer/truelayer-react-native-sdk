@@ -46,6 +46,8 @@ private class TLReactNativeUtils {
         val token: String?
         val redirectUri: String?
         val preferredCountryCode: String?
+        val shouldPresentResultScreen: Boolean?
+        val waitTimeMillis: Long?
 
         init {
             mandateId = map?.getString("mandateId")
@@ -53,6 +55,8 @@ private class TLReactNativeUtils {
             token = map?.getString("resourceToken")
             redirectUri = map?.getString("redirectUri")
             preferredCountryCode = preferences?.getString("preferredCountryCode")
+            shouldPresentResultScreen = preferences?.getBooleanOrNull("shouldPresentResultScreen")
+            waitTimeMillis = preferences?.getIntOrNull("waitTimeMillis")?.toLong()
         }
 
         @OptIn(ExperimentalContracts::class)
@@ -78,7 +82,9 @@ private class TLReactNativeUtils {
                 resourceToken = token,
                 redirectUri = redirectUri,
                 preferences = ProcessorContext.MandatePreferences(
-                    preferredCountryCode = preferredCountryCode
+                    preferredCountryCode = preferredCountryCode,
+                    shouldPresentResultScreen = shouldPresentResultScreen ?: true,
+                    waitTimeMillis = waitTimeMillis ?: 3_000
                 )
             )
         }
@@ -90,7 +96,9 @@ private class TLReactNativeUtils {
                 resourceToken = token,
                 redirectUri = redirectUri,
                 preferences = ProcessorContext.PaymentPreferences(
-                    preferredCountryCode = preferredCountryCode
+                    preferredCountryCode = preferredCountryCode,
+                    shouldPresentResultScreen = shouldPresentResultScreen ?: true,
+                    waitTimeMillis = waitTimeMillis ?: 3_000
                 )
             )
         }
@@ -122,8 +130,6 @@ private class TLReactNativeUtils {
                 ProcessorResult.FailureReason.WaitAbandoned -> "WaitAbandoned"
                 ProcessorResult.FailureReason.WaitTokenExpired -> "CommunicationIssue"
                 ProcessorResult.FailureReason.ProcessorContextNotAvailable -> "ProcessorContextNotAvailable"
-                ProcessorResult.FailureReason.ResourceIdNotAvailable -> "Unknown"
-                ProcessorResult.FailureReason.ResourceTokenNotAvailable -> "Unknown"
                 ProcessorResult.FailureReason.InvalidResource -> "Unknown"
                 ProcessorResult.FailureReason.Unknown -> "Unknown"
             }
