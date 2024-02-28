@@ -17,7 +17,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import {
   TrueLayerPaymentsSDKWrapper,
   Environment,
-  PaymentUseCase,
   ResultType,
 } from 'rn-truelayer-payments-sdk'
 
@@ -160,12 +159,7 @@ function processPayment(processorContext: SamplePaymentContext) {
       paymentId: processorContext.id,
       resourceToken: processorContext.resource_token,
       redirectUri: 'truelayer://payments_sample',
-    },
-    {
-      paymentUseCase: PaymentUseCase.Send,
-      shouldPresentResultScreen: true,
-      waitTimeMillis: 1000
-    },
+    }
   ).then(result => {
     switch (result.type) {
       case ResultType.Success:

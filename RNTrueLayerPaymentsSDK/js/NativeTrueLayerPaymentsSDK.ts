@@ -105,7 +105,6 @@ interface Spec extends TurboModule {
     },
     preferences?: {
       preferredCountryCode?: string;
-      paymentUseCase: string;
       shouldPresentResultScreen?: boolean;
       waitTimeMillis?: number;
     }

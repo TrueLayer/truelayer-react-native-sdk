@@ -55,8 +55,8 @@ private class TLReactNativeUtils {
             token = map?.getString("resourceToken")
             redirectUri = map?.getString("redirectUri")
             preferredCountryCode = preferences?.getString("preferredCountryCode")
-            shouldPresentResultScreen = preferences?.getBoolean("shouldPresentResultScreen")
-            waitTimeMillis = preferences?.getInt("waitTimeMillis")?.toLong()
+            shouldPresentResultScreen = preferences?.getBooleanOrNull("shouldPresentResultScreen")
+            waitTimeMillis = preferences?.getIntOrNull("waitTimeMillis")?.toLong()
         }
 
         @OptIn(ExperimentalContracts::class)
