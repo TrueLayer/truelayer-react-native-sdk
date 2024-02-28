@@ -6,4 +6,6 @@ export type PaymentPreferences = {
   * @deprecated The parameter should not be used
   */
   paymentUseCase: PaymentUseCase;
+  shouldPresentResultScreen?: boolean;
+  waitTimeMillis?: number;
 };
