@@ -5,8 +5,6 @@ export { PaymentStatus, MandateStatus };
 
 export type { PaymentContext } from "./payments/PaymentContext";
 
-export { PaymentUseCase } from "./payments/PaymentUseCase";
-
 export type { MandateContext } from "./mandates/MandateContext";
 
 export type { PaymentPreferences } from "./payments/PaymentPreferences";

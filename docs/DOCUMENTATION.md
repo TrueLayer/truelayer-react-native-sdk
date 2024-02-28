@@ -40,6 +40,8 @@ The parameters used in `PaymentContext` are explained below:
 The parameters used in the `PaymentPreferences` are explained below:
 
 - `preferredCountryCode`: the preferred country to use when displaying the providers. If the country is invalid, or does not include any providers, the value will fallback to the user's locale.
+- `shouldPresentResultScreen`: true if the result screen should be presented before the final redirect to the merchant app. Default is true.
+- `waitTimeMillis`: the total time the result screen will wait to get a final status of the payment. Default is 3 seconds. Minimum is 2 seconds. Maximum is 10 seconds.
 
 ### 1.x.x to 2.0.0 migration Guide
 The `paymentUseCase` has been deprecated and now payments must be configured for SignUp+ on creation with the `related_products.signup_plus` property.
@@ -109,6 +111,8 @@ The parameters used in `MandateContext` are explained below:
 The parameters used in the `MandatePreferences` are explained below:
 
 - `preferredCountryCode`: the preferred country to use when displaying the providers. If the country is invalid, or does not include any providers, the value will fallback to the user's locale.
+- `shouldPresentResultScreen`: true if the result screen should be presented before the final redirect to the merchant app. Default is true.
+- `waitTimeMillis`: the total time the result screen will wait to get a final status of the payment. Default is 3 seconds. Minimum is 2 seconds. Maximum is 10 seconds.
 
 ### Getting Mandate Status
 

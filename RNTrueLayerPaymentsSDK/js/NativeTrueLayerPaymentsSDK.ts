@@ -105,7 +105,8 @@ interface Spec extends TurboModule {
     },
     preferences?: {
       preferredCountryCode?: string;
-      paymentUseCase: string;
+      shouldPresentResultScreen?: boolean;
+      waitTimeMillis?: number;
     }
   ): Promise<ProcessorResult>;
 
@@ -120,6 +121,8 @@ interface Spec extends TurboModule {
     },
     preferences?: {
       preferredCountryCode?: string;
+      shouldPresentResultScreen?: boolean;
+      waitTimeMillis?: number;
     }
   ): Promise<ProcessorResult>;
 
