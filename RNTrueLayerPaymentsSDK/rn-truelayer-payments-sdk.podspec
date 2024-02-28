@@ -35,5 +35,5 @@ Pod::Spec.new do |s|
   s.dependency "RCTTypeSafety"
   s.dependency "ReactCommon/turbomodule/core"
   end
-  s.dependency "TrueLayerPaymentsSDK", '2.7.1'
+  s.dependency "TrueLayerPaymentsSDK", '3.0.0'
 end

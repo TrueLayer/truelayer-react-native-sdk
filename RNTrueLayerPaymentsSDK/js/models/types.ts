@@ -54,7 +54,21 @@ export type FailureReason =
   | "WaitAbandoned"
   | "ProcessorContextNotAvailable"
   | "ProviderOffline"
-  | "Unknown";
+  | "Unknown"
+  | "Blocked"
+  | "InvalidAccountDetails"
+  | "InvalidAccountHolderName"
+  | "InvalidCredentials"
+  | "InvalidRemitterAccount"
+  | "InvalidRequest"
+  | "InvalidSortCode"
+  | "InsufficientFunds"
+  | "PaymentLimitExceeded"
+  | "ProviderError"
+  | "ProviderExpired"
+  | "ProviderRejected"
+  | "UnknownError"
+  | "UserCanceledAtProvider";
 
 /**
  * Provides more detailed information about the error.

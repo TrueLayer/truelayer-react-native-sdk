@@ -4,8 +4,18 @@ require Pod::Executable.execute_command('node', ['-p',
     "react-native/scripts/react_native_pods.rb",
     {paths: [process.argv[1]]},
   )', __dir__]).strip
+  
 
-platform :ios, min_ios_version_supported
+#######
+# Read min iOS version from Xcode project and set as min iOS version for Podfile
+require 'xcodeproj'
+
+project_path = './DemoApp.xcodeproj'
+project = Xcodeproj::Project.open(project_path)
+min_ios_version_supported = project.build_configurations.first.build_settings['IPHONEOS_DEPLOYMENT_TARGET']
+######
+
+platform :ios, 14.0
 prepare_react_native_project!
 
 # If you are using a `react-native-flipper` your iOS build will fail when `NO_FLIPPER=1` is set.

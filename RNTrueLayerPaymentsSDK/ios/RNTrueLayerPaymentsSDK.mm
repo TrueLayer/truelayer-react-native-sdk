@@ -46,7 +46,6 @@ RCT_EXPORT_METHOD(_configure:(NSString *)environment
                 resourceToken:paymentContext.resourceToken()
                   redirectURI:paymentContext.redirectUri()
          preferredCountryCode:preferences.preferredCountryCode()
-               paymentUseCase:preferences.paymentUseCase()
                       resolve:resolve
                        reject:reject];
 }
@@ -60,7 +59,6 @@ RCT_EXPORT_METHOD(_processPayment:(NSDictionary *)paymentContext
                 resourceToken:paymentContext[@"resourceToken"]
                   redirectURI:paymentContext[@"redirectUri"]
          preferredCountryCode:preferences[@"preferredCountryCode"]
-               paymentUseCase:preferences[@"paymentUseCase"]
                       resolve:resolve
                        reject:reject];
 }
@@ -229,11 +227,12 @@ RCT_EXPORT_METHOD(_mandateStatus:(NSString *)mandateId
     @"customIntegrationVersion": @"2.0.0"
   };
 
-  [TrueLayerPaymentsManager configureWithEnvironment: sdkEnvironment
-                                      visualSettings: visualSettings
-                             additionalConfiguration: additionalConfiguration];
-
-  resolve(NULL);
+  [TrueLayerPaymentsManager configureWithEnvironment:sdkEnvironment 
+                                      visualSettings:visualSettings
+                             additionalConfiguration:additionalConfiguration
+                                   completionHandler:^{
+    resolve(NULL);
+  }];
 }
 
 /// Creates an `NSError` with the domain `TrueLayerPaymentsSDK.TrueLayerObjectiveCError` and a given description, failure reason, recovery suggestion, and code.
@@ -262,7 +261,6 @@ RCT_EXPORT_METHOD(_mandateStatus:(NSString *)mandateId
                resourceToken:(NSString *)resourceToken
                  redirectURI:(NSString *)redirectURI
         preferredCountryCode:(nullable NSString *)preferredCountryCode
-              paymentUseCase:(nullable NSString *)paymentUseCase
                      resolve:(RCTPromiseResolveBlock)resolve
                       reject:(RCTPromiseRejectBlock)reject
 {
@@ -282,22 +280,11 @@ RCT_EXPORT_METHOD(_mandateStatus:(NSString *)mandateId
     // We use the main thread here as `RCTPresentedViewController.init` accesses the main application window.
     UIViewController *reactViewController = RCTPresentedViewController();
 
-    TrueLayerSinglePaymentUseCase useCase;
-
-    if (paymentUseCase && [paymentUseCase caseInsensitiveCompare:@"Send"] == NSOrderedSame) {
-      useCase = TrueLayerSinglePaymentUseCaseSend;
-    } else if (paymentUseCase && [paymentUseCase caseInsensitiveCompare:@"SignUpPlus"] == NSOrderedSame) {
-      useCase = TrueLayerSinglePaymentUseCaseSignupPlus;
-    } else {
-      useCase = TrueLayerSinglePaymentUseCaseSend;
-    }
-
     // Create the context required by the ObjC bridge in TrueLayerSDK.
     TrueLayerPresentationStyle *presentationStyle = [[TrueLayerPresentationStyle alloc] initWithPresentOn:reactViewController
                                                                                                     style:UIModalPresentationAutomatic];
     TrueLayerSinglePaymentPreferences *trueLayerPreferences = [[TrueLayerSinglePaymentPreferences alloc] initWithPresentationStyle:presentationStyle
-                                                                                                              preferredCountryCode:preferredCountryCode
-                                                                                                                useCase:useCase];
+                                                                                                              preferredCountryCode:preferredCountryCode];
     TrueLayerSinglePaymentContext *context = [[TrueLayerSinglePaymentContext alloc] initWithIdentifier:paymentId
                                                                                                  token:resourceToken
                                                                                            redirectURL:[NSURL URLWithString:redirectURI]
@@ -361,8 +348,7 @@ RCT_EXPORT_METHOD(_mandateStatus:(NSString *)mandateId
                                                                                redirectURL:[NSURL URLWithString:redirectURI]
                                                                                preferences:preferences];
     
-    [TrueLayerPaymentsManager processMandateWithContext:context
-                                                success:^(TrueLayerMandateState state) {
+    [TrueLayerPaymentsManager processMandateWithContext:context success:^(TrueLayerMandateState state) {
       // Create a `step` value to return to React Native, that is equal to the typescript `ProcessorStep` enum.
       // See `types.ts` for the raw values to match.
       NSString *step = [RNTrueLayerHelpers stepFromMandateState:state];
@@ -373,8 +359,7 @@ RCT_EXPORT_METHOD(_mandateStatus:(NSString *)mandateId
       };
       
       resolve(result);
-    }
-                                                failure:^(TrueLayerMandateError error) {
+    } failure:^(TrueLayerMandateError error) {
       // Create a `reason` value to return to React Native, that is equal to the typescript `FailureReason` enum.
       // See `types.ts` for the raw values to match.
       NSString *reason = [RNTrueLayerHelpers reasonFromMandateError:error];
@@ -384,6 +369,8 @@ RCT_EXPORT_METHOD(_mandateStatus:(NSString *)mandateId
       };
       
       resolve(result);
+    } completionHandler:^{
+      // Should not act on the return of the method as it is async.
     }];
   }];
 }
