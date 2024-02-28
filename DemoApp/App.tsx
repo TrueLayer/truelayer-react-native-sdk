@@ -216,7 +216,7 @@ function createAndProcessMandate(): void {
       `id: ${processorContext.id}`,
       `resource_token: ${processorContext.resource_token}`,
     )
-    
+    processMandate(processorContext)
   })
 }
 
