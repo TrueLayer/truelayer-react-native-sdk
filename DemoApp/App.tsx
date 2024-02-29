@@ -159,7 +159,8 @@ function processPayment(processorContext: SamplePaymentContext) {
       paymentId: processorContext.id,
       resourceToken: processorContext.resource_token,
       redirectUri: 'truelayer://payments_sample',
-    }
+    },
+    {}
   ).then(result => {
     switch (result.type) {
       case ResultType.Success:
@@ -217,11 +218,14 @@ function createAndProcessMandate(): void {
 function processMandate(processorContext: SamplePaymentContext): void {
   AsyncStorage.setItem('@Store:context', JSON.stringify(processorContext))
   
-  TrueLayerPaymentsSDKWrapper.processMandate({
+  TrueLayerPaymentsSDKWrapper.processMandate(
+    {
     mandateId: processorContext.id,
     resourceToken: processorContext.resource_token,
     redirectUri: redirectUri
-  }).then(result => {
+  },
+  {}
+  ).then(result => {
     switch (result.type) {
       case ResultType.Success:
         log(`processMandate success at step: ${result.step}`)

@@ -15,11 +15,14 @@ Refer to our [payment-quickstart](https://github.com/TrueLayer/payments-quicksta
 ### Processing a Single Payment
 
 ```typescript
-TrueLayerPaymentsSDKWrapper.processPayment({
+TrueLayerPaymentsSDKWrapper.processPayment(
+{
   paymentId: "", // Your payment ID,
   resourceToken: "", // Your payment token,
   redirectUri: "", // Your redirect URI,
-}).then((result) => {
+},
+{}
+).then((result) => {
   switch (result.type) {
     case ResultType.Success:
       console.log(`processPayment success at step: ${result.step}`);
@@ -42,6 +45,8 @@ The parameters used in the `PaymentPreferences` are explained below:
 - `preferredCountryCode`: the preferred country to use when displaying the providers. If the country is invalid, or does not include any providers, the value will fallback to the user's locale.
 - `shouldPresentResultScreen`: true if the result screen should be presented before the final redirect to the merchant app. Default is true.
 - `waitTimeMillis`: the total time the result screen will wait to get a final status of the payment. Default is 3 seconds. Minimum is 2 seconds. Maximum is 10 seconds.
+
+Pass in an empty `PaymentPreferences` object even if all values are not customized.
 
 ### 1.x.x to 2.0.0 migration Guide
 The `paymentUseCase` has been deprecated and now payments must be configured for SignUp+ on creation with the `related_products.signup_plus` property.
@@ -86,11 +91,14 @@ This should be treated as the favorite source of truth for the status of the pay
 ### Processing a Mandate
 
 ```typescript
-TrueLayerPaymentsSDKWrapper.processMandate({
+TrueLayerPaymentsSDKWrapper.processMandate(
+{
   mandateId: "", // Your mandate identifier,
   resourceToken: "", // Your mandate resource token,
   redirectUri: "", // Your redirect URI,
-}).then((result) => {
+},
+{}
+).then((result) => {
   switch (result.type) {
     case ResultType.Success:
       console.log(`processMandate success at step: ${result.step}`);
@@ -113,6 +121,8 @@ The parameters used in the `MandatePreferences` are explained below:
 - `preferredCountryCode`: the preferred country to use when displaying the providers. If the country is invalid, or does not include any providers, the value will fallback to the user's locale.
 - `shouldPresentResultScreen`: true if the result screen should be presented before the final redirect to the merchant app. Default is true.
 - `waitTimeMillis`: the total time the result screen will wait to get a final status of the payment. Default is 3 seconds. Minimum is 2 seconds. Maximum is 10 seconds.
+
+Pass in an empty `MandatePreferences` object even if all values are not customized.
 
 ### Getting Mandate Status
 
