@@ -160,7 +160,6 @@ function processPayment(processorContext: SamplePaymentContext) {
       resourceToken: processorContext.resource_token,
       redirectUri: 'truelayer://payments_sample',
     },
-    {}
   ).then(result => {
     switch (result.type) {
       case ResultType.Success:
@@ -220,11 +219,10 @@ function processMandate(processorContext: SamplePaymentContext): void {
   
   TrueLayerPaymentsSDKWrapper.processMandate(
     {
-    mandateId: processorContext.id,
-    resourceToken: processorContext.resource_token,
-    redirectUri: redirectUri
-  },
-  {}
+      mandateId: processorContext.id,
+      resourceToken: processorContext.resource_token,
+      redirectUri: redirectUri
+    }
   ).then(result => {
     switch (result.type) {
       case ResultType.Success:
