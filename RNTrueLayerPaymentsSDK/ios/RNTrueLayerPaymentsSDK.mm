@@ -42,10 +42,19 @@ RCT_EXPORT_METHOD(_configure:(NSString *)environment
                 resolve:(RCTPromiseResolveBlock)resolve
                  reject:(RCTPromiseRejectBlock)reject
 {
+  bool shouldShowResultScreen = preferences.shouldPresentResultScreen().value_or(true);
+  NSNumber * _Nullable waitTimeMillis = nil;
+  
+  if (preferences.waitTimeMillis().has_value()) {
+    waitTimeMillis = [NSNumber numberWithDouble:preferences.waitTimeMillis().value()];
+  }
+  
   [self executeProcessPayment:paymentContext.paymentId()
                 resourceToken:paymentContext.resourceToken()
                   redirectURI:paymentContext.redirectUri()
          preferredCountryCode:preferences.preferredCountryCode()
+       shouldShowResultScreen:shouldShowResultScreen
+               waitTimeMillis:waitTimeMillis
                       resolve:resolve
                        reject:reject];
 }
@@ -119,9 +128,18 @@ RCT_EXPORT_METHOD(_paymentStatus:(NSString *)paymentId
                 resolve:(RCTPromiseResolveBlock)resolve
                  reject:(RCTPromiseRejectBlock)reject
 {
+  bool shouldShowResultScreen = preferences.shouldPresentResultScreen().value_or(true);
+  NSNumber * _Nullable waitTimeMillis = nil;
+  
+  if (preferences.waitTimeMillis().has_value()) {
+    waitTimeMillis = [NSNumber numberWithDouble:preferences.waitTimeMillis().value()];
+  }
+  
   [self executeProcessMandate:mandateContext.mandateId()
                 resourceToken:mandateContext.resourceToken()
                   redirectURI:mandateContext.redirectUri()
+       shouldShowResultScreen:shouldShowResultScreen
+               waitTimeMillis:waitTimeMillis
                       resolve:resolve
                        reject:reject];
 }
@@ -221,13 +239,13 @@ RCT_EXPORT_METHOD(_mandateStatus:(NSString *)mandateId
     reject([@(error.code) stringValue], error.localizedDescription, error);
     return;
   }
-
+  
   NSDictionary *additionalConfiguration = @{
     @"customIntegrationType": @"React Native",
     @"customIntegrationVersion": @"2.0.0"
   };
-
-  [TrueLayerPaymentsManager configureWithEnvironment:sdkEnvironment 
+  
+  [TrueLayerPaymentsManager configureWithEnvironment:sdkEnvironment
                                       visualSettings:visualSettings
                              additionalConfiguration:additionalConfiguration
                                    completionHandler:^{
@@ -261,6 +279,8 @@ RCT_EXPORT_METHOD(_mandateStatus:(NSString *)mandateId
                resourceToken:(NSString *)resourceToken
                  redirectURI:(NSString *)redirectURI
         preferredCountryCode:(nullable NSString *)preferredCountryCode
+      shouldShowResultScreen:(bool)shouldShowResultScreen
+              waitTimeMillis:(NSNumber  * _Nullable)waitTimeMillis
                      resolve:(RCTPromiseResolveBlock)resolve
                       reject:(RCTPromiseRejectBlock)reject
 {
@@ -279,12 +299,14 @@ RCT_EXPORT_METHOD(_mandateStatus:(NSString *)mandateId
     // Capture the presented view controller.
     // We use the main thread here as `RCTPresentedViewController.init` accesses the main application window.
     UIViewController *reactViewController = RCTPresentedViewController();
-
+    
     // Create the context required by the ObjC bridge in TrueLayerSDK.
     TrueLayerPresentationStyle *presentationStyle = [[TrueLayerPresentationStyle alloc] initWithPresentOn:reactViewController
                                                                                                     style:UIModalPresentationAutomatic];
     TrueLayerSinglePaymentPreferences *trueLayerPreferences = [[TrueLayerSinglePaymentPreferences alloc] initWithPresentationStyle:presentationStyle
-                                                                                                              preferredCountryCode:preferredCountryCode];
+                                                                                                              preferredCountryCode:preferredCountryCode
+                                                                                                            shouldShowResultScreen:shouldShowResultScreen
+                                                                                                        maximumResultScreenTimeout: waitTimeMillis];
     TrueLayerSinglePaymentContext *context = [[TrueLayerSinglePaymentContext alloc] initWithIdentifier:paymentId
                                                                                                  token:resourceToken
                                                                                            redirectURL:[NSURL URLWithString:redirectURI]
@@ -320,6 +342,8 @@ RCT_EXPORT_METHOD(_mandateStatus:(NSString *)mandateId
 -(void)executeProcessMandate:(NSString *)mandateId
                resourceToken:(NSString *)resourceToken
                  redirectURI:(NSString *)redirectURI
+      shouldShowResultScreen:(bool)shouldShowResultScreen
+              waitTimeMillis:(NSNumber  * _Nullable)waitTimeMillis
                      resolve:(RCTPromiseResolveBlock)resolve
                       reject:(RCTPromiseRejectBlock)reject
 {
@@ -342,7 +366,10 @@ RCT_EXPORT_METHOD(_mandateStatus:(NSString *)mandateId
     // Create the context required by the ObjC bridge in TrueLayerSDK.
     TrueLayerPresentationStyle *presentationStyle = [[TrueLayerPresentationStyle alloc] initWithPresentOn:reactViewController
                                                                                                     style:UIModalPresentationAutomatic];
-    TrueLayerMandatePreferences *preferences = [[TrueLayerMandatePreferences alloc] initWithPresentationStyle:presentationStyle];
+    TrueLayerMandatePreferences *preferences = [[TrueLayerMandatePreferences alloc] initWithPresentationStyle:presentationStyle
+                                                                                       shouldShowResultScreen:shouldShowResultScreen
+                                                                                   maximumResultScreenTimeout:waitTimeMillis];
+    
     TrueLayerMandateContext *context = [[TrueLayerMandateContext alloc] initWithIdentifier:mandateId
                                                                                      token:resourceToken
                                                                                redirectURL:[NSURL URLWithString:redirectURI]
@@ -369,8 +396,6 @@ RCT_EXPORT_METHOD(_mandateStatus:(NSString *)mandateId
       };
       
       resolve(result);
-    } completionHandler:^{
-      // Should not act on the return of the method as it is async.
     }];
   }];
 }
@@ -518,12 +543,12 @@ RCT_EXPORT_METHOD(_mandateStatus:(NSString *)mandateId
 - (TrueLayerVisualSettings * _Nullable)setupVisualSettingsFromDictionary:(NSDictionary *)theme {
   TrueLayerVisualSettings *visualSettings = [[TrueLayerVisualSettings alloc] init];
   NSError *error;
-
+  
   if (theme[@"ios"] != nil) {
     if (theme[@"ios"][@"fontFamilyName"] != nil) {
       visualSettings.customFontFamilyName = theme[@"ios"][@"fontFamilyName"];
     }
-
+    
     TrueLayerBackgroundColors *backgroundColors =
     [[TrueLayerBackgroundColors alloc] initWithBackgroundPrimaryLightHex: theme[@"ios"][@"lightColors"][@"backgroundPrimary"]
                                              backgroundSecondaryLightHex: theme[@"ios"][@"lightColors"][@"backgroundSecondary"]
@@ -534,7 +559,7 @@ RCT_EXPORT_METHOD(_mandateStatus:(NSString *)mandateId
                                           backgroundActionPrimaryDarkHex: theme[@"ios"][@"darkColors"][@"backgroundActionPrimary"]
                                                    backgroundCellDarkHex: theme[@"ios"][@"darkColors"][@"backgroundCell"]
                                                                    error: &error];
-
+    
     TrueLayerContentColors *contentColors =
     [[TrueLayerContentColors alloc] initWithContentPrimaryLightHex: theme[@"ios"][@"lightColors"][@"contentPrimary"]
                                           contentSecondaryLightHex: theme[@"ios"][@"lightColors"][@"contentSecondary"]
@@ -547,24 +572,24 @@ RCT_EXPORT_METHOD(_mandateStatus:(NSString *)mandateId
                                               contentActionDarkHex: theme[@"ios"][@"darkColors"][@"contentAction"]
                                                contentErrorDarkHex: theme[@"ios"][@"darkColors"][@"contentError"]
                                                              error: &error];
-
+    
     TrueLayerAccessoryColors *accessoryColors =
     [[TrueLayerAccessoryColors alloc] initWithSeparatorLightHex: theme[@"ios"][@"lightColors"][@"separator"]
                                         uiElementBorderLightHex: theme[@"ios"][@"lightColors"][@"uiElementBorder"]
                                                separatorDarkHex: theme[@"ios"][@"darkColors"][@"separator"]
                                          uiElementBorderDarkHex: theme[@"ios"][@"darkColors"][@"uiElementBorder"]
                                                           error: &error];
-
+    
     visualSettings.colors.backgroundColors = backgroundColors;
     visualSettings.colors.contentColors = contentColors;
     visualSettings.colors.accessoryColors = accessoryColors;
-
+    
   }
-
+  
   if (error != nil) {
     return NULL;
   }
-
+  
   return visualSettings;
 }
 #endif

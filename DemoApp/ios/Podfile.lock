@@ -1159,7 +1159,7 @@ PODS:
     - React-Codegen
     - React-Core
     - ReactCommon/turbomodule/core
-    - TrueLayerPaymentsSDK (= 3.0.0)
+    - TrueLayerPaymentsSDK (= 3.0.1)
   - RNCAsyncStorage (1.21.0):
     - glog
     - hermes-engine
@@ -1180,7 +1180,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - Yoga
   - SocketRocket (0.6.1)
-  - TrueLayerPaymentsSDK (3.0.0)
+  - TrueLayerPaymentsSDK (3.0.1)
   - Yoga (1.14.0)
 
 DEPENDENCIES:
@@ -1261,6 +1261,7 @@ DEPENDENCIES:
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - rn-truelayer-payments-sdk (from `../node_modules/rn-truelayer-payments-sdk`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
+  - TrueLayerPaymentsSDK (from `/Users/daven.gomes/Developer/Projects/TrueLayer-iOS-SDK`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -1278,7 +1279,6 @@ SPEC REPOS:
     - libevent
     - OpenSSL-Universal
     - SocketRocket
-    - TrueLayerPaymentsSDK
 
 EXTERNAL SOURCES:
   boost:
@@ -1386,6 +1386,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/rn-truelayer-payments-sdk"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-async-storage/async-storage"
+  TrueLayerPaymentsSDK:
+    :path: "/Users/daven.gomes/Developer/Projects/TrueLayer-iOS-SDK"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -1452,12 +1454,12 @@ SPEC CHECKSUMS:
   React-runtimescheduler: ed48e5faac6751e66ee1261c4bd01643b436f112
   React-utils: 6e5ad394416482ae21831050928ae27348f83487
   ReactCommon: 840a955d37b7f3358554d819446bffcf624b2522
-  rn-truelayer-payments-sdk: 6a71eeafc80561bbda82d33c123ed69f74171e46
+  rn-truelayer-payments-sdk: 284ab4acb3f83c17ced2c67c36076bf1d69d4d82
   RNCAsyncStorage: 559f22cc4b582414e783fd7255974b29e24b451c
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
-  TrueLayerPaymentsSDK: f9c8eeedb4f5848ed5ea3affb54ac37a0d6993b1
+  TrueLayerPaymentsSDK: c15fe5560c1a58f758817eb1c984a48398852e49
   Yoga: 64cd2a583ead952b0315d5135bf39e053ae9be70
 
-PODFILE CHECKSUM: 1c640e62c2064fd68f2afaa2e2e7a7e4dfa20fbc
+PODFILE CHECKSUM: 320164c4a8a1fb40a5ee2b8623d54bb17e7f6560
 
 COCOAPODS: 1.13.0
