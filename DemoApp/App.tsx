@@ -330,7 +330,6 @@ async function getPaymentContext(
     .then(response => response.json())
     .then(json => {
       log(json)
-      AsyncStorage.setItem('@Store:context', JSON.stringify(json))
       return json
     })
     .catch(error => {
