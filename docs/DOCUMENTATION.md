@@ -15,11 +15,13 @@ Refer to our [payment-quickstart](https://github.com/TrueLayer/payments-quicksta
 ### Processing a Single Payment
 
 ```typescript
-TrueLayerPaymentsSDKWrapper.processPayment({
+TrueLayerPaymentsSDKWrapper.processPayment(
+{
   paymentId: "", // Your payment ID,
   resourceToken: "", // Your payment token,
   redirectUri: "", // Your redirect URI,
-}).then((result) => {
+},
+).then((result) => {
   switch (result.type) {
     case ResultType.Success:
       console.log(`processPayment success at step: ${result.step}`);
@@ -86,11 +88,13 @@ This should be treated as the favorite source of truth for the status of the pay
 ### Processing a Mandate
 
 ```typescript
-TrueLayerPaymentsSDKWrapper.processMandate({
+TrueLayerPaymentsSDKWrapper.processMandate(
+{
   mandateId: "", // Your mandate identifier,
   resourceToken: "", // Your mandate resource token,
   redirectUri: "", // Your redirect URI,
-}).then((result) => {
+},
+).then((result) => {
   switch (result.type) {
     case ResultType.Success:
       console.log(`processMandate success at step: ${result.step}`);

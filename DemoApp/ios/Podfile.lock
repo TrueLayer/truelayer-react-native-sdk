@@ -1159,7 +1159,7 @@ PODS:
     - React-Codegen
     - React-Core
     - ReactCommon/turbomodule/core
-    - TrueLayerPaymentsSDK (= 2.7.1)
+    - TrueLayerPaymentsSDK (= 3.0.1)
   - RNCAsyncStorage (1.21.0):
     - glog
     - hermes-engine
@@ -1180,7 +1180,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - Yoga
   - SocketRocket (0.6.1)
-  - TrueLayerPaymentsSDK (2.7.1)
+  - TrueLayerPaymentsSDK (3.0.1)
   - Yoga (1.14.0)
 
 DEPENDENCIES:
@@ -1392,7 +1392,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   boost: d3f49c53809116a5d38da093a8aa78bf551aed09
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
-  DoubleConversion: 5189b271737e1565bdce30deb4a08d647e3f5f54
+  DoubleConversion: fea03f2699887d960129cc54bba7e52542b6f953
   FBLazyVector: 84f6edbe225f38aebd9deaf1540a4160b1f087d7
   Flipper: c7a0093234c4bdd456e363f2f19b2e4b27652d44
   Flipper-Boost-iOSX: fd1e2b8cbef7e662a122412d7ac5f5bea715403c
@@ -1403,7 +1403,7 @@ SPEC CHECKSUMS:
   Flipper-PeerTalk: 116d8f857dc6ef55c7a5a75ea3ceaafe878aadc9
   FlipperKit: 37525a5d056ef9b93d1578e04bc3ea1de940094f
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
-  glog: 04b94705f318337d7ead9e6d17c019bd9b1f6b1b
+  glog: c5d68082e772fa1c511173d6b30a9de2c05a69a2
   hermes-engine: b2669ce35fc4ac14f523b307aff8896799829fe2
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   OpenSSL-Universal: ebc357f1e6bc71fa463ccb2fe676756aff50e88c
@@ -1452,12 +1452,12 @@ SPEC CHECKSUMS:
   React-runtimescheduler: ed48e5faac6751e66ee1261c4bd01643b436f112
   React-utils: 6e5ad394416482ae21831050928ae27348f83487
   ReactCommon: 840a955d37b7f3358554d819446bffcf624b2522
-  rn-truelayer-payments-sdk: de6d60524531e3d22acd62717cb40d5526cd249f
+  rn-truelayer-payments-sdk: 284ab4acb3f83c17ced2c67c36076bf1d69d4d82
   RNCAsyncStorage: 559f22cc4b582414e783fd7255974b29e24b451c
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
-  TrueLayerPaymentsSDK: 90112a7c9f2d39cd83ffc3501044bd5c42766754
+  TrueLayerPaymentsSDK: c15fe5560c1a58f758817eb1c984a48398852e49
   Yoga: 64cd2a583ead952b0315d5135bf39e053ae9be70
 
-PODFILE CHECKSUM: 10b7306ddaba3403d8efe6e547eb40eaaa895d6b
+PODFILE CHECKSUM: 1c640e62c2064fd68f2afaa2e2e7a7e4dfa20fbc
 
 COCOAPODS: 1.13.0
