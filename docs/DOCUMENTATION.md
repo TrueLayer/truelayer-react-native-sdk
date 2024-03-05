@@ -15,13 +15,11 @@ Refer to our [payment-quickstart](https://github.com/TrueLayer/payments-quicksta
 ### Processing a Single Payment
 
 ```typescript
-TrueLayerPaymentsSDKWrapper.processPayment(
-{
+TrueLayerPaymentsSDKWrapper.processPayment({
   paymentId: "", // Your payment ID,
   resourceToken: "", // Your payment token,
   redirectUri: "", // Your redirect URI,
-},
-).then((result) => {
+}).then((result) => {
   switch (result.type) {
     case ResultType.Success:
       console.log(`processPayment success at step: ${result.step}`);
@@ -44,6 +42,15 @@ The parameters used in the `PaymentPreferences` are explained below:
 - `preferredCountryCode`: the preferred country to use when displaying the providers. If the country is invalid, or does not include any providers, the value will fallback to the user's locale.
 - `shouldPresentResultScreen`: true if the result screen should be presented before the final redirect to the merchant app. Default is true.
 - `waitTimeMillis`: the total time the result screen will wait to get a final status of the payment. Default is 3 seconds. Minimum is 2 seconds. Maximum is 10 seconds.
+
+### Handle redirects and display the payment result
+At the end of a redirect flow the bank app will relaunch your app with the redirect-uri you provided on the console.
+
+In your activity that launches when a deep link is triggered, you can fetch the redirect parameters from the url which will include the `payment_id`.
+
+Whenever you are redirected to your app, you should reinvoke the SDK, until you receive a success or error callback.
+
+By default the SDK offers a payment result screen, which displays the result of the payment and advises the user on what to do in case of a failed payment. If you disable the payment result screen, you can use the success or error callback to render a screen for your user when they return to your app.
 
 ### 1.x.x to 2.0.0 migration Guide
 The `paymentUseCase` has been deprecated and now payments must be configured for SignUp+ on creation with the `related_products.signup_plus` property.
@@ -88,13 +95,11 @@ This should be treated as the favorite source of truth for the status of the pay
 ### Processing a Mandate
 
 ```typescript
-TrueLayerPaymentsSDKWrapper.processMandate(
-{
+TrueLayerPaymentsSDKWrapper.processMandate({
   mandateId: "", // Your mandate identifier,
   resourceToken: "", // Your mandate resource token,
   redirectUri: "", // Your redirect URI,
-},
-).then((result) => {
+}).then((result) => {
   switch (result.type) {
     case ResultType.Success:
       console.log(`processMandate success at step: ${result.step}`);
@@ -117,6 +122,15 @@ The parameters used in the `MandatePreferences` are explained below:
 - `preferredCountryCode`: the preferred country to use when displaying the providers. If the country is invalid, or does not include any providers, the value will fallback to the user's locale.
 - `shouldPresentResultScreen`: true if the result screen should be presented before the final redirect to the merchant app. Default is true.
 - `waitTimeMillis`: the total time the result screen will wait to get a final status of the payment. Default is 3 seconds. Minimum is 2 seconds. Maximum is 10 seconds.
+
+### Handle redirects and display the mandate result
+At the end of a redirect flow the bank app will relaunch your app with the redirect-uri you provided on the console.
+
+In your activity that launches when a deep link is triggered, you can fetch the redirect parameters from the url which will include the `mandate_id`.
+
+Whenever you are redirected to your app, you should reinvoke the SDK, until you receive a success or error callback.
+
+By default the SDK offers a mandate result screen, which displays the result of the mandate and advises the user on what to do in case of a failed mandate. If you disable the mandate result screen, you can use the success or error callback to render a screen for your user when they return to your app.
 
 ### Getting Mandate Status
 
