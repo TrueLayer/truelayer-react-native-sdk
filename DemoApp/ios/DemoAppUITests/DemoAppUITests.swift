@@ -26,8 +26,8 @@ final class DemoAppUITests: XCTestCase {
       
       
       let _ = startSDKButton.waitForExistence(timeout: TimeInterval(integerLiteral: 30))
-      XCTAssertTrue(startSDKButton.isHittable)
-      XCTAssertTrue(processSinglePaymentButton.isHittable)
+      XCTAssertTrue(startSDKButton.isHittable, "startSDKButton is not hittable.")
+      XCTAssertTrue(processSinglePaymentButton.isHittable, "processSinglePaymentButton is not hittable.")
       
       startSDKButton.tap()
       processSinglePaymentButton.tap()
@@ -35,6 +35,6 @@ final class DemoAppUITests: XCTestCase {
       let providersTitle = app.staticTexts["Choose your bank"]
       
       let _ = providersTitle.waitForExistence(timeout: TimeInterval(integerLiteral: 30))
-      XCTAssertTrue(providersTitle.isHittable)
+      XCTAssertTrue(providersTitle.isHittable, "providersTitle is not hittable.")
     }
 }
