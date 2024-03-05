@@ -65,7 +65,6 @@ export type FailureReason =
   | "ProviderError"
   | "ProviderExpired"
   | "ProviderRejected"
-  | "UnknownError"
   | "UserCanceledAtProvider";
 
 /**

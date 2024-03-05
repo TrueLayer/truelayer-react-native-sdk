@@ -105,7 +105,7 @@
       return @"ProviderRejected";
       
     case TrueLayerSinglePaymentErrorUnknownError:
-      return @"UnknownError";
+      return @"Unknown";
       
     case TrueLayerSinglePaymentErrorUserCanceledAtProvider:
       return @"UserCanceledAtProvider";
@@ -203,7 +203,7 @@
       return @"InvalidSortCode";
       
     case TrueLayerMandateErrorUnknownError:
-      return @"UnknownError";
+      return @"Unknown";
   }
 }
 

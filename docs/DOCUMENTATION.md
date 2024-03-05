@@ -180,6 +180,20 @@ The `processPayment` and `processMandate` methods return a `ProcessorResult` typ
 | `UserAborted`                  | The user canceled the payment or mandate.                                                                                                                                                                                                                                         |
 | `ProviderOffline`                  | The pre-selected provider was offline.                                                                                                                                                                                                                                   |
 | `InvalidRedirectURI`                  | The redirect URI passed to the SDK is invalid.                                                                                                                                                                                                                                   |
+| `Blocked`                       | The payment has been blocked due to a regulatory requirement. This may happen if the PSU fails a sanctions check. |
+| `InvalidAccountDetails`         | The payment failed because either the creditor's or debtor's account details were invalid. |
+| `InvalidAccountHolderName`      | The payment failed because the account holder's name details were invalid. |
+| `InvalidCredentials`            | The banking credentials provided by the PSU to log into their bank were incorrect. |
+| `InvalidRemitterAccount`        | The account details of the remitter bank account provided during the payment flow were incorrect. |
+| `InvalidRequest`                | The payment failed due to invalid data in the request. |
+| `InvalidSortCode`               | The payment failed due to an invalid sort code being provided. |
+| `InsufficientFunds`             | The PSU did not have the required balance in their account to complete this payment. |
+| `PaymentLimitExceeded`          | The PSU's payment limit amount with their bank was breached. |
+| `ProviderError`                 | The provider has unexpectedly failed when creating the payment. |
+| `ProviderExpired`               | The payment failed because the token or exchange code used to communicate with the bank expired. |
+| `ProviderRejected`              | The provider rejected the payment. |
+| `UserCanceledAtProvider`        | The payment failed because either the creditor's or debtor's account details were invalid. |
+
 ## Customising the UI
 You can customise the colors and fonts used within the SDK. Customisation options are unique for iOS and Android and must be passed when processing a payment or mandate.
 
