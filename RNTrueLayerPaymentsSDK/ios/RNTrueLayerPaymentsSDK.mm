@@ -68,6 +68,8 @@ RCT_EXPORT_METHOD(_processPayment:(NSDictionary *)paymentContext
                 resourceToken:paymentContext[@"resourceToken"]
                   redirectURI:paymentContext[@"redirectUri"]
          preferredCountryCode:preferences[@"preferredCountryCode"]
+       shouldShowResultScreen:preferences[@"shouldPresentResultScreen"]
+               waitTimeMillis:preferences[@"waitTimeMillis"]
                       resolve:resolve
                        reject:reject];
 }
@@ -152,6 +154,8 @@ RCT_EXPORT_METHOD(_processMandate:(NSDictionary *)paymentContext
   [self executeProcessMandate:paymentContext[@"mandateId"]
                 resourceToken:paymentContext[@"resourceToken"]
                   redirectURI:paymentContext[@"redirectUri"]
+       shouldShowResultScreen:preferences[@"shouldPresentResultScreen"]
+               waitTimeMillis:preferences[@"waitTimeMillis"]
                       resolve:resolve
                        reject:reject];
 }
