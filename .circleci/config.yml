@@ -155,33 +155,18 @@ jobs:
             gem install cocoapods
             RCT_NEW_ARCH_ENABLED=1 bundle exec pod install
             cd /Users/distiller/project/DemoApp
-            yarn ios
+            cd ios
+            xcodebuild -workspace DemoApp.xcworkspace -scheme DemoAppUITests -destination 'platform=iOS Simulator,name=iPhone 15 Pro,OS=17.2' -configuration Debug test
 
 workflows:
   version: 2
   verify-version:
     jobs:
-      - verify-package-version:
-          name: "verify-package-version"
-          filters: &release_branch_filter
-            branches:
-              only: /^release\/.*/
       - build-and-publish:
           name: build-and-publish-dry-run
           isDryRun: true
-          filters: *release_branch_filter
-          requires:
-            - verify-package-version
-      - build-android-demo-app:
-          name: build-android-demo-app
-          filters: &release_branch_filter
-            branches:
-              only: /^release\/.*/
       - build-ios-demo-app:
           name: build-ios-demo-app
-          filters: &release_branch_filter
-            branches:
-              only: /^release\/.*/
 
   build-and-publish-workflow:
     jobs:
