@@ -115,7 +115,7 @@ jobs:
 
   build-ios-demo-app:
     macos:
-      xcode: 15.3.0
+      xcode: 15.0.1
     resource_class: macos.m1.large.gen1
     working_directory: /Users/distiller/project
 
@@ -123,7 +123,7 @@ jobs:
       - checkout
       - macos/add-uitest-permissions
       - macos/preboot-simulator:
-          version: "17.4"
+          version: "17.0.1"
           platform: "iOS"
           device: "iPhone 15 Pro"
       - run:
@@ -159,7 +159,7 @@ jobs:
             cd /Users/distiller/project/DemoApp/ios
             bundle install
             gem install cocoapods
-            RCT_NEW_ARCH_ENABLED=1 bundle exec pod install
+            bundle exec pod install
             cd /Users/distiller/project/DemoApp
             yarn react-native bundle --entry-file index.js --platform ios --dev false --bundle-output ios/main.jsbundle --assets-dest ios
             cd ios
