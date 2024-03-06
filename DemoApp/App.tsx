@@ -6,22 +6,25 @@ import {
   Text,
   useColorScheme,
   View,
+  Linking,
+  Alert
 } from 'react-native'
 
 import React from 'react'
 
+import AsyncStorage from '@react-native-async-storage/async-storage'
+
 import {
   TrueLayerPaymentsSDKWrapper,
   Environment,
-  PaymentUseCase,
   ResultType,
 } from 'rn-truelayer-payments-sdk'
 
 import uuid from 'react-native-uuid'
-import {Colors} from 'react-native/Libraries/NewAppScreen'
-import {log} from './utils/logger'
+import { Colors } from 'react-native/Libraries/NewAppScreen'
+import { log } from './utils/logger'
 
-function App(): JSX.Element {
+function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark'
 
   const backgroundStyle = {
@@ -56,6 +59,20 @@ function App(): JSX.Element {
     ios: iOSTheme,
   }
 
+  const getUrlAsync = async () => {
+    // Get the deep link used to open the app
+    const initialUrl = await Linking.getInitialURL()
+    if(initialUrl) {
+      handleRedirect(initialUrl)
+    }
+  }
+
+  getUrlAsync()
+
+  Linking.addEventListener("url", (event) => {
+    handleRedirect(event.url)
+  })
+
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar
@@ -87,9 +104,14 @@ function App(): JSX.Element {
             Start SDK
           </Text>
         </Pressable>
-        <Pressable style={styles.button} onPress={processPayment}>
-          <Text testID={'processPayment'} style={styles.text}>
-            Process Single Payment
+        <Pressable style={styles.button} onPress={() => createAndProcessPayment('GBP')}>
+          <Text testID={'processPaymentGBP'} style={styles.text}>
+            Process Single Payment GBP
+          </Text>
+        </Pressable>
+        <Pressable style={styles.button} onPress={() => createAndProcessPayment('EUR')}>
+          <Text testID={'processPaymentEUR'} style={styles.text}>
+            Process Single Payment EUR
           </Text>
         </Pressable>
         <Pressable style={styles.button} onPress={getSinglePaymentStatus}>
@@ -97,7 +119,7 @@ function App(): JSX.Element {
             Get Single Payment Status
           </Text>
         </Pressable>
-        <Pressable style={styles.button} onPress={processMandate}>
+        <Pressable style={styles.button} onPress={createAndProcessMandate}>
           <Text testID={'processMandate'} style={styles.text}>
             Process Mandate
           </Text>
@@ -112,37 +134,43 @@ function App(): JSX.Element {
   )
 }
 
-function processPayment(): void {
-  log('processPayment button clicked')
+const redirectUri = 'truelayer://payments_sample'
 
-  getPaymentContext('payment').then(processorContext => {
+function createAndProcessPayment(currency: 'GBP' | 'EUR'): void {
+  log(`processPayment button clicked for ${currency}`)
+
+  const type = currency == 'GBP' ? 'payment' : 'payment/euro'
+
+  getPaymentContext(type).then(processorContext => {
     log(
       `payment`,
       `id: ${processorContext.id}`,
       `resource_token: ${processorContext.resource_token}`,
     )
+    processPayment(processorContext)
+  })
+}
 
-    TrueLayerPaymentsSDKWrapper.processPayment(
-      {
-        paymentId: processorContext.id,
-        resourceToken: processorContext.resource_token,
-        redirectUri: 'truelayer://payments_sample',
-      },
-      {
-        paymentUseCase: PaymentUseCase.Send,
-      },
-    ).then(result => {
-      switch (result.type) {
-        case ResultType.Success:
-          log(`processPayment success at step: ${result.step}`)
-          break
-        case ResultType.Failure:
-          log(
-            `Oh we've failed processPayment with following reason: ${result.reason}`,
-          )
-          break
-      }
-    })
+function processPayment(processorContext: SamplePaymentContext) {
+  AsyncStorage.setItem('@Store:context', JSON.stringify(processorContext))
+  
+  TrueLayerPaymentsSDKWrapper.processPayment(
+    {
+      paymentId: processorContext.id,
+      resourceToken: processorContext.resource_token,
+      redirectUri: 'truelayer://payments_sample',
+    },
+  ).then(result => {
+    switch (result.type) {
+      case ResultType.Success:
+        log(`processPayment success at step: ${result.step}`)
+        break
+      case ResultType.Failure:
+        log(
+          `Oh we've failed processPayment with following reason: ${result.reason}`,
+        )
+        break
+    }
   })
 }
 
@@ -173,7 +201,7 @@ function getSinglePaymentStatus(): void {
   })
 }
 
-function processMandate(): void {
+function createAndProcessMandate(): void {
   log('processMandate button clicked')
 
   getPaymentContext('mandate').then(processorContext => {
@@ -182,22 +210,30 @@ function processMandate(): void {
       `id: ${processorContext.id}`,
       `resource_token: ${processorContext.resource_token}`,
     )
-    TrueLayerPaymentsSDKWrapper.processMandate({
+    processMandate(processorContext)
+  })
+}
+
+function processMandate(processorContext: SamplePaymentContext): void {
+  AsyncStorage.setItem('@Store:context', JSON.stringify(processorContext))
+  
+  TrueLayerPaymentsSDKWrapper.processMandate(
+    {
       mandateId: processorContext.id,
       resourceToken: processorContext.resource_token,
-      redirectUri: 'truelayer://payments_sample',
-    }).then(result => {
-      switch (result.type) {
-        case ResultType.Success:
-          log(`processMandate success at step: ${result.step}`)
-          break
-        case ResultType.Failure:
-          log(
-            `Oh we've failed processMandate with following reason: ${result.reason}`,
-          )
-          break
-      }
-    })
+      redirectUri: redirectUri
+    }
+  ).then(result => {
+    switch (result.type) {
+      case ResultType.Success:
+        log(`processMandate success at step: ${result.step}`)
+        break
+      case ResultType.Failure:
+        log(
+          `Oh we've failed processMandate with following reason: ${result.reason}`,
+        )
+        break
+    }
   })
 }
 
@@ -228,6 +264,29 @@ function getMandateStatus(): void {
   })
 }
 
+async function handleRedirect(url: string) {
+    // launch result screen
+  const isPayment = url.includes("payment_id")
+  const isMandate = url.includes("mandate_id")
+
+  const savedContext = await AsyncStorage.getItem('@Store:context')
+
+  if(savedContext != null) {
+    const processorContext = JSON.parse(savedContext)
+    if(isPayment) {
+      // relaunch sdk with processPayment
+      processPayment(processorContext)
+    }
+    else if (isMandate) {
+      // relaunch sdk with processMandate
+      processMandate(processorContext)
+    }
+    else {
+      Alert.alert("Error", "Invalid deep link received", [{ text: "OK" }])
+    }
+  }
+}
+
 interface SamplePaymentContext {
   id: string
   resource_token: string
@@ -238,7 +297,7 @@ interface SamplePaymentContext {
  * Amend the url to match your instance.
  */
 async function getPaymentContext(
-  type: 'mandate' | 'payment',
+  type: 'mandate' | 'payment' | 'payment/euro',
 ): Promise<SamplePaymentContext> {
   return await fetch('http://localhost:3000/v3/' + type, {
     method: 'POST',

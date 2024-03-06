@@ -1,6 +1,23 @@
 # CHANGELOG
 All notable changes to this project will be documented in this file. To know better on how to write and maintain a changelog, refer to [this link](https://keepachangelog.com/en/1.0.0/).
 
+## [2.0.0]
+
+### Added
+
+- `shouldPresentResultScreen` to `PaymentPreferences` and `MandatePreferences`. When this is enabled, a result screen is displayed at the end of the authorization flow. When the user is redirected back from the bank, it is recommended to re-invoke the SDK to display the result screen, to show the user the status of their payment or mandate. This is enabled by default.
+- `waitTimeMillis` to `PaymentPreferences` and `MandatePreferences`. This is the maximum timeout for the payment or mandate result screen, until a final status. Once reached, the user is shown a button to dismiss the SDK and return to your app.
+- New `FailureReason` cases. These more accurately reflect the reasons returned from TrueLayer Payments API V3.
+
+### Changed
+
+- Updated the underlying iOS SDK to version [3.0.1](https://github.com/TrueLayer/TrueLayer-iOS-SDK/releases/tag/3.0.1).
+- Updated the underlying Android SDK to version [3.0.1](https://docs.truelayer.com/docs/android-sdk-release-history).
+
+### Removed
+
+- `paymentUseCase` from `PaymentPreferences`. To enable Signup+ for a payment, refer to the API documentation when creating a payment.
+
 ## [1.4.0]
 
 ### Changed

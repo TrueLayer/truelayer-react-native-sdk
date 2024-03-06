@@ -1,3 +1,5 @@
 export type MandatePreferences = {
-  preferredCountryCode?: string;
+  preferredCountryCode?: string | null;
+  shouldPresentResultScreen?: boolean | null;
+  waitTimeMillis?: number | null;
 };

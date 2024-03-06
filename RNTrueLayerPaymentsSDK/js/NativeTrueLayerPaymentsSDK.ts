@@ -104,9 +104,10 @@ interface Spec extends TurboModule {
       redirectUri: string;
     },
     preferences?: {
-      preferredCountryCode?: string;
-      paymentUseCase: string;
-    }
+      preferredCountryCode?: string | null;
+      shouldPresentResultScreen?: boolean | null;
+      waitTimeMillis?: number | null;
+    } | null
   ): Promise<ProcessorResult>;
 
   /**
@@ -119,8 +120,10 @@ interface Spec extends TurboModule {
       redirectUri: string;
     },
     preferences?: {
-      preferredCountryCode?: string;
-    }
+      preferredCountryCode?: string | null;
+      shouldPresentResultScreen?: boolean | null;
+      waitTimeMillis?: number | null;
+    } | null
   ): Promise<ProcessorResult>;
 
   /**

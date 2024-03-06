@@ -40,7 +40,20 @@ The parameters used in `PaymentContext` are explained below:
 The parameters used in the `PaymentPreferences` are explained below:
 
 - `preferredCountryCode`: the preferred country to use when displaying the providers. If the country is invalid, or does not include any providers, the value will fallback to the user's locale.
-- `paymentUseCase`: dictates the wording to display to the user when sending a payment, to clarify what the payment is used for. For example, for SignUp+, use `PaymentUseCase.SignUpPlus`. For a standard payment, use `PaymentUseCase.Send`, which is also the default value.
+- `shouldPresentResultScreen`: true if the result screen should be presented before the final redirect to the merchant app. Default is true.
+- `waitTimeMillis`: the total time the result screen will wait to get a final status of the payment. Default is 3 seconds. Minimum is 2 seconds. Maximum is 10 seconds.
+
+### Handle redirects and display the payment result
+At the end of a redirect flow the bank app will relaunch your app with the redirect-uri you provided on the console.
+
+In your activity that launches when a deep link is triggered, you can fetch the redirect parameters from the url which will include the `payment_id`.
+
+Whenever you are redirected to your app, you should reinvoke the SDK, until you receive a success or error callback.
+
+By default the SDK offers a payment result screen, which displays the result of the payment and advises the user on what to do in case of a failed payment. If you disable the payment result screen, you can use the success or error callback to render a screen for your user when they return to your app.
+
+### 1.x.x to 2.0.0 migration Guide
+The `paymentUseCase` has been deprecated and now payments must be configured for SignUp+ on creation with the `related_products.signup_plus` property.
 
 ### Getting Payment Status
 
@@ -107,6 +120,17 @@ The parameters used in `MandateContext` are explained below:
 The parameters used in the `MandatePreferences` are explained below:
 
 - `preferredCountryCode`: the preferred country to use when displaying the providers. If the country is invalid, or does not include any providers, the value will fallback to the user's locale.
+- `shouldPresentResultScreen`: true if the result screen should be presented before the final redirect to the merchant app. Default is true.
+- `waitTimeMillis`: the total time the result screen will wait to get a final status of the payment. Default is 3 seconds. Minimum is 2 seconds. Maximum is 10 seconds.
+
+### Handle redirects and display the mandate result
+At the end of a redirect flow the bank app will relaunch your app with the redirect-uri you provided on the console.
+
+In your activity that launches when a deep link is triggered, you can fetch the redirect parameters from the url which will include the `mandate_id`.
+
+Whenever you are redirected to your app, you should reinvoke the SDK, until you receive a success or error callback.
+
+By default the SDK offers a mandate result screen, which displays the result of the mandate and advises the user on what to do in case of a failed mandate. If you disable the mandate result screen, you can use the success or error callback to render a screen for your user when they return to your app.
 
 ### Getting Mandate Status
 
@@ -170,6 +194,20 @@ The `processPayment` and `processMandate` methods return a `ProcessorResult` typ
 | `UserAborted`                  | The user canceled the payment or mandate.                                                                                                                                                                                                                                         |
 | `ProviderOffline`                  | The pre-selected provider was offline.                                                                                                                                                                                                                                   |
 | `InvalidRedirectURI`                  | The redirect URI passed to the SDK is invalid.                                                                                                                                                                                                                                   |
+| `Blocked`                       | The payment has been blocked due to a regulatory requirement. This may happen if the PSU fails a sanctions check. |
+| `InvalidAccountDetails`         | The payment failed because either the creditor's or debtor's account details were invalid. |
+| `InvalidAccountHolderName`      | The payment failed because the account holder's name details were invalid. |
+| `InvalidCredentials`            | The banking credentials provided by the PSU to log into their bank were incorrect. |
+| `InvalidRemitterAccount`        | The account details of the remitter bank account provided during the payment flow were incorrect. |
+| `InvalidRequest`                | The payment failed due to invalid data in the request. |
+| `InvalidSortCode`               | The payment failed due to an invalid sort code being provided. |
+| `InsufficientFunds`             | The PSU did not have the required balance in their account to complete this payment. |
+| `PaymentLimitExceeded`          | The PSU's payment limit amount with their bank was breached. |
+| `ProviderError`                 | The provider has unexpectedly failed when creating the payment. |
+| `ProviderExpired`               | The payment failed because the token or exchange code used to communicate with the bank expired. |
+| `ProviderRejected`              | The provider rejected the payment. |
+| `UserCanceledAtProvider`        | The payment failed because either the creditor's or debtor's account details were invalid. |
+
 ## Customising the UI
 You can customise the colors and fonts used within the SDK. Customisation options are unique for iOS and Android and must be passed when processing a payment or mandate.
 

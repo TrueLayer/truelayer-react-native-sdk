@@ -47,11 +47,11 @@ export abstract class TrueLayerPaymentsSDKWrapper {
    */
   static processPayment(
     paymentContext: PaymentContext,
-    preferences?: PaymentPreferences
+    preferences?: PaymentPreferences | null
   ): Promise<ProcessorResult> {
     return RNTrueLayerPaymentsSDK!!._processPayment(
       paymentContext,
-      preferences
+      preferences ?? {}
     );
   }
 
@@ -69,11 +69,11 @@ export abstract class TrueLayerPaymentsSDKWrapper {
    */
   static processMandate(
     mandateContext: MandateContext,
-    preferences?: MandatePreferences
+    preferences?: MandatePreferences | null
   ): Promise<ProcessorResult> {
     return RNTrueLayerPaymentsSDK!!._processMandate(
       mandateContext,
-      preferences
+      preferences ?? {}
     );
   }
 

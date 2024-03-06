@@ -1,6 +1,5 @@
-import { PaymentUseCase } from "./PaymentUseCase";
-
 export type PaymentPreferences = {
-  preferredCountryCode?: string;
-  paymentUseCase: PaymentUseCase;
+  preferredCountryCode?: string | null;
+  shouldPresentResultScreen?: boolean | null;
+  waitTimeMillis?: number | null;
 };

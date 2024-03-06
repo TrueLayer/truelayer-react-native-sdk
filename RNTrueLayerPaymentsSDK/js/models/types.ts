@@ -5,8 +5,6 @@ export { PaymentStatus, MandateStatus };
 
 export type { PaymentContext } from "./payments/PaymentContext";
 
-export { PaymentUseCase } from "./payments/PaymentUseCase";
-
 export type { MandateContext } from "./mandates/MandateContext";
 
 export type { PaymentPreferences } from "./payments/PaymentPreferences";
@@ -54,7 +52,20 @@ export type FailureReason =
   | "WaitAbandoned"
   | "ProcessorContextNotAvailable"
   | "ProviderOffline"
-  | "Unknown";
+  | "Unknown"
+  | "Blocked"
+  | "InvalidAccountDetails"
+  | "InvalidAccountHolderName"
+  | "InvalidCredentials"
+  | "InvalidRemitterAccount"
+  | "InvalidRequest"
+  | "InvalidSortCode"
+  | "InsufficientFunds"
+  | "PaymentLimitExceeded"
+  | "ProviderError"
+  | "ProviderExpired"
+  | "ProviderRejected"
+  | "UserCanceledAtProvider";
 
 /**
  * Provides more detailed information about the error.

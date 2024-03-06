@@ -24,7 +24,6 @@ import com.truelayer.payments.core.domain.utils.onError
 import com.truelayer.payments.core.domain.utils.onOk
 import com.truelayer.payments.ui.TrueLayerUI
 import com.truelayer.payments.ui.models.ProcessorStatus
-import com.truelayer.payments.ui.screens.processor.PaymentUseCase
 import com.truelayer.payments.ui.screens.processor.ProcessorActivityContract
 import com.truelayer.payments.ui.screens.processor.ProcessorContext
 import com.truelayer.payments.ui.screens.processor.ProcessorResult
@@ -47,7 +46,8 @@ private class TLReactNativeUtils {
         val token: String?
         val redirectUri: String?
         val preferredCountryCode: String?
-        val paymentUseCase: PaymentUseCase
+        val shouldPresentResultScreen: Boolean?
+        val waitTimeMillis: Long?
 
         init {
             mandateId = map?.getString("mandateId")
@@ -55,7 +55,8 @@ private class TLReactNativeUtils {
             token = map?.getString("resourceToken")
             redirectUri = map?.getString("redirectUri")
             preferredCountryCode = preferences?.getString("preferredCountryCode")
-            paymentUseCase = preferences?.getString("paymentUseCase").convertToUseCase()
+            shouldPresentResultScreen = preferences?.getBooleanOrNull("shouldPresentResultScreen")
+            waitTimeMillis = preferences?.getIntOrNull("waitTimeMillis")?.toLong()
         }
 
         @OptIn(ExperimentalContracts::class)
@@ -81,7 +82,9 @@ private class TLReactNativeUtils {
                 resourceToken = token,
                 redirectUri = redirectUri,
                 preferences = ProcessorContext.MandatePreferences(
-                    preferredCountryCode = preferredCountryCode
+                    preferredCountryCode = preferredCountryCode,
+                    shouldPresentResultScreen = shouldPresentResultScreen ?: true,
+                    waitTimeMillis = waitTimeMillis ?: 3_000
                 )
             )
         }
@@ -94,7 +97,8 @@ private class TLReactNativeUtils {
                 redirectUri = redirectUri,
                 preferences = ProcessorContext.PaymentPreferences(
                     preferredCountryCode = preferredCountryCode,
-                    paymentUseCase = paymentUseCase
+                    shouldPresentResultScreen = shouldPresentResultScreen ?: true,
+                    waitTimeMillis = waitTimeMillis ?: 3_000
                 )
             )
         }
@@ -126,8 +130,6 @@ private class TLReactNativeUtils {
                 ProcessorResult.FailureReason.WaitAbandoned -> "WaitAbandoned"
                 ProcessorResult.FailureReason.WaitTokenExpired -> "CommunicationIssue"
                 ProcessorResult.FailureReason.ProcessorContextNotAvailable -> "ProcessorContextNotAvailable"
-                ProcessorResult.FailureReason.ResourceIdNotAvailable -> "Unknown"
-                ProcessorResult.FailureReason.ResourceTokenNotAvailable -> "Unknown"
                 ProcessorResult.FailureReason.InvalidResource -> "Unknown"
                 ProcessorResult.FailureReason.Unknown -> "Unknown"
             }
@@ -256,8 +258,6 @@ private class TLReactNativeUtils {
 }
 
 private fun String?.convertToEnvironment() = Environment.values().firstOrNull { it.name == this } ?: Environment.PRODUCTION
-
-private fun String?.convertToUseCase() = PaymentUseCase.values().firstOrNull { it.name.equals(this, true) } ?: PaymentUseCase.default
 
 private fun CoreError.intoProcessorResult(): ProcessorResult.Failure = when (this) {
     is CoreError.ConnectionError ->
