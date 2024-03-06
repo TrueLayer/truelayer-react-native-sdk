@@ -4,7 +4,7 @@ orbs:
   node: circleci/node@5.1.0
   android: circleci/android@2.3.0
   rn: react-native-community/react-native@7.1.0
-  macos: circleci/macos@1.0
+  macos: circleci/macos@2.4.1
 
 executors:
   base_executor:
@@ -149,9 +149,6 @@ jobs:
             npx yalc add rn-truelayer-payments-sdk
             yarn install
       - macos/add-uitest-permissions
-      - macos/add-permission:
-          bundle-id: "com.apple.CoreSimulator.SimulatorTrampoline"
-          permission-type: "kTCCServiceMicrophone"
       - run:
           name: build ios
           command: |
