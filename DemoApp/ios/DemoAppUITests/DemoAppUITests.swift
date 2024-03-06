@@ -8,33 +8,33 @@
 import XCTest
 
 final class DemoAppUITests: XCTestCase {
-  let timeout: TimeInterval = 180
-  
-  override func setUpWithError() throws {
-    // In UI tests it is usually best to stop immediately when a failure occurs.
-    continueAfterFailure = false
-  }
-  
-  func testProvidersListRenders() throws {
-    // UI tests must launch the application that they test.
-    let app = XCUIApplication()
-    app.launch()
+
+    override func setUpWithError() throws {
+      // In UI tests it is usually best to stop immediately when a failure occurs.
+      continueAfterFailure = false
+    }
+
+    func testProvidersListRenders() throws {
+      // UI tests must launch the application that they test.
+      let app = XCUIApplication()
+      app.launch()
+
+      let startSDKPredicate = NSPredicate(format: "label CONTAINS[c] 'Start SDK'")
+      let startSDKButton = app.staticTexts.matching(startSDKPredicate).firstMatch
+      let processSinglePaymentPredicate = NSPredicate(format: "label CONTAINS[c] 'Process Single Payment'")
+      let processSinglePaymentButton = app.staticTexts.matching(processSinglePaymentPredicate).firstMatch
+      
+      
+      let _ = startSDKButton.waitForExistence(timeout: TimeInterval(integerLiteral: 30))
+      XCTAssertTrue(startSDKButton.isHittable)
+      XCTAssertTrue(processSinglePaymentButton.isHittable)
+      
+      startSDKButton.tap()
+      processSinglePaymentButton.tap()
     
-    let startSDKButton = app.otherElements["Start SDK"]
-    XCTAssert(startSDKButton.waitForExistence(timeout: timeout), "startSDKButton does not exist.")
-    XCTAssert(startSDKButton.isHittable, "startSDKButton is not hittable.")
-    
-    startSDKButton.tap()
-    
-    let processSinglePaymentButton = app.otherElements["Process Single Payment GBP"]
-    XCTAssert(processSinglePaymentButton.waitForExistence(timeout: timeout), "processSinglePaymentButton does not exist.")
-    XCTAssert(processSinglePaymentButton.isHittable, "processSinglePaymentButton is not hittable.")
-    
-    processSinglePaymentButton.tap()
-    
-    let providersTitle = app.staticTexts["Choose your bank"]
-    
-    XCTAssert(providersTitle.waitForExistence(timeout: timeout), "providersTitle does not exist.")
-    XCTAssertTrue(providersTitle.isHittable, "providersTitle is not hittable.")
-  }
+      let providersTitle = app.staticTexts["Choose your bank"]
+      
+      let _ = providersTitle.waitForExistence(timeout: TimeInterval(integerLiteral: 30))
+      XCTAssertTrue(providersTitle.isHittable)
+    }
 }
