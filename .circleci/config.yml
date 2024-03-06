@@ -115,12 +115,17 @@ jobs:
 
   build-ios-demo-app:
     macos:
-      xcode: 15.2.0
+      xcode: 15.3.0
     resource_class: macos.m1.large.gen1
     working_directory: /Users/distiller/project
 
     steps:
       - checkout
+      - macos/add-uitest-permissions
+      - macos/preboot-simulator:
+          version: "17.4"
+          platform: "iOS"
+          device: "iPhone 15 Pro"
       - run:
           name: Setup quick-start service
           command: |
@@ -148,7 +153,6 @@ jobs:
             cd /Users/distiller/project/DemoApp
             npx yalc add rn-truelayer-payments-sdk
             yarn install
-      - macos/add-uitest-permissions
       - run:
           name: build ios
           command: |
@@ -158,7 +162,7 @@ jobs:
             RCT_NEW_ARCH_ENABLED=1 bundle exec pod install
             cd /Users/distiller/project/DemoApp
             cd ios
-            xcodebuild -workspace DemoApp.xcworkspace -scheme DemoAppUITests -destination 'platform=iOS Simulator,name=iPhone 15 Pro,OS=17.2' -configuration Debug test
+            xcodebuild -workspace DemoApp.xcworkspace -scheme DemoAppUITests -destination 'platform=iOS Simulator,name=iPhone 15 Pro,OS=17.4' -configuration Debug test
 
 workflows:
   version: 2
