@@ -153,6 +153,7 @@ jobs:
             npx yalc add rn-truelayer-payments-sdk
             yarn install
             yarn start
+          background: true
       - run:
           name: build ios
           command: |
