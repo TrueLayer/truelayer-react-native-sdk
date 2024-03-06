@@ -122,10 +122,6 @@ jobs:
     steps:
       - checkout
       - macos/add-uitest-permissions
-      - macos/preboot-simulator:
-          version: "17.0.1"
-          platform: "iOS"
-          device: "iPhone 15 Pro"
       - run:
           name: Setup quick-start service
           command: |
