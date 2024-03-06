@@ -147,11 +147,12 @@ jobs:
             yarn build
             yalc publish
       - run:
-          name: Install DemoApp dependencies
+          name: Install DemoApp dependencies and start server
           command: |
             cd /Users/distiller/project/DemoApp
             npx yalc add rn-truelayer-payments-sdk
             yarn install
+            yarn start
       - run:
           name: build ios
           command: |
