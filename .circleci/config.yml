@@ -170,13 +170,6 @@ workflows:
   version: 2
   verify-version:
     jobs:
-      - verify-package-version:
-          name: "verify-package-version"
-      - build-and-publish:
-          name: build-and-publish-dry-run
-          isDryRun: true
-          requires:
-            - verify-package-version
       - build-ios-demo-app:
           name: build-ios-demo-app
 
