@@ -4,6 +4,7 @@ orbs:
   node: circleci/node@5.1.0
   android: circleci/android@2.3.0
   rn: react-native-community/react-native@7.1.0
+  macos: circleci/macos@2.4.1
 
 executors:
   base_executor:
@@ -120,6 +121,10 @@ jobs:
 
     steps:
       - checkout
+      - macos/add-uitest-permissions
+      - macos/add-permission:
+          bundle-id: "com.apple.CoreSimulator.SimulatorTrampoline"
+          permission-type: "kTCCServiceMicrophone"
       - run:
           name: Setup quick-start service
           command: |
@@ -142,11 +147,13 @@ jobs:
             yarn build
             yalc publish
       - run:
-          name: Install DemoApp dependencies
+          name: Install DemoApp dependencies and start server
           command: |
             cd /Users/distiller/project/DemoApp
             npx yalc add rn-truelayer-payments-sdk
             yarn install
+            yarn start
+          background: true
       - run:
           name: build ios
           command: |
@@ -155,7 +162,9 @@ jobs:
             gem install cocoapods
             RCT_NEW_ARCH_ENABLED=1 bundle exec pod install
             cd /Users/distiller/project/DemoApp
-            yarn ios
+            yarn react-native bundle --entry-file index.js --platform ios --dev false --bundle-output ios/main.jsbundle --assets-dest ios
+            cd ios
+            xcodebuild -workspace DemoApp.xcworkspace -scheme DemoAppUITests -destination 'platform=iOS Simulator,name=iPhone 15 Pro,OS=17.2' -configuration Debug test
 
 workflows:
   version: 2
