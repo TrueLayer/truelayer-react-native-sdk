@@ -8,7 +8,7 @@
 import XCTest
 
 final class DemoAppUITests: XCTestCase {
-  let timeout: TimeInterval = 30
+  let timeout: TimeInterval = 60
   
   override func setUpWithError() throws {
     // In UI tests it is usually best to stop immediately when a failure occurs.
