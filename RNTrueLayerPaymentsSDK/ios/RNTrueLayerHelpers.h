@@ -18,6 +18,10 @@
 /// - Parameter status: The single payment status from the TrueLayerSDK Objecive-C bridge.
 +(NSString *)statusFromSinglePaymentStatus:(TrueLayerSinglePaymentStatus)status;
 
+/// Returns a result shown `String` value to send to the merchant from a given Objective-C single payment result shown.
+/// - Parameter resultShown: The single payment result shown from the TrueLayerSDK Objecive-C bridge.
++ (NSString *)resultShownFromSinglePaymentResultShown:(TrueLayerSinglePaymentResultShown)resultShown;
+
 // MARK: - Mandate
 
 /// Returns a `step` value to send to the merchant from a given mandate state.
@@ -31,5 +35,9 @@
 /// Returns a `status` value to send to the merchant from a given Objective-C mandate status.
 /// - Parameter status: The mandate status from the TrueLayerSDK Objecive-C bridge.
 +(NSString *)statusFromMandateStatus:(TrueLayerMandateStatus)status;
+
+/// Returns a result shown `String` value to send to the merchant from a given Objective-C mandate result shown.
+/// - Parameter resultShown: The mandate result shown from the TrueLayerSDK Objecive-C bridge.
++ (NSString *)resultShownFromMandateResultShown:(TrueLayerMandateResultShown)resultShown;
 
 @end

@@ -316,26 +316,29 @@ RCT_EXPORT_METHOD(_mandateStatus:(NSString *)mandateId
                                                                                            redirectURL:[NSURL URLWithString:redirectURI]
                                                                                            preferences:trueLayerPreferences];
     
-    [TrueLayerPaymentsManager processSinglePaymentWithContext:context
-                                                      success:^(TrueLayerSinglePaymentState state) {
-      // Create a `step` value to return to React Native, that is equal to the typescript `ProcessorStep` enum.
+    [TrueLayerPaymentsManager processSinglePaymentWithContext:context 
+                                                    onSuccess:^(TrueLayerProcessSinglePaymentSuccess * _Nonnull singlePaymentSuccess) {
       // See `types.ts` for the raw values to match.
-      NSString *step = [RNTrueLayerHelpers stepFromSinglePaymentState:state];
+      NSString *step = [RNTrueLayerHelpers stepFromSinglePaymentState:singlePaymentSuccess.state];
+      NSString *resultShown = [RNTrueLayerHelpers resultShownFromSinglePaymentResultShown:singlePaymentSuccess.resultShown];
       
       NSDictionary *result = @{
         @"type": @"Success",
-        @"step": step
+        @"step": step,
+        @"resultShown": resultShown
       };
       
       resolve(result);
-    }
-                                                      failure:^(TrueLayerSinglePaymentError error) {
-      // Create a `reason` value to return to React Native, that is equal to the typescript `FailureReason` enum.
-      // See `types.ts` for the raw values to match.
-      NSString *reason = [RNTrueLayerHelpers reasonFromSinglePaymentError:error];
+
+    } 
+                                                    onFailure:^(TrueLayerProcessSinglePaymentFailure * _Nonnull singlePaymentFailure) {
+      NSString *reason = [RNTrueLayerHelpers reasonFromSinglePaymentError:singlePaymentFailure.error];
+      NSString *resultShown = [RNTrueLayerHelpers resultShownFromSinglePaymentResultShown:singlePaymentFailure.resultShown];
+
       NSDictionary *result = @{
         @"type": @"Failure",
-        @"reason": reason
+        @"reason": reason,
+        @"resultShown": resultShown
       };
       
       resolve(result);
@@ -378,25 +381,30 @@ RCT_EXPORT_METHOD(_mandateStatus:(NSString *)mandateId
                                                                                      token:resourceToken
                                                                                redirectURL:[NSURL URLWithString:redirectURI]
                                                                                preferences:preferences];
-    
-    [TrueLayerPaymentsManager processMandateWithContext:context success:^(TrueLayerMandateState state) {
-      // Create a `step` value to return to React Native, that is equal to the typescript `ProcessorStep` enum.
+        
+    [TrueLayerPaymentsManager processMandateWithContext:context
+                                   onSuccess:^(TrueLayerProcessMandateSuccess * _Nonnull singlePaymentSuccess) {
       // See `types.ts` for the raw values to match.
-      NSString *step = [RNTrueLayerHelpers stepFromMandateState:state];
+      NSString *step = [RNTrueLayerHelpers stepFromMandateState:singlePaymentSuccess.state];
+      NSString *resultShown = [RNTrueLayerHelpers resultShownFromMandateResultShown:singlePaymentSuccess.resultShown];
       
       NSDictionary *result = @{
         @"type": @"Success",
-        @"step": step
+        @"step": step,
+        @"resultShown": resultShown
       };
       
       resolve(result);
-    } failure:^(TrueLayerMandateError error) {
-      // Create a `reason` value to return to React Native, that is equal to the typescript `FailureReason` enum.
-      // See `types.ts` for the raw values to match.
-      NSString *reason = [RNTrueLayerHelpers reasonFromMandateError:error];
+      
+    }
+                                   onFailure:^(TrueLayerProcessMandateFailure * _Nonnull singlePaymentFailure) {
+      NSString *reason = [RNTrueLayerHelpers reasonFromMandateError:singlePaymentFailure.error];
+      NSString *resultShown = [RNTrueLayerHelpers resultShownFromMandateResultShown:singlePaymentFailure.resultShown];
+      
       NSDictionary *result = @{
         @"type": @"Failure",
-        @"reason": reason
+        @"reason": reason,
+        @"resultShown": resultShown
       };
       
       resolve(result);
