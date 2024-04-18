@@ -160,6 +160,9 @@ function processPayment(processorContext: SamplePaymentContext) {
       resourceToken: processorContext.resource_token,
       redirectUri: 'truelayer://payments_sample',
     },
+    {
+      shouldPresentResultScreen: true
+    }
   ).then(result => {
     switch (result.type) {
       case ResultType.Success:
@@ -222,6 +225,9 @@ function processMandate(processorContext: SamplePaymentContext): void {
       mandateId: processorContext.id,
       resourceToken: processorContext.resource_token,
       redirectUri: redirectUri
+    },
+    {
+      shouldPresentResultScreen: true
     }
   ).then(result => {
     switch (result.type) {
