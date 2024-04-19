@@ -246,7 +246,7 @@ RCT_EXPORT_METHOD(_mandateStatus:(NSString *)mandateId
   
   NSDictionary *additionalConfiguration = @{
     @"customIntegrationType": @"React Native",
-    @"customIntegrationVersion": @"2.0.0"
+    @"customIntegrationVersion": @"2.1.0"
   };
   
   [TrueLayerPaymentsManager configureWithEnvironment:sdkEnvironment
