@@ -67,7 +67,7 @@ Alternatively, you can use our [open source server](https://github.com/TrueLayer
 #### Minimum Versions
 
 - Xcode 14.x and iOS 14.0.
-- Android 5.0 (API level 21)
+- Android 7.0 (API level 24)
 
 ### Android specific setup
 
@@ -93,7 +93,7 @@ android {
 dependencies {
     // Add to your projects `build.gradle`.
     // We are currently using following version of desuga libraries
-    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:1.2.2"
+    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:2.0.4"
 }
 ```
 
