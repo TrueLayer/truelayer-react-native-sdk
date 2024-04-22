@@ -16,6 +16,7 @@ import com.facebook.react.bridge.WritableNativeMap
 import com.truelayer.RNTrueLayerPaymentsSDK.TLReactNativeUtils.Companion.createProcessorFailureResult
 import com.truelayer.RNTrueLayerPaymentsSDK.TLReactNativeUtils.Companion.createStatusFailure
 import com.truelayer.RNTrueLayerPaymentsSDK.TLReactNativeUtils.Companion.mapMandateStatus
+import com.truelayer.RNTrueLayerPaymentsSDK.TLReactNativeUtils.Companion.mapPaymentResultShown
 import com.truelayer.RNTrueLayerPaymentsSDK.TLReactNativeUtils.Companion.mapPaymentStatus
 import com.truelayer.payments.core.domain.configuration.Environment
 import com.truelayer.payments.core.domain.errors.CoreError
@@ -154,27 +155,61 @@ private class TLReactNativeUtils {
             }
         }
 
+
+        fun mapPaymentResultShown(resultShown: ProcessorResult.ResultShown): String {
+            /*
+                export enum ResultShown {
+                  NoneShown = "NoneShown",
+                  NoneInvalidState = "NoneInvalidState",
+                  Success = "Success",
+                  Initiated = "Initiated",
+                  InsufficientFunds = "InsufficientFunds",
+                  PaymentLimitExceeded = "PaymentLimitExceeded",
+                  UserCanceledAtProvider = "UserCanceledAtProvider",
+                  AuthorizationFailed = "AuthorizationFailed",
+                  Expired = "Expired",
+                  InvalidAccountDetails = "InvalidAccountDetails",
+                  GenericFailed = "GenericFailed",
+                }
+            */
+            return when (resultShown) {
+                ProcessorResult.ResultShown.None -> "NoneShown"
+                ProcessorResult.ResultShown.Initiated -> "Initiated"
+                ProcessorResult.ResultShown.Success -> "Success"
+                ProcessorResult.ResultShown.InsufficientFunds -> "InsufficientFunds"
+                ProcessorResult.ResultShown.PaymentLimitExceeded -> "PaymentLimitExceeded"
+                ProcessorResult.ResultShown.UserCanceledAtProvider -> "UserCanceledAtProvider"
+                ProcessorResult.ResultShown.AuthorizationFailed -> "AuthorizationFailed"
+                ProcessorResult.ResultShown.Expired -> "Expired"
+                ProcessorResult.ResultShown.InvalidAccountDetails -> "InvalidAccountDetails"
+                ProcessorResult.ResultShown.InvalidGenericWithoutRetry -> "GenericFailed"
+                ProcessorResult.ResultShown.Failed -> "GenericFailed"
+            }
+        }
+
         /*
             export type ProcessorResult =
-              | { type: ProcessorResultType.Success; step: ProcessorStep }
-              | { type: ProcessorResultType.Failure; reason: FailureReason };
+              | { type: ResultType.Success; step: ProcessorStep, resultShown: ResultShown }
+              | { type: ResultType.Failure; reason: FailureReason, resultShown: ResultShown };
          */
-        fun createProcessorFailureResult(reason: ProcessorResult.FailureReason): WritableMap {
+        fun createProcessorFailureResult(reason: ProcessorResult.FailureReason, resultShown: ProcessorResult.ResultShown): WritableMap {
             val map: WritableMap = WritableNativeMap()
             map.putString("type", "Failure")
             map.putString("reason", mapFailureReason(reason))
+            map.putString("resultShown", mapPaymentResultShown(resultShown))
             return map
         }
 
         /*
             export type ProcessorResult =
-              | { type: ProcessorResultType.Success; step: ProcessorStep }
-              | { type: ProcessorResultType.Failure; reason: FailureReason };
+              | { type: ResultType.Success; step: ProcessorStep, resultShown: ResultShown }
+              | { type: ResultType.Failure; reason: FailureReason, resultShown: ResultShown };
          */
-        fun createProcessorSuccessResult(step: ProcessorResult.PaymentStep): WritableMap {
+        fun createProcessorSuccessResult(step: ProcessorResult.PaymentStep, resultShown: ProcessorResult.ResultShown): WritableMap {
             val map: WritableMap = WritableNativeMap()
             map.putString("type", "Success")
             map.putString("step", mapPaymentStep(step))
+            map.putString("resultShown", mapPaymentResultShown(resultShown))
             return map
         }
 
@@ -261,12 +296,12 @@ private fun String?.convertToEnvironment() = Environment.values().firstOrNull { 
 
 private fun CoreError.intoProcessorResult(): ProcessorResult.Failure = when (this) {
     is CoreError.ConnectionError ->
-        ProcessorResult.Failure(ProcessorResult.FailureReason.NoInternet)
+        ProcessorResult.Failure(ProcessorResult.FailureReason.NoInternet, ProcessorResult.ResultShown.None)
     is CoreError.CertificateValidationError ->
-        ProcessorResult.Failure(ProcessorResult.FailureReason.ConnectionSecurityIssue)
+        ProcessorResult.Failure(ProcessorResult.FailureReason.ConnectionSecurityIssue, ProcessorResult.ResultShown.None)
     is CoreError.HttpError,
     is CoreError.ValidationError ->
-        ProcessorResult.Failure(ProcessorResult.FailureReason.CommunicationIssue)
+        ProcessorResult.Failure(ProcessorResult.FailureReason.CommunicationIssue, ProcessorResult.ResultShown.None)
 }
 
 private fun WritableMap.concatenate(map: WritableMap) {
@@ -343,7 +378,7 @@ class TlPaymentSdkModule(reactContext: ReactApplicationContext) :
         val extractedContext: ProcessorContext.PaymentContext? = contextExtractor.getPaymentContext()
         if (extractedContext == null) {
             promise?.resolve(
-                createProcessorFailureResult(ProcessorResult.FailureReason.ProcessorContextNotAvailable)
+                createProcessorFailureResult(ProcessorResult.FailureReason.ProcessorContextNotAvailable, ProcessorResult.ResultShown.None)
             )
             return
         }
@@ -384,7 +419,7 @@ class TlPaymentSdkModule(reactContext: ReactApplicationContext) :
         val extractedContext: ProcessorContext.MandateContext? = contextExtractor.getMandateContext()
         if (extractedContext == null) {
             promise?.resolve(
-                createProcessorFailureResult(ProcessorResult.FailureReason.ProcessorContextNotAvailable)
+                createProcessorFailureResult(ProcessorResult.FailureReason.ProcessorContextNotAvailable, ProcessorResult.ResultShown.None)
             )
             return
         }
@@ -409,7 +444,7 @@ class TlPaymentSdkModule(reactContext: ReactApplicationContext) :
         }
         if (mandateId == null || resourceToken == null) {
             promise?.resolve(
-                createProcessorFailureResult(ProcessorResult.FailureReason.ProcessorContextNotAvailable)
+                createProcessorFailureResult(ProcessorResult.FailureReason.ProcessorContextNotAvailable, ProcessorResult.ResultShown.None)
             )
             return
         }
@@ -428,6 +463,7 @@ class TlPaymentSdkModule(reactContext: ReactApplicationContext) :
                     val mandateStatusResult = WritableNativeMap().apply {
                         putString("type", "Success")
                         putString("status", mapMandateStatus(it))
+                        putString("resultShown", mapPaymentResultShown(ProcessorResult.ResultShown.None))
                     }
 
                     promise?.resolve(mandateStatusResult)
@@ -445,7 +481,7 @@ class TlPaymentSdkModule(reactContext: ReactApplicationContext) :
         }
         if (paymentId == null || resourceToken == null) {
             promise?.resolve(
-                createProcessorFailureResult(ProcessorResult.FailureReason.ProcessorContextNotAvailable)
+                createProcessorFailureResult(ProcessorResult.FailureReason.ProcessorContextNotAvailable, ProcessorResult.ResultShown.None)
             )
             return
         }
@@ -463,6 +499,7 @@ class TlPaymentSdkModule(reactContext: ReactApplicationContext) :
                     val paymentStatusResult = WritableNativeMap().apply {
                         putString("type", "Success")
                         putString("status", mapPaymentStatus(it))
+                        putString("resultShown", mapPaymentResultShown(ProcessorResult.ResultShown.None))
                     }
 
                     promise?.resolve(paymentStatusResult)
@@ -540,10 +577,10 @@ class TlPaymentSdkModule(reactContext: ReactApplicationContext) :
             result.putInt("resultCode", resultCode)
             when (val sdkResult = ProcessorResult.unwrapResult(data)) {
                 is ProcessorResult.Successful -> {
-                    result.concatenate(TLReactNativeUtils.createProcessorSuccessResult(sdkResult.step))
+                    result.concatenate(TLReactNativeUtils.createProcessorSuccessResult(sdkResult.step, sdkResult.resultShown))
                 }
                 is ProcessorResult.Failure -> {
-                    result.concatenate(createProcessorFailureResult(sdkResult.reason))
+                    result.concatenate(createProcessorFailureResult(sdkResult.reason, sdkResult.resultShown))
                 }
                 null -> { } // just ignore
             }

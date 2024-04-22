@@ -134,6 +134,43 @@
   }
 }
 
++ (NSString *)resultShownFromSinglePaymentResultShown:(TrueLayerSinglePaymentResultShown)resultShown {
+  switch (resultShown) {
+    case TrueLayerSinglePaymentResultShownNoneShown:
+      return @"NoneShown";
+      
+    case TrueLayerSinglePaymentResultShownNoneInvalidState:
+      return @"NoneInvalidState";
+      
+    case TrueLayerSinglePaymentResultShownSuccess:
+      return @"Success";
+      
+    case TrueLayerSinglePaymentResultShownInitiated:
+      return @"Initiated";
+      
+    case TrueLayerSinglePaymentResultShownInsufficientFunds:
+      return @"InsufficientFunds";
+      
+    case TrueLayerSinglePaymentResultShownPaymentLimitExceeded:
+      return @"PaymentLimitExceeded";
+      
+    case TrueLayerSinglePaymentResultShownUserCanceledAtProvider:
+      return @"UserCanceledAtProvider";
+      
+    case TrueLayerSinglePaymentResultShownAuthorizationFailed:
+      return @"AuthorizationFailed";
+      
+    case TrueLayerSinglePaymentResultShownExpired:
+      return @"Expired";
+      
+    case TrueLayerSinglePaymentResultShownInvalidAccountDetails:
+      return @"InvalidAccountDetails";
+      
+    case TrueLayerSinglePaymentResultShownGenericFailed:
+      return @"GenericFailed";
+  }
+}
+
 // MARK: - Mandate
 
 + (NSString *)stepFromMandateState:(TrueLayerMandateState)state {
@@ -223,6 +260,31 @@
       
     case TrueLayerMandateStatusFailed:
       return @"Failed";
+  }
+}
+
++ (NSString *)resultShownFromMandateResultShown:(TrueLayerMandateResultShown)resultShown {
+  switch (resultShown) {
+    case TrueLayerMandateResultShownNoneShown:
+      return @"NoneShown";
+      
+    case TrueLayerMandateResultShownNoneInvalidState:
+      return @"NoneInvalidState";
+      
+    case TrueLayerMandateResultShownSuccess:
+      return @"Success";
+      
+    case TrueLayerMandateResultShownInitiated:
+      return @"Initiated";
+      
+    case TrueLayerMandateResultShownAuthorizationFailed:
+      return @"AuthorizationFailed";
+      
+    case TrueLayerMandateResultShownExpired:
+      return @"Expired";
+      
+    case TrueLayerMandateResultShownGenericFailed:
+      return @"GenericFailed";
   }
 }
 
