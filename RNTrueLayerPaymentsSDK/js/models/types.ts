@@ -31,8 +31,8 @@ export enum ResultType {
 }
 
 export type ProcessorResult =
-  | { type: ResultType.Success; step: ProcessorStep }
-  | { type: ResultType.Failure; reason: FailureReason };
+  | { type: ResultType.Success; step: ProcessorStep, resultShown: ResultShown }
+  | { type: ResultType.Failure; reason: FailureReason, resultShown: ResultShown };
 
 export enum ProcessorStep {
   Redirect = "Redirect",
@@ -40,6 +40,20 @@ export enum ProcessorStep {
   Authorized = "Authorized",
   Executed = "Executed",
   Settled = "Settled",
+}
+
+export enum ResultShown {
+  NoneShown = "NoneShown",
+  NoneInvalidState = "NoneInvalidState",
+  Success = "Success",
+  Initiated = "Initiated",
+  InsufficientFunds = "InsufficientFunds",
+  PaymentLimitExceeded = "PaymentLimitExceeded",
+  UserCanceledAtProvider = "UserCanceledAtProvider",
+  AuthorizationFailed = "AuthorizationFailed",
+  Expired = "Expired",
+  InvalidAccountDetails = "InvalidAccountDetails",
+  GenericFailed = "GenericFailed",
 }
 
 export type FailureReason =

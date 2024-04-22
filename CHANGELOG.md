@@ -1,6 +1,17 @@
 # CHANGELOG
 All notable changes to this project will be documented in this file. To know better on how to write and maintain a changelog, refer to [this link](https://keepachangelog.com/en/1.0.0/).
 
+## [2.1.0]
+
+### Added
+
+The `ProcessorResult` type has new property `resultShown`. If you are using the result screen has been show to the user as a part of the payment flow, whe `resultShown` property will indicate what user have seen.
+
+### Changed
+
+- Updated the underlying iOS SDK to version [3.1.0](https://github.com/TrueLayer/TrueLayer-iOS-SDK/releases/tag/3.1.0).
+- Updated the underlying Android SDK to version [3.1.0](https://docs.truelayer.com/docs/android-sdk-release-history).
+
 ## [2.0.0]
 
 ### Added

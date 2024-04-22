@@ -160,14 +160,17 @@ function processPayment(processorContext: SamplePaymentContext) {
       resourceToken: processorContext.resource_token,
       redirectUri: 'truelayer://payments_sample',
     },
+    {
+      shouldPresentResultScreen: true
+    }
   ).then(result => {
     switch (result.type) {
       case ResultType.Success:
-        log(`processPayment success at step: ${result.step}`)
+        log(`processPayment success: ${JSON.stringify(result)}`)
         break
       case ResultType.Failure:
         log(
-          `Oh we've failed processPayment with following reason: ${result.reason}`,
+          `Oh we've failed processPayment with following result: ${JSON.stringify(result)}`,
         )
         break
     }
@@ -222,15 +225,18 @@ function processMandate(processorContext: SamplePaymentContext): void {
       mandateId: processorContext.id,
       resourceToken: processorContext.resource_token,
       redirectUri: redirectUri
+    },
+    {
+      shouldPresentResultScreen: true
     }
   ).then(result => {
     switch (result.type) {
       case ResultType.Success:
-        log(`processMandate success at step: ${result.step}`)
+        log(`processMandate success: ${JSON.stringify(result)}`)
         break
       case ResultType.Failure:
         log(
-          `Oh we've failed processMandate with following reason: ${result.reason}`,
+          `Oh we've failed processMandate with following result: ${JSON.stringify(result)}`,
         )
         break
     }
