@@ -63,15 +63,20 @@ function App(): React.JSX.Element {
     // Get the deep link used to open the app
     const initialUrl = await Linking.getInitialURL()
     if(initialUrl) {
+      console.log("getUrlAsync: " + initialUrl)
       handleRedirect(initialUrl)
     }
   }
 
   getUrlAsync()
+  console.log("Main APP function")
 
-  Linking.addEventListener("url", (event) => {
-    handleRedirect(event.url)
-  })
+  if (Linking.listenerCount("url") == 0) {
+    Linking.addEventListener("url", (event) => {
+      console.log("eventListener url: " + event.url)
+      handleRedirect(event.url)
+    })
+  }
 
   return (
     <SafeAreaView style={backgroundStyle}>
@@ -148,6 +153,44 @@ function createAndProcessPayment(currency: 'GBP' | 'EUR'): void {
       `resource_token: ${processorContext.resource_token}`,
     )
     processPayment(processorContext)
+  })
+}
+
+function handleGetPaymentStatus(processorContext: SamplePaymentContext) {
+  AsyncStorage.setItem('@Store:context', JSON.stringify(processorContext))
+  TrueLayerPaymentsSDKWrapper.paymentStatus(
+      processorContext.id,
+      processorContext.resource_token
+  ).then(result => {
+    switch (result.type) {
+      case ResultType.Success:
+        log(`processPayment success: ${JSON.stringify(result)}`)
+        break
+      case ResultType.Failure:
+        log(
+          `Oh we've failed processPayment with following result: ${JSON.stringify(result)}`,
+        )
+        break
+    }
+  })
+}
+
+function handleGetMandateStatus(processorContext: SamplePaymentContext) {
+  AsyncStorage.setItem('@Store:context', JSON.stringify(processorContext))
+  TrueLayerPaymentsSDKWrapper.mandateStatus(
+    processorContext.id,
+    processorContext.resource_token
+  ).then(result => {
+    switch (result.type) {
+      case ResultType.Success:
+        log(`processMandate success: ${JSON.stringify(result)}`)
+        break
+      case ResultType.Failure:
+        log(
+          `Oh we've failed processMandate with following result: ${JSON.stringify(result)}`,
+        )
+        break
+    }
   })
 }
 
@@ -271,6 +314,8 @@ function getMandateStatus(): void {
 }
 
 async function handleRedirect(url: string) {
+
+  console.log("handleRedirect for url: " + url)
     // launch result screen
   const isPayment = url.includes("payment_id")
   const isMandate = url.includes("mandate_id")
@@ -298,11 +343,23 @@ interface SamplePaymentContext {
   resource_token: string
 }
 
+async function getPaymentContext(
+  type: 'mandate' | 'payment' | 'payment/euro',
+  timeout: number = 7000,
+): Promise<SamplePaymentContext> {
+  return Promise.race<SamplePaymentContext>([
+    fetchPaymentContext(type),
+    new Promise((_,reject) =>
+      setTimeout(() => reject(new Error('timeout')), timeout)
+    )
+  ])
+}
+
 /**
  * This one will fetch the token for mandate from the payments quickstart project
  * Amend the url to match your instance.
  */
-async function getPaymentContext(
+async function fetchPaymentContext(
   type: 'mandate' | 'payment' | 'payment/euro',
 ): Promise<SamplePaymentContext> {
   return await fetch('http://localhost:3000/v3/' + type, {

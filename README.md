@@ -93,7 +93,7 @@ android {
 dependencies {
     // Add to your projects `build.gradle`.
     // We are currently using following version of desuga libraries
-    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:2.0.4"
+    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:2.1.2"
 }
 ```
 
@@ -109,9 +109,9 @@ In your `app.json` file you need to add the following configuration for `expo-bu
         "expo-build-properties",
         {
           "android": {
-            "compileSdkVersion": 33,
-            "targetSdkVersion": 33,
-            "buildToolsVersion": "33.0.0",
+            "compileSdkVersion": 34,
+            "targetSdkVersion": 34,
+            "buildToolsVersion": "34.0.0",
             "packagingOptions": {
               "exclude": ["META-INF/LICENSE-MIT"]
             }

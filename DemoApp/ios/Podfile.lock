@@ -1152,15 +1152,15 @@ PODS:
     - React-jsi (= 0.73.6)
     - React-logger (= 0.73.6)
     - React-perflogger (= 0.73.6)
-  - rn-truelayer-payments-sdk (2.1.0):
+  - rn-truelayer-payments-sdk (2.2.0):
     - RCT-Folly
     - RCTRequired
     - RCTTypeSafety
     - React-Codegen
     - React-Core
     - ReactCommon/turbomodule/core
-    - TrueLayerPaymentsSDK (= 3.1.0)
-  - RNCAsyncStorage (1.21.0):
+    - TrueLayerPaymentsSDK (= 3.2.1)
+  - RNCAsyncStorage (1.23.1):
     - glog
     - hermes-engine
     - RCT-Folly (= 2022.05.16.00)
@@ -1180,7 +1180,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - Yoga
   - SocketRocket (0.6.1)
-  - TrueLayerPaymentsSDK (3.1.0)
+  - TrueLayerPaymentsSDK (3.2.1)
   - Yoga (1.14.0)
 
 DEPENDENCIES:
@@ -1452,10 +1452,10 @@ SPEC CHECKSUMS:
   React-runtimescheduler: 9636eee762c699ca7c85751a359101797e4c8b3b
   React-utils: d16c1d2251c088ad817996621947d0ac8167b46c
   ReactCommon: 2aa35648354bd4c4665b9a5084a7d37097b89c10
-  rn-truelayer-payments-sdk: 55149923492f3e4ba1d3247867bcffce5910d53b
-  RNCAsyncStorage: 0c35c1c99e3d257a0ba7e7218823a02c69262c7c
+  rn-truelayer-payments-sdk: 0b41aa531a76d6074b712a079483b032dcd17306
+  RNCAsyncStorage: 0ae9ad1fef1cdf2633a2d41574076ddeeaa1df48
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
-  TrueLayerPaymentsSDK: 6dd05b4d38b6cf13dd56f4818040a7696f460ecd
+  TrueLayerPaymentsSDK: ae89346c21a097a7f49a5bbfb49e10ee19088fdc
   Yoga: d17d2cc8105eed528474683b42e2ea310e1daf61
 
 PODFILE CHECKSUM: 1c299ce58ba9e3eeb6e73f2d69673f141d220c49
