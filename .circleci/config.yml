@@ -2,7 +2,7 @@ version: 2.1
 
 orbs:
   node: circleci/node@5.1.0
-  android: circleci/android@2.3.0
+  android: circleci/android@2.5.0
   rn: react-native-community/react-native@7.1.0
   macos: circleci/macos@2.4.1
 
@@ -57,10 +57,16 @@ jobs:
   build-android-demo-app:
     executor:
       name: android/android-machine
-      tag: 2023.09.1
+      tag: default
     steps:
       - checkout:
           path: ~/project
+      - android/change-java-version:
+          java-version: 17
+      - run:
+          name: Validate java version
+          command: |
+            java --version
       - run:
           name: Install Yalc
           command: |
