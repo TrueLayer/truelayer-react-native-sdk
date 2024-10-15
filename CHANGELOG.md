@@ -1,6 +1,12 @@
 # CHANGELOG
 All notable changes to this project will be documented in this file. To know better on how to write and maintain a changelog, refer to [this link](https://keepachangelog.com/en/1.0.0/).
 
+## [2.2.1]
+
+### Changed
+
+- Updated the underlying Android SDK to version [3.2.2](https://docs.truelayer.com/docs/android-sdk-release-history).
+
 ## [2.2.0]
 
 ### Changed
