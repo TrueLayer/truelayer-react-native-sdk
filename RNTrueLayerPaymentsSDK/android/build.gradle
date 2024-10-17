@@ -67,5 +67,5 @@ repositories {
 
 dependencies {
   implementation 'com.facebook.react:react-native:+'
-  implementation 'com.truelayer.payments:ui:3.2.1'
+  implementation 'com.truelayer.payments:ui:3.2.2'
 }
