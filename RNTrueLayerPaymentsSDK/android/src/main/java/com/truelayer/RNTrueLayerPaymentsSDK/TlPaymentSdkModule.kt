@@ -139,7 +139,7 @@ private class TLReactNativeUtils {
         fun mapPaymentStep(step: ProcessorResult.PaymentStep): String {
             /*
                 export enum ProcessorStep {
-                  Redirect = "Redirect",
+                  Redirect = "Redirect", // Deprecated
                   Wait = "Wait",
                   Authorized = "Authorized",
                   Executed = "Executed",
@@ -147,7 +147,6 @@ private class TLReactNativeUtils {
                 }
              */
             return when (step) {
-                ProcessorResult.PaymentStep.Redirect -> "Redirect"
                 ProcessorResult.PaymentStep.Wait -> "Wait"
                 ProcessorResult.PaymentStep.Authorized -> "Authorized"
                 ProcessorResult.PaymentStep.Successful -> "Executed"
