@@ -15,8 +15,8 @@ buildscript {
     gradlePluginPortal()
   }
   dependencies {
-    classpath("com.android.tools.build:gradle:8.2.1")
-    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.20"
+    classpath("com.android.tools.build:gradle:8.7.3")
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.25"
   }
 }
 
@@ -29,7 +29,7 @@ apply plugin: 'com.facebook.react'
 apply plugin: 'kotlin-android'
 
 android {
-  compileSdkVersion safeExtGet('compileSdkVersion', 34)
+  compileSdkVersion safeExtGet('compileSdkVersion', 35)
   defaultConfig {
     def packageJsonVersion = getVersionFromPackageJson()
     buildConfigField "String", "RN_TL_SDK_VERSION", "\"${packageJsonVersion}\""
@@ -67,5 +67,5 @@ repositories {
 
 dependencies {
   implementation 'com.facebook.react:react-native:+'
-  implementation 'com.truelayer.payments:ui:3.9.0'
+  implementation 'com.truelayer.payments:ui:3.9.1'
 }
