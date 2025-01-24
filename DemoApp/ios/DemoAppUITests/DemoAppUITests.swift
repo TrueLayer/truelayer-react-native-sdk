@@ -23,17 +23,16 @@ final class DemoAppUITests: XCTestCase {
       let startSDKButton = app.staticTexts.matching(startSDKPredicate).firstMatch
       let processSinglePaymentPredicate = NSPredicate(format: "label CONTAINS[c] 'Process Single Payment'")
       let processSinglePaymentButton = app.staticTexts.matching(processSinglePaymentPredicate).firstMatch
-      
-      
+
       let _ = startSDKButton.waitForExistence(timeout: TimeInterval(integerLiteral: 30))
       XCTAssertTrue(startSDKButton.isHittable)
       XCTAssertTrue(processSinglePaymentButton.isHittable)
-      
+
       startSDKButton.tap()
       processSinglePaymentButton.tap()
-    
+
       let providersTitle = app.staticTexts["Choose your bank"]
-      
+
       let _ = providersTitle.waitForExistence(timeout: TimeInterval(integerLiteral: 30))
       XCTAssertTrue(providersTitle.isHittable)
     }
