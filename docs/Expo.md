@@ -77,10 +77,10 @@ You can do that by running the following commands:
 For Android
 ```text
 npx expo prebuild
-npx expo run:android
+npx expo run android
 ```
 For iOS
 ```text
 npx expo prebuild
-npx expo run:ios
+npx expo run ios
 ```
