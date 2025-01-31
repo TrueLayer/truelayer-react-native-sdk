@@ -1,6 +1,6 @@
 ## Integration example
 
-An integration example can be found in the `ExpoDemoApp`. This exaple is limitted only to the SDK initialization, but presents how the SDK needs to be integrated into the project.
+An integration example can be found in the `ExpoDemoApp`. This exaple is limited only to the SDK initialization, but presents how the SDK needs to be integrated into the project.
 The full example of how the SDK can be used can be found in the pure react-native `DemoApp`.
 
 ## Updating build scripts
