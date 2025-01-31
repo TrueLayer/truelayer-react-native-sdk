@@ -1,6 +1,17 @@
 # CHANGELOG
 All notable changes to this project will be documented in this file. To know better on how to write and maintain a changelog, refer to [this link](https://keepachangelog.com/en/1.0.0/).
 
+## [2.3.0]
+
+### Changed
+
+- Updated the underlying Android SDK to version [3.9.1](https://docs.truelayer.com/docs/android-sdk-release-history).
+- Updated the underlying iOS SDK to version [3.9.0](https://docs.truelayer.com/docs/ios-sdk-release-history).
+
+### Fixes
+
+- Fixed a problem when iOS SDK would crash if no theme was provided at configure sdk step.
+
 ## [2.2.1]
 
 ### Changed

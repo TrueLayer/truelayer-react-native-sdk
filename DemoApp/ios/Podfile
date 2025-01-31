@@ -4,30 +4,9 @@ require Pod::Executable.execute_command('node', ['-p',
     "react-native/scripts/react_native_pods.rb",
     {paths: [process.argv[1]]},
   )', __dir__]).strip
-  
 
-#######
-# Read min iOS version from Xcode project and set as min iOS version for Podfile
-require 'xcodeproj'
-
-project_path = './DemoApp.xcodeproj'
-project = Xcodeproj::Project.open(project_path)
-min_ios_version_supported = project.build_configurations.first.build_settings['IPHONEOS_DEPLOYMENT_TARGET']
-######
-
-platform :ios, 14.0
+platform :ios, min_ios_version_supported
 prepare_react_native_project!
-
-# If you are using a `react-native-flipper` your iOS build will fail when `NO_FLIPPER=1` is set.
-# because `react-native-flipper` depends on (FlipperKit,...) that will be excluded
-#
-# To fix this you can also exclude `react-native-flipper` using a `react-native.config.js`
-# ```js
-# module.exports = {
-#   dependencies: {
-#     ...(process.env.NO_FLIPPER ? { 'react-native-flipper': { platforms: { ios: null } } } : {}),
-# ```
-flipper_config = ENV['NO_FLIPPER'] == "1" ? FlipperConfiguration.disabled : FlipperConfiguration.enabled
 
 linkage = ENV['USE_FRAMEWORKS']
 if linkage != nil
@@ -40,18 +19,12 @@ target 'DemoApp' do
 
   use_react_native!(
     :path => config[:reactNativePath],
-    # Enables Flipper.
-    #
-    # Note that if you have use_frameworks! enabled, Flipper will not work and
-    # you should disable the next line.
-    :flipper_configuration => flipper_config,
     # An absolute path to your application root.
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
   target 'DemoAppUITests' do
-    inherit! :complete
-    # Pods for testing
+#    inherit! :complete
   end
 
   post_install do |installer|
@@ -59,22 +32,8 @@ target 'DemoApp' do
     react_native_post_install(
       installer,
       config[:reactNativePath],
-      :mac_catalyst_enabled => false
+      :mac_catalyst_enabled => false,
+      # :ccache_enabled => true
     )
-    # this is a workaround for the issue with FlipperTransportTypes
-    # and XCode 15.3 as per here: https://stackoverflow.com/questions/78121217/build-error-on-xcode-15-3-called-object-type-facebookflippersocketcertifi
-    installer.pods_project.targets.each do |target|
-      if target.name == 'Flipper'
-        file_path = 'Pods/Flipper/xplat/Flipper/FlipperTransportTypes.h'
-        contents = File.read(file_path)
-        unless contents.include?('#include <functional>')
-          File.chmod(0755, file_path)
-          File.open(file_path, 'w') do |file|
-            file.puts('#include <functional>')
-            file.puts(contents)
-          end
-        end
-      end
-    end
   end
 end

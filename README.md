@@ -93,59 +93,13 @@ android {
 dependencies {
     // Add to your projects `build.gradle`.
     // We are currently using following version of desuga libraries
-    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:2.1.2"
+    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:2.1.3"
 }
 ```
 
-### Additional setup to use the SDK with Expo
+### Additional setup to use the SDK with Expo 52
 
-In your `app.json` file you need to add the following configuration for `expo-build-properties`
-
-```json
-{
-  "expo": {
-    "plugins": [
-      [
-        "expo-build-properties",
-        {
-          "android": {
-            "compileSdkVersion": 34,
-            "targetSdkVersion": 34,
-            "buildToolsVersion": "34.0.0",
-            "packagingOptions": {
-              "exclude": ["META-INF/LICENSE-MIT"]
-            }
-          },
-          "ios": {
-            "deploymentTarget": "14.0"
-          }
-        }
-      ]
-    ]        
-  }
-}
-```
-
-For the above to work you need to have `expo-build-properties` package installed. If you don't, install it with:
-
-`npx expo install expo-build-properties`
-
-### Using the SDK with Expo
-
-The React Native SDK is a wrapper around a native mobile TrueLayer Payments SDK. It is not possible to use it with Expo for web.
-It is also not possible to use the SDK within the Expo Go app. To test the SDK, you must build the Android and iOS apps.
-You can do that by running the following commands:
-
-For Android
-```text
-npx expo prebuild
-npx expo run:android
-```
-For iOS
-```text
-npx expo prebuild
-npx expo run:ios
-```
+Please check [Expo Integration](docs/Expo.md)
 
 ## How to Use the SDK
 

@@ -35,6 +35,9 @@ export type ProcessorResult =
   | { type: ResultType.Failure; reason: FailureReason, resultShown: ResultShown };
 
 export enum ProcessorStep {
+  /**
+   * @deprecated `Redirect` is no longer a valid case sent by the SDK and will be removed in the future. 
+   */
   Redirect = "Redirect",
   Wait = "Wait",
   Authorized = "Authorized",

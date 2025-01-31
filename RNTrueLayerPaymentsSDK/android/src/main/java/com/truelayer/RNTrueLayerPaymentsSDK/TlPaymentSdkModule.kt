@@ -139,7 +139,7 @@ private class TLReactNativeUtils {
         fun mapPaymentStep(step: ProcessorResult.PaymentStep): String {
             /*
                 export enum ProcessorStep {
-                  Redirect = "Redirect",
+                  Redirect = "Redirect", // Deprecated
                   Wait = "Wait",
                   Authorized = "Authorized",
                   Executed = "Executed",
@@ -147,7 +147,6 @@ private class TLReactNativeUtils {
                 }
              */
             return when (step) {
-                ProcessorResult.PaymentStep.Redirect -> "Redirect"
                 ProcessorResult.PaymentStep.Wait -> "Wait"
                 ProcessorResult.PaymentStep.Authorized -> "Authorized"
                 ProcessorResult.PaymentStep.Successful -> "Executed"
@@ -349,7 +348,14 @@ class TlPaymentSdkModule(reactContext: ReactApplicationContext) :
         promise: Promise?
     ) {
         val env = environment.convertToEnvironment()
-        themeMap = theme?.getMap("android")?.toHashMap()
+        val rawTheme = theme?.getMap("android")?.toHashMap()
+        rawTheme?.let {
+            val tempMapNonNullValues = HashMap<String, Any>()
+            rawTheme.entries.forEach { (key, value) ->
+                value?.let { tempMapNonNullValues[key] = value }
+            }
+            themeMap = tempMapNonNullValues
+        }
 
         // we ignore the outcome in here for now
         val out = TrueLayerUI.init(reactApplicationContext) {
@@ -359,7 +365,7 @@ class TlPaymentSdkModule(reactContext: ReactApplicationContext) :
             trueLayerUI = it
             promise?.resolve(null)
         }.onError {
-            promise?.reject(it.cause)
+            promise?.reject(it.cause ?: it)
         }
     }
 
