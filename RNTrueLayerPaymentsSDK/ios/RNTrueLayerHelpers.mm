@@ -13,11 +13,6 @@
     case TrueLayerSinglePaymentStateExecuted:
       return @"Executed";
 
-    // `TrueLayerSinglePaymentStateRedirect` is deprecated and will be removed in the future versions.
-    // Starting from SDK version 3.8.0, it's safe to assume that this case will never be triggered.
-    case TrueLayerSinglePaymentStateRedirect:
-      return @"Redirect";
-
     case TrueLayerSinglePaymentStateSettled:
       return @"Settled";
 
@@ -111,6 +106,18 @@
 
     case TrueLayerSinglePaymentErrorUserCanceledAtProvider:
       return @"UserCanceledAtProvider";
+
+    case TrueLayerSinglePaymentErrorInvalidBeneficiaryAccount:
+      return @"InvalidBeneficiaryAccount";
+
+    case TrueLayerSinglePaymentErrorInvalidOtp:
+      return @"InvalidOtp";
+
+    case TrueLayerSinglePaymentErrorSchemeUnavailable:
+      return @"SchemeUnavailable";
+
+    case TrueLayerSinglePaymentErrorVerificationDeclined:
+      return @"VerificationDeclined";
   }
 }
 
@@ -179,11 +186,6 @@
   switch (state) {
     case TrueLayerMandateStateAuthorized:
       return @"Authorized";
-
-      // `TrueLayerMandateStateRedirect` is deprecated and will be removed in the future versions.
-      // Starting from SDK version 3.8.0, it's safe to assume that this case will never be triggered.
-    case TrueLayerMandateStateRedirect:
-      return @"Redirect";
   }
 }
 
@@ -245,6 +247,12 @@
 
     case TrueLayerMandateErrorUnknownError:
       return @"Unknown";
+
+    case TrueLayerMandateErrorInvalidMandateState:
+      return @"InvalidMandateState";
+
+    case TrueLayerMandateErrorConstraintViolation:
+      return @"ConstraintViolation";
   }
 }
 
