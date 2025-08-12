@@ -118,7 +118,7 @@ private class TLReactNativeUtils {
                   | "ProcessorContextNotAvailable"
                   | "Unknown";
              */
-            
+
             return when (reason) {
                 ProcessorResult.FailureReason.NoInternet -> "NoInternet"
                 ProcessorResult.FailureReason.UserAborted -> "UserAborted"
@@ -317,11 +317,12 @@ private fun WritableMap.concatenate(map: WritableMap) {
     }
 }
 
+private var trueLayerUI: TrueLayerUI? = null
+
 class TlPaymentSdkModule(reactContext: ReactApplicationContext) :
     NativeTrueLayerPaymentsSDKSpec(reactContext), ActivityEventListener {
 
     val mPromises: SparseArray<Promise> = SparseArray()
-    var trueLayerUI: TrueLayerUI? = null
     var themeMap: HashMap<String, Any>? = null
 
     val scope = CoroutineScope(
@@ -355,6 +356,15 @@ class TlPaymentSdkModule(reactContext: ReactApplicationContext) :
                 value?.let { tempMapNonNullValues[key] = value }
             }
             themeMap = tempMapNonNullValues
+        }
+
+        // TrueLayerUI can not be init twice
+        if (trueLayerUI != null) {
+            // This is a workaround to be able to call init more than once
+            // This will ignore any configuration setup and will
+            // continue to use the previously configured instance
+            promise?.resolve(null)
+            return
         }
 
         // we ignore the outcome in here for now
