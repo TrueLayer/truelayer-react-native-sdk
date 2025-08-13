@@ -31,9 +31,13 @@ final class DemoAppUITests: XCTestCase {
       startSDKButton.tap()
       processSinglePaymentButton.tap()
 
-      let providersTitle = app.staticTexts["Choose your bank"]
+      let changeProviderButton = app.buttons["Change"]
+      let _ = changeProviderButton.waitForExistence(timeout: TimeInterval(integerLiteral: 30))
+      changeProviderButton.tap()
 
+      let providersTitle = app.staticTexts["Select your bank"]
       let _ = providersTitle.waitForExistence(timeout: TimeInterval(integerLiteral: 30))
+
       XCTAssertTrue(providersTitle.isHittable)
     }
 }
