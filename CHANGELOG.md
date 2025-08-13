@@ -1,6 +1,18 @@
 # CHANGELOG
 All notable changes to this project will be documented in this file. To know better on how to write and maintain a changelog, refer to [this link](https://keepachangelog.com/en/1.0.0/).
 
+## [3.0.0]
+
+### Changed
+
+- Updated the underlying Android SDK to version [4.0.0](https://docs.truelayer.com/docs/android-sdk-release-history).
+- Updated the underlying iOS SDK to version [4.0.1](https://docs.truelayer.com/docs/ios-sdk-release-history).
+
+### Fixes
+
+- Workaround to address [Issue 87](https://github.com/TrueLayer/truelayer-react-native-sdk/issues/87)
+  TrueLayerPaymentsSDKWrapper.configure fails on Android: "TrueLayerUI was not initialised" (works fine on iOS and most of Android devices)
+
 ## [2.3.0]
 
 ### Changed

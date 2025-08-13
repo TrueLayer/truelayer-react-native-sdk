@@ -1499,7 +1499,7 @@ PODS:
     - React-logger (= 0.77.0)
     - React-perflogger (= 0.77.0)
     - React-utils (= 0.77.0)
-  - rn-truelayer-payments-sdk (2.3.0):
+  - rn-truelayer-payments-sdk (3.0.0):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1519,7 +1519,7 @@ PODS:
     - ReactCodegen
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
-    - TrueLayerPaymentsSDK (= 3.9.0)
+    - TrueLayerPaymentsSDK (= 4.0.1)
     - Yoga
   - RNCAsyncStorage (2.1.0):
     - DoubleConversion
@@ -1543,7 +1543,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - Yoga
   - SocketRocket (0.7.1)
-  - TrueLayerPaymentsSDK (3.9.0)
+  - TrueLayerPaymentsSDK (4.0.1)
   - Yoga (0.0.0)
 
 DEPENDENCIES:
@@ -1770,7 +1770,7 @@ SPEC CHECKSUMS:
   fmt: a40bb5bd0294ea969aaaba240a927bd33d878cdd
   glog: eb93e2f488219332457c3c4eafd2738ddc7e80b8
   hermes-engine: 1f783c3d53940aed0d2c84586f0b7a85ab7827ef
-  RCT-Folly: e78785aa9ba2ed998ea4151e314036f6c49e6d82
+  RCT-Folly: 36fe2295e44b10d831836cc0d1daec5f8abcf809
   RCTDeprecation: f5c19ebdb8804b53ed029123eb69914356192fc8
   RCTRequired: 6ae6cebe470486e0e0ce89c1c0eabb998e7c51f4
   RCTTypeSafety: 50d6ec72a3d13cf77e041ff43a0617050fb98e3f
@@ -1828,10 +1828,10 @@ SPEC CHECKSUMS:
   ReactAppDependencyProvider: 6e8d68583f39dc31ee65235110287277eb8556ef
   ReactCodegen: c08a5113d9c9c895fe10f3c296f74c6b705a60a9
   ReactCommon: 1bd2dc684d7992acbf0dfee887b89a57a1ead86d
-  rn-truelayer-payments-sdk: 48918c5f26fba02c6c694cf146d36bcb11387af7
+  rn-truelayer-payments-sdk: a9b36f3882138423d95d6208dd3a768e8a07825c
   RNCAsyncStorage: 73773ca1dd29378bf0fe8dd7d67870d422e2fc05
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
-  TrueLayerPaymentsSDK: 1486cf735dcc1223d3ceb30b20a43af5628019a6
+  TrueLayerPaymentsSDK: a7ee1fe3e371d05f33dcd3165eeeb9c3a059fd74
   Yoga: 78d74e245ed67bb94275a1316cdc170b9b7fe884
 
 PODFILE CHECKSUM: fee8dbd43718634d5b71c544195045b9ec1e33e6
