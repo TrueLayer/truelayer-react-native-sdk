@@ -35,9 +35,8 @@
   "homepage": "https://github.com/TrueLayer/truelayer-react-native-sdk#readme",
   "devDependencies": {
     "@tsconfig/react-native": "^2.0.2",
-    "@types/react": "^18.0.25",
-    "@types/react-native": "^0.70.6",
-    "@types/react-test-renderer": "^18.0.0",
+    "@types/react": "latest",
+    "@types/react-test-renderer": "latest",
     "chokidar": "^3.5.3",
     "esbuild": "^0.17.12",
     "esbuild-plugin-clean": "^1.0.1",
