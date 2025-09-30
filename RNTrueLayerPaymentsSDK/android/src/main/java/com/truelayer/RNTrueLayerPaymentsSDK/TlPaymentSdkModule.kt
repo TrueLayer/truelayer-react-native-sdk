@@ -526,7 +526,7 @@ class TlPaymentSdkModule(reactContext: ReactApplicationContext) :
         }
     }
 
-    override fun onNewIntent(p0: Intent?) {
+    override fun onNewIntent(p0: Intent) {
     }
 
     override fun getConstants(): Map<String, Any> {
