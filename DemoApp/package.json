@@ -11,8 +11,8 @@
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^2.1.0",
-    "react": "18.3.1",
-    "react-native": "0.77.0",
+    "react": "19.1.1",
+    "react-native": "0.82.0",
     "react-native-uuid": "^2.0.3",
     "rn-truelayer-payments-sdk": "file:.yalc/rn-truelayer-payments-sdk"
   },
@@ -20,23 +20,23 @@
     "@babel/core": "^7.25.2",
     "@babel/preset-env": "^7.25.3",
     "@babel/runtime": "^7.25.0",
-    "@react-native-community/cli": "15.0.1",
-    "@react-native-community/cli-platform-android": "15.0.1",
-    "@react-native-community/cli-platform-ios": "15.0.1",
-    "@react-native/babel-preset": "0.77.0",
-    "@react-native/eslint-config": "0.77.0",
-    "@react-native/metro-config": "0.77.0",
-    "@react-native/typescript-config": "0.77.0",
+    "@react-native-community/cli": "latest",
+    "@react-native-community/cli-platform-android": "latest",
+    "@react-native-community/cli-platform-ios": "latest",
+    "@react-native/babel-preset": "latest",
+    "@react-native/eslint-config": "latest",
+    "@react-native/metro-config": "latest",
+    "@react-native/typescript-config": "latest",
     "@types/jest": "^29.5.13",
-    "@types/react": "^18.2.6",
+    "@types/react": "latest",
     "@types/react-test-renderer": "^18.0.0",
     "eslint": "^8.19.0",
     "jest": "^29.6.3",
     "prettier": "3.4.2",
-    "react-test-renderer": "18.3.1",
+    "react-test-renderer": "latest",
     "typescript": "5.0.4"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=20.19.4"
   }
 }

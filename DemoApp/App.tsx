@@ -21,14 +21,24 @@ import {
 } from 'rn-truelayer-payments-sdk'
 
 import uuid from 'react-native-uuid'
-import { Colors } from 'react-native/Libraries/NewAppScreen'
 import { log } from './utils/logger'
+
+const Colors = {
+  light: {
+    lighter: "#FFFFFF",
+    darker: "#CCCCCC",
+  },
+  dark: {
+    lighter: "#333333",
+    darker: "#000000",
+  },
+};
 
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark'
 
   const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+    backgroundColor: isDarkMode ? Colors.dark.darker : Colors.light.lighter,
     flex: 1,
   }
 
