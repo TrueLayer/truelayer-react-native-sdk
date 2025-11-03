@@ -13,7 +13,8 @@
     "@react-native-async-storage/async-storage": "^2.1.0",
     "react": "19.1.1",
     "react-native": "0.82.0",
-    "react-native-uuid": "^2.0.3"
+    "react-native-uuid": "^2.0.3",
+    "rn-truelayer-payments-sdk": "file:.yalc/rn-truelayer-payments-sdk"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
