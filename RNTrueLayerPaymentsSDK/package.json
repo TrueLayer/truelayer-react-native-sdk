@@ -36,7 +36,7 @@
   "devDependencies": {
     "@react-native/typescript-config": "0.82.0",
     "@types/react": "latest",
-    "@types/react-native": "0.82.0",
+    "@types/react-native": "latest",
     "@types/react-test-renderer": "latest",
     "chokidar": "^3.5.3",
     "esbuild": "^0.17.12",
