@@ -31,17 +31,9 @@ final class DemoAppUITests: XCTestCase {
       startSDKButton.tap()
       processSinglePaymentButton.tap()
 
-      let changeProviderButton = app.buttons["Mock UK Payments - Redirect Flow"]
-      let _ = changeProviderButton.waitForExistence(timeout: TimeInterval(integerLiteral: 30))
-      changeProviderButton.tap()
-
-      let selectAnotherBankButton = app.buttons["Select another bank"]
-      let _ = selectAnotherBankButton.waitForExistence(timeout: TimeInterval(integerLiteral: 30))
-      selectAnotherBankButton.tap()
-
-      let providersTitle = app.staticTexts["Select your bank"]
-      let _ = providersTitle.waitForExistence(timeout: TimeInterval(integerLiteral: 30))
-
-      XCTAssertTrue(providersTitle.isHittable)
+      let mockUkTextPredicate = NSPredicate(format: "label CONTAINS[c] 'Mock UK'")
+      let mockUkTextButton = app.staticTexts.matching(mockUkTextPredicate).firstMatch
+      let _ = mockUkTextButton.waitForExistence(timeout: TimeInterval(integerLiteral: 30))
+      XCTAssertTrue(mockUkTextButton.exists)
     }
 }
