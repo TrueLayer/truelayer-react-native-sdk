@@ -1,6 +1,5 @@
 import {
   Pressable,
-  SafeAreaView,
   StatusBar,
   StyleSheet,
   Text,
@@ -9,6 +8,8 @@ import {
   Linking,
   Alert
 } from 'react-native'
+
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import React from 'react'
 
@@ -102,7 +103,9 @@ function App(): React.JSX.Element {
 
             TrueLayerPaymentsSDKWrapper.configure(
               Environment.Sandbox,
-              theme,
+              // if you want to use default theme then just do not provide the theme parameter
+              // only pre-approved merchants will be able to override the theme
+              theme
             ).then(
               () => {
                 log('Configure success')
