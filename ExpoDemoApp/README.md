@@ -3,14 +3,29 @@
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
 
 ## Get started
+1. First add the Payments SDK as in [DemoApp Readme](../DemoApp/README.md)
+    ```bash
+    npx yalc --version
+    
+    cd RNTrueLayerPaymentsSDK
+    yarn install
+    yarn build
+    
+    npx yalc publish
+    
+    yarn yalc:watch
+    
+    cd ../ExpoDemoApp
+    npx yalc add rn-truelayer-payments-sdk
+    ```
 
-1. Install dependencies
+2. Install dependencies
 
    ```bash
    npm install
    ```
 
-2. Start the app
+3. Start the app
 
    ```bash
     npx expo prebuild
