@@ -1,5 +1,6 @@
 import {
   Pressable,
+  SafeAreaView,
   StatusBar,
   StyleSheet,
   Text,
@@ -8,8 +9,6 @@ import {
   Linking,
   Alert
 } from 'react-native'
-
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 import React from 'react'
 
@@ -103,9 +102,7 @@ function App(): React.JSX.Element {
 
             TrueLayerPaymentsSDKWrapper.configure(
               Environment.Sandbox,
-              // if you want to use default theme then just do not provide the theme parameter
-              // only pre-approved merchants will be able to override the theme
-              theme
+              theme,
             ).then(
               () => {
                 log('Configure success')
@@ -327,9 +324,13 @@ function getMandateStatus(): void {
 }
 
 async function handleRedirect(url: string) {
+  if (!url.includes("truelayer://")) {
+    return;
+  }
 
   console.log("handleRedirect for url: " + url)
-    // launch result screen
+
+  // launch result screen
   const isPayment = url.includes("payment_id")
   const isMandate = url.includes("mandate_id")
 

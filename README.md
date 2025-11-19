@@ -85,6 +85,7 @@ android {
     // this part will remove excess LICENSE-MIT files
     packagingOptions {
         resources {
+            excludes += '/META-INF/{AL2.0,LGPL2.1}'
             pickFirsts += ['META-INF/LICENSE-MIT']
         }
     }
@@ -93,7 +94,7 @@ android {
 dependencies {
     // Add to your projects `build.gradle`.
     // We are currently using following version of desuga libraries
-    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:2.1.3"
+    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:2.1.5"
 }
 ```
 

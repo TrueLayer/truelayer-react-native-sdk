@@ -1,7 +1,6 @@
 ## Integration example
 
-An integration example can be found in the `ExpoDemoApp`. This example is limited only to the SDK initialization, but presents how the SDK needs to be integrated into the project.
-The full example of how the SDK can be used can be found in the pure react-native `DemoApp`.
+An integration example can be found in the `ExpoDemoApp`. It contains a similiar example of what's built in the `DemoApp`.
 
 ## Updating build scripts
 
@@ -15,10 +14,6 @@ In your `app.json` file you need to add the following configuration for `expo-bu
         "expo-build-properties",
         {
           "android": {
-            "compileSdkVersion": 35,
-            "targetSdkVersion": 35,
-            "buildToolsVersion": "35.0.0",
-            "kotlinVersion": "1.9.25",
             "packagingOptions": {
               "pickFirst": ["META-INF/LICENSE-MIT"],
               "excludes" : "/META-INF/{AL2.0,LGPL2.1}"
@@ -60,7 +55,7 @@ android {
 dependencies {
     // Add to your projects `build.gradle`.
     // We are currently using following version of desuga libraries
-    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:2.1.3"
+    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:2.1.5"
 }
 ```
 
