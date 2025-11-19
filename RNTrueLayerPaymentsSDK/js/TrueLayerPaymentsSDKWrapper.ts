@@ -28,7 +28,7 @@ export abstract class TrueLayerPaymentsSDKWrapper {
    */
   static configure(
     environment: Environment = Environment.Production,
-    theme?: Theme
+    theme: Theme
   ): Promise<void> {
     return RNTrueLayerPaymentsSDK!!._configure(environment, theme);
   }
