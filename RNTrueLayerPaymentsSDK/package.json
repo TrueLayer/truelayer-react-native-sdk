@@ -1,6 +1,6 @@
 {
   "name": "rn-truelayer-payments-sdk",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "description": "RN wrapper for TrueLayer's payments SDK",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
