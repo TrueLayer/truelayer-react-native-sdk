@@ -1,6 +1,10 @@
 # CHANGELOG
 All notable changes to this project will be documented in this file. To know better on how to write and maintain a changelog, refer to [this link](https://keepachangelog.com/en/1.0.0/).
 
+## [3.1.2]
+
+- Updated the underlying iOS SDK to version [4.1.1](https://docs.truelayer.com/docs/ios-sdk-release-history).
+
 ## [3.1.1]
 
 - Updated the underlying Android SDK to version [4.1.2](https://docs.truelayer.com/docs/android-sdk-release-history).
