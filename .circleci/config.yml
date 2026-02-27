@@ -121,8 +121,8 @@ jobs:
 
   build-ios-demo-app:
     macos:
-      xcode: 16.2.0
-    resource_class: macos.m1.large.gen1
+      xcode: 16.4.0
+    resource_class: m4pro.medium
     working_directory: /Users/distiller/project
 
     steps:
@@ -170,7 +170,7 @@ jobs:
             cd /Users/distiller/project/DemoApp
             yarn react-native bundle --entry-file index.js --platform ios --dev false --bundle-output ios/main.jsbundle --assets-dest ios
             cd ios
-            xcodebuild -workspace DemoApp.xcworkspace -scheme DemoAppUITests -destination 'platform=iOS Simulator,name=iPhone 16 Pro,OS=18.2' -configuration Debug test
+            xcodebuild -workspace DemoApp.xcworkspace -scheme DemoAppUITests -destination 'platform=iOS Simulator,name=iPhone 16 Pro,OS=18.5' -configuration Release test
 
 workflows:
   version: 2
