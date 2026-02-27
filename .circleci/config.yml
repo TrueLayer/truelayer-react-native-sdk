@@ -170,7 +170,7 @@ jobs:
             cd /Users/distiller/project/DemoApp
             yarn react-native bundle --entry-file index.js --platform ios --dev false --bundle-output ios/main.jsbundle --assets-dest ios
             cd ios
-            xcodebuild -workspace DemoApp.xcworkspace -scheme DemoAppUITests -destination 'platform=iOS Simulator,name=iPhone 16 Pro,OS=18.5' -configuration Debug test
+            xcodebuild -workspace DemoApp.xcworkspace -scheme DemoAppUITests -destination 'platform=iOS Simulator,name=iPhone 16 Pro,OS=18.5' -configuration Release test
 
 workflows:
   version: 2
