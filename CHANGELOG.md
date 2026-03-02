@@ -3,7 +3,7 @@ All notable changes to this project will be documented in this file. To know bet
 
 ## [3.1.2]
 
-- Updated the underlying iOS SDK to version [4.1.1](https://docs.truelayer.com/docs/ios-sdk-release-history).
+- Updated the underlying iOS SDK to version [4.1.2](https://docs.truelayer.com/docs/ios-sdk-release-history).
 - Updated the underlying Android SDK to version [4.1.4](https://docs.truelayer.com/docs/android-sdk-release-history).
 
 ## [3.1.1]
