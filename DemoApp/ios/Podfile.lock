@@ -1854,7 +1854,7 @@ PODS:
     - React-utils (= 0.84.1)
     - ReactNativeDependencies
   - ReactNativeDependencies (0.84.1)
-  - rn-truelayer-payments-sdk (3.1.2):
+  - rn-truelayer-payments-sdk (3.1.3):
     - hermes-engine
     - RCTRequired
     - RCTTypeSafety
@@ -1875,7 +1875,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - ReactNativeDependencies
-    - TrueLayerPaymentsSDK (= 4.1.2)
+    - TrueLayerPaymentsSDK (= 4.1.4)
     - Yoga
   - RNCAsyncStorage (2.2.0):
     - hermes-engine
@@ -1899,7 +1899,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - ReactNativeDependencies
     - Yoga
-  - TrueLayerPaymentsSDK (4.1.2)
+  - TrueLayerPaymentsSDK (4.1.4)
   - Yoga (0.0.0)
 
 DEPENDENCIES:
@@ -2142,7 +2142,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   FBLazyVector: e97c19a5a442429d1988f182a1940fb08df514da
-  hermes-engine: a2648dbcd3a223377440243b58c5c1b1dd0f8320
+  hermes-engine: e8ad428be702dc3c6951152cbf87c02d7c42b8f7
   RCTDeprecation: af44b104091a34482596cd9bd7e8d90c4e9b4bd7
   RCTRequired: bb77b070f75f53398ce43c0aaaa58337cebe2bf6
   RCTSwiftUI: afc0a0a635860da1040a0b894bfd529da06d7810
@@ -2151,7 +2151,7 @@ SPEC CHECKSUMS:
   React: 1ba7d364ade7d883a1ec055bfc3606f35fdee17b
   React-callinvoker: bc2a26f8d84fb01f003fc6de6c9337b64715f95b
   React-Core: 7840d3a80b43a95c5e80ef75146bd70925ebab0f
-  React-Core-prebuilt: fd4acdc33f109eaf597162ad6696296a0f9fbc94
+  React-Core-prebuilt: 727b1c64d6578abae213bd6a52c07609fec1db80
   React-CoreModules: 2eb010400b63b89e53a324ffb3c112e4c7c3ce42
   React-cxxreact: a558e92199d26f145afa9e62c4233cf8e7950efe
   React-debug: 755200a6e7f5e6e0a40ff8d215493d43cce285fc
@@ -2213,12 +2213,12 @@ SPEC CHECKSUMS:
   ReactAppDependencyProvider: e96e93b493d8d86eeaee3e590ba0be53f6abe46f
   ReactCodegen: 797de5178718324c6eba3327b07f9a423fbd5787
   ReactCommon: 07572bf9e687c8a52fbe4a3641e9e3a1a477c78e
-  ReactNativeDependencies: 9e51f172b2631ce0faa24587d0633d25b89bb966
-  rn-truelayer-payments-sdk: 0ef8b3527d159766045ce1d074cfae9e88328114
+  ReactNativeDependencies: 1abec5bc6d4af5f9083dad884d1a71e45e36c68d
+  rn-truelayer-payments-sdk: 197f6f6e23139ab478c7a5a5b608f7433b0af9f8
   RNCAsyncStorage: 3a4f5e2777dae1688b781a487923a08569e27fe4
-  TrueLayerPaymentsSDK: 275154082f9eb5d4725835fb7583611df9ec73c9
+  TrueLayerPaymentsSDK: 32ca292d27b9476e219a6ba1abd642f463d973c7
   Yoga: c0b3f2c7e8d3e327e450223a2414ca3fa296b9a2
 
-PODFILE CHECKSUM: fee8dbd43718634d5b71c544195045b9ec1e33e6
+PODFILE CHECKSUM: bba99f6b303e13a1221d187cdc4c4accc66a43bc
 
 COCOAPODS: 1.16.2
