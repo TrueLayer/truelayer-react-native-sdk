@@ -1875,7 +1875,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - ReactNativeDependencies
-    - TrueLayerPaymentsSDK (= 4.1.4)
+    - TrueLayerPaymentsSDK (= 4.1.6)
     - Yoga
   - RNCAsyncStorage (2.2.0):
     - hermes-engine
@@ -1899,7 +1899,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - ReactNativeDependencies
     - Yoga
-  - TrueLayerPaymentsSDK (4.1.4)
+  - TrueLayerPaymentsSDK (4.1.6)
   - Yoga (0.0.0)
 
 DEPENDENCIES:
@@ -2214,11 +2214,11 @@ SPEC CHECKSUMS:
   ReactCodegen: 797de5178718324c6eba3327b07f9a423fbd5787
   ReactCommon: 07572bf9e687c8a52fbe4a3641e9e3a1a477c78e
   ReactNativeDependencies: 1abec5bc6d4af5f9083dad884d1a71e45e36c68d
-  rn-truelayer-payments-sdk: 197f6f6e23139ab478c7a5a5b608f7433b0af9f8
+  rn-truelayer-payments-sdk: 6dd143ad91420e245a7376f0f795bccbf094437a
   RNCAsyncStorage: 3a4f5e2777dae1688b781a487923a08569e27fe4
-  TrueLayerPaymentsSDK: 32ca292d27b9476e219a6ba1abd642f463d973c7
+  TrueLayerPaymentsSDK: dd1f1ddb346ef87a2eb61f59a67982a6ade120fb
   Yoga: c0b3f2c7e8d3e327e450223a2414ca3fa296b9a2
 
-PODFILE CHECKSUM: bba99f6b303e13a1221d187cdc4c4accc66a43bc
+PODFILE CHECKSUM: fee8dbd43718634d5b71c544195045b9ec1e33e6
 
 COCOAPODS: 1.16.2
