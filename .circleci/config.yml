@@ -35,9 +35,9 @@ jobs:
       - node/install-packages:
           pkg-manager: yarn
       - run:
-          name: Ensure npm >= 11.5.1 (required for OIDC trusted publishing)
+          name: Ensure npm >= 11.11.0 (CircleCI OIDC support landed in npm 11.11.0)
           command: |
-            npm install -g npm@11.5.1
+            npm install -g npm@11.11.0
             npm --version
       - run:
           name: Build SDK
