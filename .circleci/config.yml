@@ -37,7 +37,7 @@ jobs:
       - run:
           name: Ensure npm >= 11.5.1 (required for OIDC trusted publishing)
           command: |
-            npm install -g npm@latest
+            npm install -g npm@11.5.1
             npm --version
       - run:
           name: Build SDK
