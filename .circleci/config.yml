@@ -21,7 +21,9 @@ jobs:
           command: ./RNTrueLayerPaymentsSDK/scripts/check_package_version_against_branch.sh
 
   build-and-publish:
-    executor: node/default
+    executor:
+      name: node/default
+      tag: "22.14.0"
     working_directory: ~/project/RNTrueLayerPaymentsSDK
     parameters:
       isDryRun:
@@ -33,6 +35,11 @@ jobs:
       - node/install-packages:
           pkg-manager: yarn
       - run:
+          name: Ensure npm >= 11.5.1 (required for OIDC trusted publishing)
+          command: |
+            npm install -g npm@11.5.1
+            npm --version
+      - run:
           name: Build SDK
           command: yarn build
       - when:
@@ -40,18 +47,16 @@ jobs:
           steps:
             - run:
                 name: Publish to npm (dry run)
-                command: |
-                  echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
-                  npm publish --dry-run
+                command: npm publish --dry-run
       - when:
           condition:
             and:
               - not: << parameters.isDryRun >>
           steps:
             - run:
-                name: Publish to npm (actual)
+                name: Publish to npm (actual, OIDC trusted publishing)
                 command: |
-                  echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
+                  export NPM_ID_TOKEN=$(circleci run oidc get --claims '{"aud": "npm:registry.npmjs.org"}')
                   npm publish
 
   build-android-demo-app:
