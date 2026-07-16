@@ -56,7 +56,9 @@ jobs:
             - run:
                 name: Publish to npm (actual, OIDC trusted publishing)
                 command: |
+                  npm --version
                   export NPM_ID_TOKEN=$(circleci run oidc get --claims '{"aud": "npm:registry.npmjs.org"}')
+                  test -n "$NPM_ID_TOKEN" || { echo "ERROR: OIDC id token is empty"; exit 1; }
                   npm publish
 
   build-android-demo-app:
