@@ -46,12 +46,6 @@ jobs:
           condition: << parameters.isDryRun >>
           steps:
             - run:
-                name: "[TEMP] OIDC smoke test - fetch id token"
-                command: |
-                  export NPM_ID_TOKEN=$(circleci run oidc get --claims '{"aud": "npm:registry.npmjs.org"}')
-                  if [ -z "$NPM_ID_TOKEN" ]; then echo "OIDC token EMPTY"; exit 1; fi
-                  echo "OIDC token fetched OK (${#NPM_ID_TOKEN} chars)"
-            - run:
                 name: Publish to npm (dry run)
                 command: npm publish --dry-run
       - when:
